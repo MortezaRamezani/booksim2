@@ -1,4 +1,4 @@
-BookSim Interconnection Network Simulator (HPCAN)
+BookSim Interconnection Network Simulator
 =========================================
 
 BookSim is a cycle-accurate interconnection network simulator.
