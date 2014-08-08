@@ -1,4 +1,4 @@
-BookSim Interconnection Network Simulator (HPCAN)
+BookSim Interconnection Network Simulator
 =========================================
 
 BookSim is a cycle-accurate interconnection network simulator.
@@ -16,13 +16,13 @@ A Detailed and Flexible Cycle-Accurate Network-on-Chip Simulator. In *Proceeding
 
 ---
 
-### Git Problem:
+### Using two ssh-key with Github problem:
 
-Remember, to use git-scm on windows with two github account, follow instruction in the following link:
+Remember, to use git-scm on windows with two github accounts, follow the instruction in the following link:
 
 http://kevinpelgrims.com/blog/2012/07/19/setting-up-multiple-github-accounts-on-windows
 
-Note that you shoud use git-scm bash in order to add second ssh-key to git-agent.
+Note that you should use git-scm bash in order to add second ssh-key to git-agent.
 
 ### Adding project to Eclipse:
 
@@ -32,7 +32,7 @@ select MinGW GCC, and browse to source code directory from Existing Code Locatio
 Now, under project properties, in C/C++ Build side menu, go to Builder Settings tab, and change Build Location to this:
 ${workspace_loc:/booksim2/src}/
   
-### Fixed Eclipse Unresolved Symbols:
+### Fixing Eclipse unresolved symbols:
 
 Go to Project > Properties > C/C++ General > Preprocessor Includes... > Providers and select "CDT GCC Built-in Compiler Settings"
 
