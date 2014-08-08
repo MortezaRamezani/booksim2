@@ -33,10 +33,17 @@
 #include <cstring>
 #include <climits>
 #include <cassert>
+
+#if defined(WIN32)
+#include <time.h>
+#endif
+
+
 #ifdef _WIN32_
 #pragma warning (disable: 4786)
 #include <ostream>
 #endif
+
 
 using namespace std;
 
