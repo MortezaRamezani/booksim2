@@ -188,8 +188,8 @@ IQRouter::~IQRouter( )
     cout << *_bufferMonitor << endl ;
     
     cout << Name() << ".switchMonitor:" << endl ; 
-    cout << "Inputs=" << _inputs ;
-    cout << "Outputs=" << _outputs ;
+    cout << "Inputs=" << _inputs << endl ;
+    cout << "Outputs=" << _outputs << endl ;
     cout << *_switchMonitor << endl ;
   }
 

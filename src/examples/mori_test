@@ -1,0 +1,26 @@
+// $Id$
+
+//simple 8X8 torus under injection mode 
+
+
+sample_period = 100;
+//routing_delay = ;
+print_activity = 1;
+print_csv_results = 1;
+watch_out = -;
+stats_out = -;
+
+// Topology
+topology = torus;
+k = 4;
+n = 2;
+
+// Routing
+routing_function = dim_order;
+
+// Flow control
+num_vcs = 2;
+
+// Traffic
+traffic = uniform;
+injection_rate = 0.15;
