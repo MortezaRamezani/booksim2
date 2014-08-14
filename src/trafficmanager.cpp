@@ -763,7 +763,7 @@ int TrafficManager::_IssuePacket( int source, int cl )
         } else {
       
             //produce a packet
-            if(_injection_process[cl]->test(source)) {
+            if(_injection_process[cl]->test(source, _traffic_pattern[cl]->dest(source))) {
 	
                 //coin toss to determine request type.
                 result = (RandomFloat() < _write_fraction[cl]) ? 2 : 1;
@@ -772,7 +772,7 @@ int TrafficManager::_IssuePacket( int source, int cl )
             }
         }
     } else { //normal mode
-        result = _injection_process[cl]->test(source) ? 1 : 0;
+        result = _injection_process[cl]->test(source, _traffic_pattern[cl]->dest(source)) ? 1 : 0;
         _requestsOutstanding[source]++;
     } 
     if(result != 0) {

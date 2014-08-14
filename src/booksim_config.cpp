@@ -182,6 +182,14 @@ BookSimConfig::BookSimConfig( )
   _float_map["burst_beta"]  = 0.5; // burst length
   _float_map["burst_r1"] = -1.0; // burst rate
 
+  _int_map["mr_multi_rate"] = 0;
+  _float_map["mr_burst_alphas"] = 0.5; // burst interval
+  AddStrField("mr_burst_alphas", ""); // workaraound to allow for vector specification
+  _float_map["mr_burst_betas"]  = 0.5; // burst length
+  AddStrField("mr_burst_betas", ""); // workaraound to allow for vector specification
+  _float_map["mr_burst_r1s"] = -1.0; // burst rate
+  AddStrField("mr_burst_r1s", ""); // workaraound to allow for vector specification
+
   AddStrField( "priority", "none" );  // message priorities
 
   _int_map["batch_size"] = 1000;

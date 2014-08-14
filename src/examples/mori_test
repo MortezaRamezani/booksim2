@@ -12,11 +12,6 @@ sample_period = 10;
 
 routing_delay = 1;
 
-injection_process = on_off({0.3,0.6,-0.5});
-//burst_alpha = ;
-//burst_beta = ;
-//burst_r1 = ;
-
 // use_read_write = ;
 
 //print_activity = 1;
@@ -29,7 +24,7 @@ injection_process = on_off({0.3,0.6,-0.5});
 
 // Topology
 topology = torus;
-k = 4;
+k = 2;
 n = 2;
 
 // Routing
@@ -40,4 +35,17 @@ num_vcs = 2;
 
 // Traffic
 traffic = uniform;
+
 injection_rate = 0.15;
+
+//injection_process = on_off({0.3,0.6,-0.5});
+
+injection_process = on_off;
+
+burst_alpha = 0.45;
+burst_beta = 0.54;
+burst_r1 = -0.93;
+
+mr_burst_alphas = {0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3};
+mr_burst_betas = {0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67,0.67};
+mr_burst_r1s = {-0.94,0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94,-0.94};
