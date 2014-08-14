@@ -35,7 +35,7 @@
 #include <map>
 #include <list>
 
-class AnyNet: public Network {
+class AnyNet : public Network {
 
   string file_name;
   //associtation between  nodes and routers
@@ -52,7 +52,7 @@ class AnyNet: public Network {
   void buildRoutingTable();
   void route(int r_start);
 
-public:
+ public:
   AnyNet(const Configuration &config, const string & name);
   ~AnyNet();
 
@@ -72,5 +72,5 @@ public:
 };
 
 void min_anynet(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                OutputSet *outputs, bool inject);
 #endif

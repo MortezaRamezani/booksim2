@@ -33,35 +33,36 @@
 using namespace std;
 
 class InjectionProcess {
-protected:
+ protected:
   int _nodes;
   double _rate;
   InjectionProcess(int nodes, double rate);
-public:
+ public:
   virtual ~InjectionProcess() {
   }
   virtual bool test(int source, int destination) = 0;
   virtual void reset();
   static InjectionProcess * New(string const & inject, int nodes, double load,
-      Configuration const * const config = NULL);
+                                Configuration const * const config = NULL);
 };
 
-class BernoulliInjectionProcess: public InjectionProcess {
-public:
+class BernoulliInjectionProcess : public InjectionProcess {
+ public:
   BernoulliInjectionProcess(int nodes, double rate);
   virtual bool test(int source, int destination);
 };
 
-class OnOffInjectionProcess: public InjectionProcess {
-private:
+class OnOffInjectionProcess : public InjectionProcess {
+ private:
   vector<double> _alpha;
   vector<double> _beta;
   vector<double> _r1;
   vector<int> _initial;
   vector<int> _state;
-public:
+ public:
   OnOffInjectionProcess(int nodes, double rate, vector<double> alpha,
-      vector<double> beta, vector<double> r1, vector<int> initial);
+                        vector<double> beta, vector<double> r1,
+                        vector<int> initial);
   virtual void reset();
   virtual bool test(int source, int destination);
 };

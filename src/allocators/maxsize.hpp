@@ -32,7 +32,7 @@
 
 #include "allocator.hpp"
 
-class MaxSizeMatch: public DenseAllocator {
+class MaxSizeMatch : public DenseAllocator {
   vector<int> _from;   // array to hold breadth-first tree
   int *_s;      // stack of leaf nodes in tree
   int *_ns;     // next stack
@@ -40,7 +40,7 @@ class MaxSizeMatch: public DenseAllocator {
 
   bool _ShortestAugmenting();
 
-public:
+ public:
   MaxSizeMatch(Module *parent, const string& name, int inputs, int ouputs);
   ~MaxSizeMatch();
 

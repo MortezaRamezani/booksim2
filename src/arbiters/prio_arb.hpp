@@ -33,10 +33,10 @@
 #include "module.hpp"
 #include "config_utils.hpp"
 
-class PriorityArbiter: public Module {
+class PriorityArbiter : public Module {
   int _rr_ptr;
 
-protected:
+ protected:
   const int _inputs;
 
   struct sRequest {
@@ -49,9 +49,9 @@ protected:
 
   int _match;
 
-public:
+ public:
   PriorityArbiter(const Configuration &config, Module *parent,
-      const string& name, int inputs);
+                  const string& name, int inputs);
 
   void Clear();
 

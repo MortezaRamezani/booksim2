@@ -35,12 +35,12 @@
 
 #include "separable.hpp"
 
-class SeparableOutputFirstAllocator: public SeparableAllocator {
+class SeparableOutputFirstAllocator : public SeparableAllocator {
 
-public:
+ public:
 
   SeparableOutputFirstAllocator(Module* parent, const string& name, int inputs,
-      int outputs, const string& arb_type);
+                                int outputs, const string& arb_type);
 
   virtual void Allocate();
 

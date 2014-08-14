@@ -31,8 +31,8 @@
 #include "switch_monitor.hpp"
 #include "iq_router.hpp"
 
-Power_Module::Power_Module(Network * n, const Configuration &config) :
-    Module(0, "power_module") {
+Power_Module::Power_Module(Network * n, const Configuration &config)
+    : Module(0, "power_module") {
 
   string pfile = config.GetStr("tech_file");
   PowerConfig pconfig;
@@ -149,30 +149,30 @@ wire const & Power_Module::wireOptimize(double L) {
     double bestN = -1;
     for (double K = 1.0; K < 10; K += 0.1) {
       for (double N = 1.0; N < 40; N += 1.0) {
-	for (double M = 1.0; M < 40.0; M += 1.0) {
-	  double l = 1.0 * L / (N * M);
+        for (double M = 1.0; M < 40.0; M += 1.0) {
+          double l = 1.0 * L / (N * M);
 
-	  double k0 = R * (Co_delay + Ci_delay);
-	  double k1 = R / K * Cw + K * Rw * Ci_delay;
-	  double k2 = 0.5 * Rw * Cw;
-	  double Tw = k0 + (k1 * l) + k2 * (l * l);
-	  double alpha = 0.2;
-	  double power = alpha * W * powerRepeatedWire(L, K, M, N)
-	      + powerWireDFF(M, W, alpha);
-	  double metric = M * M * M * M * power;
-	  if ((N * Tw) < (0.8 * tCLK)) {
-	    if (metric < bestMetric) {
-	      bestMetric = metric;
-	      bestK = K;
-	      bestM = M;
-	      bestN = N;
-	    }
-	  }
-	}
+          double k0 = R * (Co_delay + Ci_delay);
+          double k1 = R / K * Cw + K * Rw * Ci_delay;
+          double k2 = 0.5 * Rw * Cw;
+          double Tw = k0 + (k1 * l) + k2 * (l * l);
+          double alpha = 0.2;
+          double power = alpha * W * powerRepeatedWire(L, K, M, N)
+              + powerWireDFF(M, W, alpha);
+          double metric = M * M * M * M * power;
+          if ((N * Tw) < (0.8 * tCLK)) {
+            if (metric < bestMetric) {
+              bestMetric = metric;
+              bestK = K;
+              bestM = M;
+              bestN = N;
+            }
+          }
+        }
       }
     }
     cout << "L = " << L << " K = " << bestK << " M = " << bestM << " N = "
-	<< bestN << endl;
+         << bestN << endl;
 
     wire const temp = { L, bestK, bestM, bestN };
     iter = wire_map.insert(make_pair(L, temp)).first;
@@ -233,9 +233,9 @@ void Power_Module::calcBuffer(const BufferMonitor *bm) {
       double ar = ((double) reads[i * classes + j]) / totalTime;
       double aw = ((double) writes[i * classes + j]) / totalTime;
       if (ar > 1 || aw > 1) {
-	cout
-	    << "activity factor is greater than one, soemthing is stomping memory\n";
-	exit(-1);
+        cout
+            << "activity factor is greater than one, soemthing is stomping memory\n";
+        exit(-1);
       }
       double Pwl = powerWordLine(channel_width, depth);
       double Prd = powerMemoryBitRead(depth) * channel_width;
@@ -303,7 +303,7 @@ void Power_Module::calcSwitch(const SwitchMonitor* sm) {
   switchArea += areaCrossbar(sm->NumInputs(), sm->NumOutputs());
   outputArea += areaOutputModule(sm->NumOutputs());
   switchPowerLeak += powerCrossbarLeak(channel_width, sm->NumInputs(),
-      sm->NumOutputs());
+                                       sm->NumOutputs());
 
   const vector<int> activity = sm->GetActivity();
   vector<double> type_activity(classes);
@@ -314,19 +314,19 @@ void Power_Module::calcSwitch(const SwitchMonitor* sm) {
     }
     for (int j = 0; j < sm->NumInputs(); j++) {
       for (int k = 0; k < classes; k++) {
-	double a = activity[k + classes * (i + sm->NumOutputs() * j)];
-	a = a / totalTime;
-	if (a > 1) {
-	  cout << "Switcht activity factor is greater than 1!!!\n";
-	  exit(-1);
-	}
-	double Px = powerCrossbar(channel_width, sm->NumInputs(),
-	    sm->NumOutputs(), j, i);
-	switchPower += a * channel_width * Px;
-	switchPowerCtrl += a
-	    * powerCrossbarCtrl(channel_width, sm->NumInputs(),
-		sm->NumOutputs());
-	type_activity[k] += a;
+        double a = activity[k + classes * (i + sm->NumOutputs() * j)];
+        a = a / totalTime;
+        if (a > 1) {
+          cout << "Switcht activity factor is greater than 1!!!\n";
+          exit(-1);
+        }
+        double Px = powerCrossbar(channel_width, sm->NumInputs(),
+                                  sm->NumOutputs(), j, i);
+        switchPower += a * channel_width * Px;
+        switchPowerCtrl += a
+            * powerCrossbarCtrl(channel_width, sm->NumInputs(),
+                                sm->NumOutputs());
+        type_activity[k] += a;
       }
     }
     outputPowerClk += powerWireClk(1, channel_width);
@@ -339,7 +339,7 @@ void Power_Module::calcSwitch(const SwitchMonitor* sm) {
 }
 
 double Power_Module::powerCrossbar(double width, double inputs, double outputs,
-    double from, double to) {
+                                   double from, double to) {
   // datapath traversal power
   double Wxbar = width * outputs * CrossbarPitch;
   double Hxbar = width * inputs * CrossbarPitch;
@@ -375,7 +375,7 @@ double Power_Module::powerCrossbar(double width, double inputs, double outputs,
 }
 
 double Power_Module::powerCrossbarCtrl(double width, double inputs,
-    double outputs) {
+                                       double outputs) {
 
   // datapath traversal power
   double Wxbar = width * outputs * CrossbarPitch;
@@ -396,7 +396,7 @@ double Power_Module::powerCrossbarCtrl(double width, double inputs,
 }
 
 double Power_Module::powerCrossbarLeak(double width, double inputs,
-    double outputs) {
+                                       double outputs) {
   // datapath traversal power
   double Wxbar = width * outputs * CrossbarPitch;
   double Hxbar = width * inputs * CrossbarPitch;

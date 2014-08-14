@@ -65,6 +65,6 @@ void SaveRandomState(std::vector<long> & save_x, std::vector<double> & save_u);
 
 // Restores the generator state from previously saved values
 void RestoreRandomState(std::vector<long> const & save_x,
-    std::vector<double> const & save_u);
+                        std::vector<double> const & save_u);
 
 #endif

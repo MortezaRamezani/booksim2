@@ -30,7 +30,7 @@
 
 #include "network.hpp"
 
-class KNCube: public Network {
+class KNCube : public Network {
 
   bool _mesh;
 
@@ -46,7 +46,7 @@ class KNCube: public Network {
   int _LeftNode(int node, int dim);
   int _RightNode(int node, int dim);
 
-public:
+ public:
   KNCube(const Configuration &config, const string & name, bool mesh);
   static void RegisterRoutingFunctions();
 

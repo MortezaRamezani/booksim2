@@ -36,7 +36,7 @@
 #include "routefunc.hpp"
 #include "config_utils.hpp"
 
-class Buffer: public Module {
+class Buffer : public Module {
 
   int _occupancy;
   int _size;
@@ -47,10 +47,10 @@ class Buffer: public Module {
   vector<int> _class_occupancy;
 #endif
 
-public:
+ public:
 
   Buffer(const Configuration& config, int outputs, Module *parent,
-      const string& name);
+         const string& name);
   ~Buffer();
 
   void AddFlit(int vc, Flit *f);
@@ -110,7 +110,7 @@ public:
   }
 
   inline void Route(int vc, tRoutingFunction rf, const Router* router,
-      const Flit* f, int in_channel) {
+                    const Flit* f, int in_channel) {
     _vc[vc]->Route(rf, router, f, in_channel);
   }
 

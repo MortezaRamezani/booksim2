@@ -32,8 +32,9 @@
 #include "buffer.hpp"
 
 Buffer::Buffer(const Configuration& config, int outputs, Module *parent,
-    const string& name) :
-    Module(parent, name), _occupancy(0) {
+               const string& name)
+    : Module(parent, name),
+      _occupancy(0) {
   int num_vcs = config.GetInt("num_vcs");
 
   _size = config.GetInt("buf_size");

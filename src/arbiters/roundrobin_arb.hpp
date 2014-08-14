@@ -35,12 +35,12 @@
 
 #include "arbiter.hpp"
 
-class RoundRobinArbiter: public Arbiter {
+class RoundRobinArbiter : public Arbiter {
 
   // Priority pointer
   int _pointer;
 
-public:
+ public:
 
   // Constructors
   RoundRobinArbiter(Module *parent, const string &name, int size);
@@ -60,14 +60,14 @@ public:
   virtual void Clear();
 
   static inline bool Supersedes(int input1, int pri1, int input2, int pri2,
-      int offset, int size) {
+                                int offset, int size) {
     // in a round-robin scheme with the given number of positions and current 
     // offset, should a request at input1 with priority pri1 supersede a 
     // request at input2 with priority pri2?
     return ((pri1 > pri2)
-	|| ((pri1 == pri2)
-	    && (((input1 - offset + size) % size)
-		< ((input2 - offset + size) % size))));
+        || ((pri1 == pri2)
+            && (((input1 - offset + size) % size)
+                < ((input2 - offset + size) % size))));
   }
 
 };

@@ -35,16 +35,16 @@
 #include <iostream>
 
 class Module {
-private:
+ private:
   string _name;
   string _fullname;
 
   vector<Module *> _children;
 
-protected:
+ protected:
   void _AddChild(Module *child);
 
-public:
+ public:
   Module(Module *parent, const string& name);
   virtual ~Module() {
   }

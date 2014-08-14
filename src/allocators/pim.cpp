@@ -33,8 +33,9 @@
 
 //#define DEBUG_PIM
 
-PIM::PIM(Module *parent, const string& name, int inputs, int outputs, int iters) :
-    DenseAllocator(parent, name, inputs, outputs), _PIM_iter(iters) {
+PIM::PIM(Module *parent, const string& name, int inputs, int outputs, int iters)
+    : DenseAllocator(parent, name, inputs, outputs),
+      _PIM_iter(iters) {
 }
 
 PIM::~PIM() {
@@ -59,15 +60,15 @@ void PIM::Allocate() {
       input_offset = RandomInt(_inputs - 1);
 
       for (int i = 0; i < _inputs; ++i) {
-	input = (i + input_offset) % _inputs;
+        input = (i + input_offset) % _inputs;
 
-	if ((_request[input][output].label != -1) && (_inmatch[input] == -1)
-	    && (_outmatch[output] == -1)) {
+        if ((_request[input][output].label != -1) && (_inmatch[input] == -1)
+            && (_outmatch[output] == -1)) {
 
-	  // Grant
-	  grants[output] = input;
-	  break;
-	}
+          // Grant
+          grants[output] = input;
+          break;
+        }
       }
     }
 
@@ -80,16 +81,16 @@ void PIM::Allocate() {
       output_offset = RandomInt(_outputs - 1);
 
       for (int o = 0; o < _outputs; ++o) {
-	output = (o + output_offset) % _outputs;
+        output = (o + output_offset) % _outputs;
 
-	if (grants[output] == input) {
+        if (grants[output] == input) {
 
-	  // Accept
-	  _inmatch[input] = output;
-	  _outmatch[output] = input;
+          // Accept
+          _inmatch[input] = output;
+          _outmatch[output] = input;
 
-	  break;
-	}
+          break;
+        }
       }
     }
   }

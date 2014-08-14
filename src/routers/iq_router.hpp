@@ -48,7 +48,7 @@ class Allocator;
 class SwitchMonitor;
 class BufferMonitor;
 
-class IQRouter: public Router {
+class IQRouter : public Router {
 
   int _vcs;
 
@@ -148,15 +148,15 @@ class IQRouter: public Router {
   SwitchMonitor * _switchMonitor;
   BufferMonitor * _bufferMonitor;
 
-public:
+ public:
 
   IQRouter(Configuration const & config, Module *parent, string const & name,
-      int id, int inputs, int outputs);
+           int id, int inputs, int outputs);
 
   virtual ~IQRouter();
 
   virtual void AddOutputChannel(FlitChannel * channel,
-      CreditChannel * backchannel);
+                                CreditChannel * backchannel);
 
   virtual void ReadInputs();
   virtual void WriteOutputs();

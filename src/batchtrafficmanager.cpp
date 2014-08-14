@@ -34,9 +34,13 @@
 #include "batchtrafficmanager.hpp"
 
 BatchTrafficManager::BatchTrafficManager(const Configuration &config,
-    const vector<Network *> & net) :
-    TrafficManager(config, net), _last_id(-1), _last_pid(-1), _overall_min_batch_time(
-	0), _overall_avg_batch_time(0), _overall_max_batch_time(0) {
+                                         const vector<Network *> & net)
+    : TrafficManager(config, net),
+      _last_id(-1),
+      _last_pid(-1),
+      _overall_min_batch_time(0),
+      _overall_avg_batch_time(0),
+      _overall_max_batch_time(0) {
 
   _max_outstanding = config.GetInt("max_outstanding_requests");
 
@@ -68,28 +72,28 @@ void BatchTrafficManager::_RetireFlit(Flit *f, int dest) {
 
 int BatchTrafficManager::_IssuePacket(int source, int cl) {
   int result = 0;
-  if (_use_read_write[cl]) { //read write packets
+  if (_use_read_write[cl]) {  //read write packets
     //check queue for waiting replies.
     //check to make sure it is on time yet
     if (!_repliesPending[source].empty()) {
       if (_repliesPending[source].front()->time <= _time) {
-	result = -1;
+        result = -1;
       }
     } else {
       if ((_packet_seq_no[source] < _batch_size)
-	  && ((_max_outstanding <= 0)
-	      || (_requestsOutstanding[source] < _max_outstanding))) {
+          && ((_max_outstanding <= 0)
+              || (_requestsOutstanding[source] < _max_outstanding))) {
 
-	//coin toss to determine request type.
-	result = (RandomFloat() < 0.5) ? 2 : 1;
+        //coin toss to determine request type.
+        result = (RandomFloat() < 0.5) ? 2 : 1;
 
-	_requestsOutstanding[source]++;
+        _requestsOutstanding[source]++;
       }
     }
-  } else { //normal
+  } else {  //normal
     if ((_packet_seq_no[source] < _batch_size)
-	&& ((_max_outstanding <= 0)
-	    || (_requestsOutstanding[source] < _max_outstanding))) {
+        && ((_max_outstanding <= 0)
+            || (_requestsOutstanding[source] < _max_outstanding))) {
       result = _GetNextPacketSize(cl);
       _requestsOutstanding[source]++;
     }
@@ -115,22 +119,22 @@ bool BatchTrafficManager::_SingleSim() {
     int start_time = _time;
     bool batch_complete;
     cout << "Sending batch " << batch_index + 1 << " (" << _batch_size
-	<< " packets)..." << endl;
+         << " packets)..." << endl;
     do {
       _Step();
       batch_complete = true;
       for (int i = 0; i < _nodes; ++i) {
-	if (_packet_seq_no[i] < _batch_size) {
-	  batch_complete = false;
-	  break;
-	}
+        if (_packet_seq_no[i] < _batch_size) {
+          batch_complete = false;
+          break;
+        }
       }
       if (_sent_packets_out) {
-	*_sent_packets_out << _packet_seq_no << endl;
+        *_sent_packets_out << _packet_seq_no << endl;
       }
     } while (!batch_complete);
     cout << "Batch injected. Time used is " << _time - start_time << " cycles."
-	<< endl;
+         << endl;
 
     int sent_time = _time;
     cout << "Waiting for batch to complete..." << endl;
@@ -148,19 +152,19 @@ bool BatchTrafficManager::_SingleSim() {
       ++empty_steps;
 
       if (empty_steps % 1000 == 0) {
-	_DisplayRemaining();
-	cout << ".";
+        _DisplayRemaining();
+        cout << ".";
       }
 
       packets_left = false;
       for (int c = 0; c < _classes; ++c) {
-	packets_left |= !_total_in_flight_flits[c].empty();
+        packets_left |= !_total_in_flight_flits[c].empty();
       }
     }
     cout << endl;
     cout << "Batch received. Time used is " << _time - sent_time << " cycles."
-	<< endl << "Last packet was " << _last_pid << ", last flit was "
-	<< _last_id << "." << endl;
+         << endl << "Last packet was " << _last_pid << ", last flit was "
+         << _last_id << "." << endl;
 
     _batch_time->AddSample(_time - start_time);
 
@@ -186,9 +190,9 @@ void BatchTrafficManager::_UpdateOverallStats() {
 string BatchTrafficManager::_OverallStatsCSV(int c) const {
   ostringstream os;
   os << TrafficManager::_OverallStatsCSV(c) << ','
-      << _overall_min_batch_time / (double) _total_sims << ','
-      << _overall_avg_batch_time / (double) _total_sims << ','
-      << _overall_max_batch_time / (double) _total_sims;
+     << _overall_min_batch_time / (double) _total_sims << ','
+     << _overall_avg_batch_time / (double) _total_sims << ','
+     << _overall_max_batch_time / (double) _total_sims;
   return os.str();
 }
 
@@ -207,10 +211,10 @@ void BatchTrafficManager::DisplayStats(ostream & os) const {
 void BatchTrafficManager::DisplayOverallStats(ostream & os) const {
   TrafficManager::DisplayOverallStats(os);
   os << "Overall min batch duration = "
-      << _overall_min_batch_time / (double) _total_sims << " (" << _total_sims
-      << " samples)" << endl << "Overall min batch duration = "
-      << _overall_avg_batch_time / (double) _total_sims << " (" << _total_sims
-      << " samples)" << endl << "Overall min batch duration = "
-      << _overall_max_batch_time / (double) _total_sims << " (" << _total_sims
-      << " samples)" << endl;
+     << _overall_min_batch_time / (double) _total_sims << " (" << _total_sims
+     << " samples)" << endl << "Overall min batch duration = "
+     << _overall_avg_batch_time / (double) _total_sims << " (" << _total_sims
+     << " samples)" << endl << "Overall min batch duration = "
+     << _overall_max_batch_time / (double) _total_sims << " (" << _total_sims
+     << " samples)" << endl;
 }

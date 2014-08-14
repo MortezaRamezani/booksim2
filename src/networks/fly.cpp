@@ -34,8 +34,8 @@
 
 //#define DEBUG_FLY
 
-KNFly::KNFly(const Configuration &config, const string & name) :
-    Network(config, name) {
+KNFly::KNFly(const Configuration &config, const string & name)
+    : Network(config, name) {
   _ComputeSize(config);
   _Alloc();
   _BuildNet(config);
@@ -70,7 +70,7 @@ void KNFly::_BuildNet(const Configuration &config) {
 
       router_name << "router_" << stage << "_" << addr;
       _routers[node] = Router::NewRouter(config, this, router_name.str(), node,
-	  _k, _k);
+                                         _k, _k);
       _timed_modules.push_back(_routers[node]);
       router_name.str("");
 
@@ -79,37 +79,37 @@ void KNFly::_BuildNet(const Configuration &config) {
 #endif 
 
       for (int port = 0; port < _k; ++port) {
-	// Input connections
-	if (stage == 0) {
-	  c = addr * _k + port;
-	  _routers[node]->AddInputChannel(_inject[c], _inject_cred[c]);
+        // Input connections
+        if (stage == 0) {
+          c = addr * _k + port;
+          _routers[node]->AddInputChannel(_inject[c], _inject_cred[c]);
 #ifdef DEBUG_FLY	  
-	  cout << "  injection channel " << c << endl;
+          cout << "  injection channel " << c << endl;
 #endif 
-	} else {
-	  c = _InChannel(stage, addr, port);
-	  _routers[node]->AddInputChannel(_chan[c], _chan_cred[c]);
-	  _chan[c]->SetLatency(1);
+        } else {
+          c = _InChannel(stage, addr, port);
+          _routers[node]->AddInputChannel(_chan[c], _chan_cred[c]);
+          _chan[c]->SetLatency(1);
 
 #ifdef DEBUG_FLY
-	  cout << "  input channel " << c << endl;
+          cout << "  input channel " << c << endl;
 #endif 
-	}
+        }
 
-	// Output connections
-	if (stage == _n - 1) {
-	  c = addr * _k + port;
-	  _routers[node]->AddOutputChannel(_eject[c], _eject_cred[c]);
+        // Output connections
+        if (stage == _n - 1) {
+          c = addr * _k + port;
+          _routers[node]->AddOutputChannel(_eject[c], _eject_cred[c]);
 #ifdef DEBUG_FLY
-	  cout << "  ejection channel " << c << endl;
+          cout << "  ejection channel " << c << endl;
 #endif 
-	} else {
-	  c = _OutChannel(stage, addr, port);
-	  _routers[node]->AddOutputChannel(_chan[c], _chan_cred[c]);
+        } else {
+          c = _OutChannel(stage, addr, port);
+          _routers[node]->AddOutputChannel(_chan[c], _chan_cred[c]);
 #ifdef DEBUG_FLY
-	  cout << "  output channel " << c << endl;
+          cout << "  output channel " << c << endl;
 #endif 
-	}
+        }
       }
 
       ++node;

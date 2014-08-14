@@ -76,10 +76,10 @@ long seed; /* selector for different streams */
       x[j + j] = x[j], x[j + j - 1] = 0; /* "square" */
     for (j = KK + KK - 2; j >= KK; j--)
       x[j - (KK - LL)] = mod_diff(x[j-(KK-LL)], x[j]), x[j - KK] = mod_diff(
-	  x[j-KK], x[j]);
+          x[j-KK], x[j]);
     if (is_odd(ss)) { /* "multiply by z" */
       for (j = KK; j > 0; j--)
-	x[j] = x[j - 1];
+        x[j] = x[j - 1];
       x[0] = x[KK]; /* shift the buffer cyclically */
       x[LL] = mod_diff(x[LL], x[KK]);
     }

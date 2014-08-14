@@ -44,8 +44,8 @@
 #include "network.hpp"
 #include "routefunc.hpp"
 
-class CMesh: public Network {
-public:
+class CMesh : public Network {
+ public:
   CMesh(const Configuration &config, const string & name);
   int GetN() const;
   int GetK() const;
@@ -55,7 +55,7 @@ public:
 
   static void RegisterRoutingFunctions();
 
-private:
+ private:
 
   static int _cX;
   static int _cY;
@@ -81,15 +81,15 @@ private:
 // Routing Functions
 //
 void xy_yx_cmesh(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                 OutputSet *outputs, bool inject);
 
 void xy_yx_no_express_cmesh(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                            OutputSet *outputs, bool inject);
 
 void dor_cmesh(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+               OutputSet *outputs, bool inject);
 
 void dor_no_express_cmesh(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                          OutputSet *outputs, bool inject);
 
 #endif

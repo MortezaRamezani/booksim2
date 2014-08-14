@@ -48,8 +48,8 @@
 #include "anynet.hpp"
 #include "dragonfly.hpp"
 
-Network::Network(const Configuration &config, const string & name) :
-    TimedModule(0, name) {
+Network::Network(const Configuration &config, const string & name)
+    : TimedModule(0, name) {
   _size = -1;
   _nodes = -1;
   _channels = -1;
@@ -247,21 +247,21 @@ void Network::DumpChannelMap(ostream & os, string const & prefix) const {
   os << prefix << "source_router,source_port,dest_router,dest_port" << endl;
   for (int c = 0; c < _nodes; ++c)
     os << prefix << "-1," << _inject[c]->GetSourcePort() << ','
-	<< _inject[c]->GetSink()->GetID() << ',' << _inject[c]->GetSinkPort()
-	<< endl;
+       << _inject[c]->GetSink()->GetID() << ',' << _inject[c]->GetSinkPort()
+       << endl;
   for (int c = 0; c < _channels; ++c)
     os << prefix << _chan[c]->GetSource()->GetID() << ','
-	<< _chan[c]->GetSourcePort() << ',' << _chan[c]->GetSink()->GetID()
-	<< ',' << _chan[c]->GetSinkPort() << endl;
+       << _chan[c]->GetSourcePort() << ',' << _chan[c]->GetSink()->GetID()
+       << ',' << _chan[c]->GetSinkPort() << endl;
   for (int c = 0; c < _nodes; ++c)
     os << prefix << _eject[c]->GetSource()->GetID() << ','
-	<< _eject[c]->GetSourcePort() << ',' << "-1,"
-	<< _eject[c]->GetSinkPort() << endl;
+       << _eject[c]->GetSourcePort() << ',' << "-1," << _eject[c]->GetSinkPort()
+       << endl;
 }
 
 void Network::DumpNodeMap(ostream & os, string const & prefix) const {
   os << prefix << "source_router,dest_router" << endl;
   for (int s = 0; s < _nodes; ++s)
     os << prefix << _eject[s]->GetSource()->GetID() << ','
-	<< _inject[s]->GetSink()->GetID() << endl;
+       << _inject[s]->GetSink()->GetID() << endl;
 }

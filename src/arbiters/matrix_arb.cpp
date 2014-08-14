@@ -34,8 +34,9 @@
 #include <iostream>
 using namespace std;
 
-MatrixArbiter::MatrixArbiter(Module *parent, const string &name, int size) :
-    Arbiter(parent, name, size), _last_req(-1) {
+MatrixArbiter::MatrixArbiter(Module *parent, const string &name, int size)
+    : Arbiter(parent, name, size),
+      _last_req(-1) {
   _matrix.resize(size);
   for (int i = 0; i < size; i++) {
     _matrix[i].resize(size);
@@ -61,8 +62,8 @@ void MatrixArbiter::UpdateState() {
   if (_selected > -1) {
     for (int i = 0; i < _size; i++) {
       if (_selected != i) {
-	_matrix[_selected][i] = 0;
-	_matrix[i][_selected] = 1;
+        _matrix[_selected][i] = 0;
+        _matrix[i][_selected] = 1;
       }
     }
   }
@@ -88,20 +89,20 @@ int MatrixArbiter::Arbitrate(int* id, int* pri) {
     for (int input = 0; input < _size; input++) {
       if (_request[input].valid) {
 
-	bool grant = true;
-	for (int i = 0; i < _size; i++) {
-	  if (_request[i].valid
-	      && (((_request[i].pri == _request[input].pri) && _matrix[i][input])
-		  || (_request[i].pri > _request[input].pri))) {
-	    grant = false;
-	    break;
-	  }
-	}
+        bool grant = true;
+        for (int i = 0; i < _size; i++) {
+          if (_request[i].valid
+              && (((_request[i].pri == _request[input].pri) && _matrix[i][input])
+                  || (_request[i].pri > _request[input].pri))) {
+            grant = false;
+            break;
+          }
+        }
 
-	if (grant) {
-	  _selected = input;
-	  break;
-	}
+        if (grant) {
+          _selected = input;
+          break;
+        }
       }
 
     }

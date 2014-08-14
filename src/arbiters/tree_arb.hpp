@@ -35,7 +35,7 @@
 
 #include "arbiter.hpp"
 
-class TreeArbiter: public Arbiter {
+class TreeArbiter : public Arbiter {
 
   int _group_size;
 
@@ -44,11 +44,11 @@ class TreeArbiter: public Arbiter {
 
   vector<int> _group_reqs;
 
-public:
+ public:
 
   // Constructors
   TreeArbiter(Module *parent, const string &name, int size, int groups,
-      const string & arb_type);
+              const string & arb_type);
 
   ~TreeArbiter();
 

@@ -101,13 +101,13 @@ int OutputSet::GetVC(int output_port, int vc_index, int *pri) const {
     if (i->output_port == output_port) {
       range = i->vc_end - i->vc_start + 1;
       if (remaining >= range) {
-	remaining -= range;
+        remaining -= range;
       } else {
-	vc = i->vc_start + remaining;
-	if (pri) {
-	  *pri = i->pri;
-	}
-	break;
+        vc = i->vc_start + remaining;
+        if (pri) {
+          *pri = i->pri;
+        }
+        break;
       }
     }
     i++;

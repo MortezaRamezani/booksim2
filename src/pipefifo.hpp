@@ -32,7 +32,7 @@
 
 #include "module.hpp"
 
-template<class T> class PipelineFIFO: public Module {
+template<class T> class PipelineFIFO : public Module {
   int _lanes;
   int _depth;
 
@@ -41,7 +41,7 @@ template<class T> class PipelineFIFO: public Module {
 
   vector<vector<T*> > _data;
 
-public:
+ public:
   PipelineFIFO(Module *parent, const string& name, int lanes, int depth);
   ~PipelineFIFO();
 
@@ -54,8 +54,11 @@ public:
 };
 
 template<class T> PipelineFIFO<T>::PipelineFIFO(Module *parent,
-    const string& name, int lanes, int depth) :
-    Module(parent, name), _lanes(lanes), _depth(depth) {
+                                                const string& name, int lanes,
+                                                int depth)
+    : Module(parent, name),
+      _lanes(lanes),
+      _depth(depth) {
   _pipe_len = depth + 1;
   _pipe_ptr = 0;
 

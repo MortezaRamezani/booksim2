@@ -39,14 +39,14 @@
 
 using namespace std;
 
-class MatrixArbiter: public Arbiter {
+class MatrixArbiter : public Arbiter {
 
   // Priority matrix
   vector<vector<int> > _matrix;
 
   int _last_req;
 
-public:
+ public:
 
   // Constructors
   MatrixArbiter(Module *parent, const string &name, int size);

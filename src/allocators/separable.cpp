@@ -37,8 +37,9 @@
 #include "arbiter.hpp"
 
 SeparableAllocator::SeparableAllocator(Module* parent, const string& name,
-    int inputs, int outputs, const string& arb_type) :
-    SparseAllocator(parent, name, inputs, outputs) {
+                                       int inputs, int outputs,
+                                       const string& arb_type)
+    : SparseAllocator(parent, name, inputs, outputs) {
 
   _input_arb.resize(inputs);
 
@@ -46,7 +47,7 @@ SeparableAllocator::SeparableAllocator(Module* parent, const string& name,
     ostringstream arb_name("arb_i");
     arb_name << i;
     _input_arb[i] = Arbiter::NewArbiter(this, arb_name.str(), arb_type,
-	outputs);
+                                        outputs);
   }
 
   _output_arb.resize(outputs);
@@ -55,7 +56,7 @@ SeparableAllocator::SeparableAllocator(Module* parent, const string& name,
     ostringstream arb_name("arb_o");
     arb_name << i;
     _output_arb[i] = Arbiter::NewArbiter(this, arb_name.str(), arb_type,
-	inputs);
+                                         inputs);
   }
 
 }

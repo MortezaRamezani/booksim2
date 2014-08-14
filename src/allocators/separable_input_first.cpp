@@ -39,9 +39,10 @@
 #include <iostream>
 #include <cstring>
 
-SeparableInputFirstAllocator::SeparableInputFirstAllocator(Module* parent,
-    const string& name, int inputs, int outputs, const string& arb_type) :
-    SeparableAllocator(parent, name, inputs, outputs, arb_type) {
+SeparableInputFirstAllocator::SeparableInputFirstAllocator(
+    Module* parent, const string& name, int inputs, int outputs,
+    const string& arb_type)
+    : SeparableAllocator(parent, name, inputs, outputs, arb_type) {
 }
 
 void SeparableInputFirstAllocator::Allocate() {

@@ -37,8 +37,8 @@
 using namespace std;
 
 TreeArbiter::TreeArbiter(Module *parent, const string &name, int size,
-    int groups, const string & arb_type) :
-    Arbiter(parent, name, size) {
+                         int groups, const string & arb_type)
+    : Arbiter(parent, name, size) {
   assert(size % groups == 0);
   _group_arbiters.resize(groups);
   _group_reqs.resize(groups, 0);
@@ -47,7 +47,7 @@ TreeArbiter::TreeArbiter(Module *parent, const string &name, int size,
     ostringstream group_arb_name;
     group_arb_name << "group_arb" << i;
     _group_arbiters[i] = Arbiter::NewArbiter(this, group_arb_name.str(),
-	arb_type, _group_size);
+                                             arb_type, _group_size);
   }
   _global_arbiter = Arbiter::NewArbiter(this, "global_arb", arb_type, groups);
 }

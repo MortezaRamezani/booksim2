@@ -47,15 +47,15 @@
 //register the requests to a node
 class PacketReplyInfo;
 
-class TrafficManager: public Module {
+class TrafficManager : public Module {
 
-private:
+ private:
 
   vector<vector<int> > _packet_size;
   vector<vector<int> > _packet_size_rate;
   vector<int> _packet_size_max_val;
 
-protected:
+ protected:
   int _nodes;
   int _routers;
   int _vcs;
@@ -213,7 +213,10 @@ protected:
   // ============ Simulation parameters ============ 
 
   enum eSimState {
-    warming_up, running, draining, done
+    warming_up,
+    running,
+    draining,
+    done
   };
   eSimState _sim_state;
 
@@ -271,7 +274,7 @@ protected:
 #endif
 
   // ============ Internal methods ============ 
-protected:
+ protected:
 
   virtual void _RetireFlit(Flit *f, int dest);
 
@@ -286,7 +289,8 @@ protected:
   virtual void _ClearStats();
 
   void _ComputeStats(const vector<int> & stats, int *sum, int *min = NULL,
-      int *max = NULL, int *min_pos = NULL, int *max_pos = NULL) const;
+                     int *max = NULL, int *min_pos = NULL,
+                     int *max_pos = NULL) const;
 
   virtual bool _SingleSim();
 
@@ -301,10 +305,10 @@ protected:
   int _GetNextPacketSize(int cl) const;
   double _GetAveragePacketSize(int cl) const;
 
-public:
+ public:
 
   static TrafficManager * New(Configuration const & config,
-      vector<Network *> const & net);
+                              vector<Network *> const & net);
 
   TrafficManager(const Configuration &config, const vector<Network *> & net);
   virtual ~TrafficManager();

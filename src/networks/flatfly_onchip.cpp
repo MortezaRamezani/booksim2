@@ -44,7 +44,6 @@
 //
 //Updated by mihelog   27 Aug to add progressive choice of intermediate destination.
 //Also, half of the total vcs are used for non-minimal routing, others for minimal (for UGAL and valiant).
-
 #include "booksim.hpp"
 #include <vector>
 #include <sstream>
@@ -62,8 +61,8 @@ static int _ycount;
 static int _xrouter;
 static int _yrouter;
 
-FlatFlyOnChip::FlatFlyOnChip(const Configuration &config, const string & name) :
-    Network(config, name) {
+FlatFlyOnChip::FlatFlyOnChip(const Configuration &config, const string & name)
+    : Network(config, name) {
 
   _ComputeSize(config);
   _Alloc();
@@ -74,7 +73,7 @@ void FlatFlyOnChip::_ComputeSize(const Configuration &config) {
   _k = config.GetInt("k");	// # of routers per dimension
   _n = config.GetInt("n");	// dimension
   _c = config.GetInt("c");    //concentration, may be different from k
-  _r = _c + (_k - 1) * _n;// total radix of the switch  ( # of inputs/outputs)
+  _r = _c + (_k - 1) * _n;  // total radix of the switch  ( # of inputs/outputs)
 
   //how many routers in the x or y direction
   _xcount = config.GetInt("x");
@@ -126,7 +125,7 @@ void FlatFlyOnChip::_BuildNet(const Configuration &config) {
     router_name << "_" << node;
 
     _routers[node] = Router::NewRouter(config, this, router_name.str(), node,
-	_r, _r);
+                                       _r, _r);
     _timed_modules.push_back(_routers[node]);
 
 #ifdef DEBUG_FLATFLY
@@ -150,52 +149,52 @@ void FlatFlyOnChip::_BuildNet(const Configuration &config) {
     //estimating distance from client to router
     for (int y = 0; y < _yrouter; y++) {
       for (int x = 0; x < _xrouter; x++) {
-	//Zero is a naughty number
-	if (yleng == 0 && !yodd) {
-	  yleng++;
-	}
-	if (xleng == 0 && !xodd) {
-	  xleng++;
-	}
-	int ileng = 1;   //at least 1 away
-	//measure distance in the y direction
-	if (abs(yleng) > 1) {
-	  ileng += (abs(yleng) - 1);
-	}
-	//measure distance in the x direction
-	if (abs(xleng) > 1) {
-	  ileng += (abs(xleng) - 1);
-	}
-	//increment for the next client, add Y, if full, reset y add x
-	yleng++;
-	if (yleng > _yrouter / 2) {
-	  yleng = -_yrouter / 2;
-	  xleng++;
-	}
-	//adopted from the CMESH, the first node has 0,1,8,9 (as an example)
-	int link = (_xcount * _xrouter) * (_yrouter * y_index + y)
-	    + (_xrouter * x_index + x);
+        //Zero is a naughty number
+        if (yleng == 0 && !yodd) {
+          yleng++;
+        }
+        if (xleng == 0 && !xodd) {
+          xleng++;
+        }
+        int ileng = 1;   //at least 1 away
+        //measure distance in the y direction
+        if (abs(yleng) > 1) {
+          ileng += (abs(yleng) - 1);
+        }
+        //measure distance in the x direction
+        if (abs(xleng) > 1) {
+          ileng += (abs(xleng) - 1);
+        }
+        //increment for the next client, add Y, if full, reset y add x
+        yleng++;
+        if (yleng > _yrouter / 2) {
+          yleng = -_yrouter / 2;
+          xleng++;
+        }
+        //adopted from the CMESH, the first node has 0,1,8,9 (as an example)
+        int link = (_xcount * _xrouter) * (_yrouter * y_index + y)
+            + (_xrouter * x_index + x);
 
-	if (use_noc_latency) {
-	  _inject[link]->SetLatency(ileng);
-	  _inject_cred[link]->SetLatency(ileng);
-	  _eject[link]->SetLatency(ileng);
-	  _eject_cred[link]->SetLatency(ileng);
-	} else {
-	  _inject[link]->SetLatency(1);
-	  _inject_cred[link]->SetLatency(1);
-	  _eject[link]->SetLatency(1);
-	  _eject_cred[link]->SetLatency(1);
-	}
-	_routers[node]->AddInputChannel(_inject[link], _inject_cred[link]);
+        if (use_noc_latency) {
+          _inject[link]->SetLatency(ileng);
+          _inject_cred[link]->SetLatency(ileng);
+          _eject[link]->SetLatency(ileng);
+          _eject_cred[link]->SetLatency(ileng);
+        } else {
+          _inject[link]->SetLatency(1);
+          _inject_cred[link]->SetLatency(1);
+          _eject[link]->SetLatency(1);
+          _eject_cred[link]->SetLatency(1);
+        }
+        _routers[node]->AddInputChannel(_inject[link], _inject_cred[link]);
 
 #ifdef DEBUG_FLATFLY
-	cout << "  Adding injection channel " << link << endl;
+        cout << "  Adding injection channel " << link << endl;
 #endif
 
-	_routers[node]->AddOutputChannel(_eject[link], _eject_cred[link]);
+        _routers[node]->AddOutputChannel(_eject[link], _eject_cred[link]);
 #ifdef DEBUG_FLATFLY
-	cout << "  Adding ejection channel " << link << endl;
+        cout << "  Adding ejection channel " << link << endl;
 #endif
       }
     }
@@ -218,65 +217,65 @@ void FlatFlyOnChip::_BuildNet(const Configuration &config) {
 
       //for every other router in the dimension
       for (int cnt = 0; cnt < (_k); ++cnt) {
-	int other = 0; //the other router that we are trying to connect
-	int offset = 0; //silly ness when node< other or when node>other
-	//if xdimension
-	if (dim == 0) {
-	  other = ycurr * _k + cnt;
-	} else if (dim == 1) {
-	  other = cnt * _k + xcurr;
-	  if (_n == 3) {
-	    other += curr4 * _k * _k;
-	  }
-	  if (_n == 4) {
-	    curr4 = ((int) (node / (_k * _k))) % _k;
-	    other += curr4 * _k * _k + curr5 * _k * _k * _k;
-	  }
-	} else if (dim == 2) {
-	  other = cnt * _k * _k + curr3;
-	  if (_n == 4) {
-	    other += curr5 * _k * _k * _k;
-	  }
-	} else if (dim == 3) {
-	  other = cnt * _k * _k * _k + curr6;
-	}
-	assert(dim < 4);
-	if (other == node) {
+        int other = 0;  //the other router that we are trying to connect
+        int offset = 0;  //silly ness when node< other or when node>other
+        //if xdimension
+        if (dim == 0) {
+          other = ycurr * _k + cnt;
+        } else if (dim == 1) {
+          other = cnt * _k + xcurr;
+          if (_n == 3) {
+            other += curr4 * _k * _k;
+          }
+          if (_n == 4) {
+            curr4 = ((int) (node / (_k * _k))) % _k;
+            other += curr4 * _k * _k + curr5 * _k * _k * _k;
+          }
+        } else if (dim == 2) {
+          other = cnt * _k * _k + curr3;
+          if (_n == 4) {
+            other += curr5 * _k * _k * _k;
+          }
+        } else if (dim == 3) {
+          other = cnt * _k * _k * _k + curr6;
+        }
+        assert(dim < 4);
+        if (other == node) {
 #ifdef DEBUG_FLATFLY
-	  cout << "ignore channel : " << _output << " to node " << node <<" and "<<other<<endl;
+          cout << "ignore channel : " << _output << " to node " << node <<" and "<<other<<endl;
 #endif
-	  continue;
-	}
-	//calculate channel length
-	int length = 0;
-	int oned = abs((node % _xcount) - (other % _xcount));
-	int twod = abs(node / _xcount - other / _xcount);
-	length = _xrouter * oned + _yrouter * twod;
-	//oh the node<other silly ness
-	if (node < other) {
-	  offset = -1;
-	}
-	//node, dimension, router within dimension. Good luck understanding this
-	_output = (_k - 1) * _n * node + (_k - 1) * dim + cnt + offset;
+          continue;
+        }
+        //calculate channel length
+        int length = 0;
+        int oned = abs((node % _xcount) - (other % _xcount));
+        int twod = abs(node / _xcount - other / _xcount);
+        length = _xrouter * oned + _yrouter * twod;
+        //oh the node<other silly ness
+        if (node < other) {
+          offset = -1;
+        }
+        //node, dimension, router within dimension. Good luck understanding this
+        _output = (_k - 1) * _n * node + (_k - 1) * dim + cnt + offset;
 
 #ifdef DEBUG_FLATFLY
-	cout << "Adding channel : " << _output << " to node " << node <<" and "<<other<<" with length "<<length<<endl;
+        cout << "Adding channel : " << _output << " to node " << node <<" and "<<other<<" with length "<<length<<endl;
 #endif
-	if (use_noc_latency) {
-	  _chan[_output]->SetLatency(length);
-	  _chan_cred[_output]->SetLatency(length);
-	} else {
-	  _chan[_output]->SetLatency(1);
-	  _chan_cred[_output]->SetLatency(1);
-	}
-	_routers[node]->AddOutputChannel(_chan[_output], _chan_cred[_output]);
+        if (use_noc_latency) {
+          _chan[_output]->SetLatency(length);
+          _chan_cred[_output]->SetLatency(length);
+        } else {
+          _chan[_output]->SetLatency(1);
+          _chan_cred[_output]->SetLatency(1);
+        }
+        _routers[node]->AddOutputChannel(_chan[_output], _chan_cred[_output]);
 
-	_routers[other]->AddInputChannel(_chan[_output], _chan_cred[_output]);
+        _routers[other]->AddInputChannel(_chan[_output], _chan_cred[_output]);
 
-	if (gTrace) {
-	  cout << "Link " << _output << " " << node << " " << other << " "
-	      << length << endl;
-	}
+        if (gTrace) {
+          cout << "Link " << _output << " " << node << " " << other << " "
+               << length << endl;
+        }
 
       }
     }
@@ -316,7 +315,7 @@ void FlatFlyOnChip::RegisterRoutingFunctions() {
 
 //The initial XY or YX minimal routing direction is chosen adaptively
 void adaptive_xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                           OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -345,7 +344,7 @@ void adaptive_xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
     int dest = flatfly_transformation(f->dest);
     int targetr = (int) (dest / gC);
 
-    if (targetr == r->GetID()) { //if we are at the final router, yay, output to client
+    if (targetr == r->GetID()) {  //if we are at the final router, yay, output to client
       out_port = dest % gC;
 
     } else {
@@ -361,25 +360,25 @@ void adaptive_xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
       //  into the network, adaptively
       bool x_then_y;
       if (in_channel < gC) {
-	int credit_xy = r->GetUsedCredit(out_port_xy);
-	int credit_yx = r->GetUsedCredit(out_port_yx);
-	if (credit_xy > credit_yx) {
-	  x_then_y = false;
-	} else if (credit_xy < credit_yx) {
-	  x_then_y = true;
-	} else {
-	  x_then_y = (RandomInt(1) > 0);
-	}
+        int credit_xy = r->GetUsedCredit(out_port_xy);
+        int credit_yx = r->GetUsedCredit(out_port_yx);
+        if (credit_xy > credit_yx) {
+          x_then_y = false;
+        } else if (credit_xy < credit_yx) {
+          x_then_y = true;
+        } else {
+          x_then_y = (RandomInt(1) > 0);
+        }
       } else {
-	x_then_y = (f->vc < (vcBegin + available_vcs));
+        x_then_y = (f->vc < (vcBegin + available_vcs));
       }
 
       if (x_then_y) {
-	out_port = out_port_xy;
-	vcEnd -= available_vcs;
+        out_port = out_port_xy;
+        vcEnd -= available_vcs;
       } else {
-	out_port = out_port_yx;
-	vcBegin += available_vcs;
+        out_port = out_port_yx;
+        vcBegin += available_vcs;
       }
     }
 
@@ -392,7 +391,7 @@ void adaptive_xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
 
 //The initial XY or YX minimal routing direction is chosen randomly
 void xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                  OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -421,7 +420,7 @@ void xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
     int dest = flatfly_transformation(f->dest);
     int targetr = (int) (dest / gC);
 
-    if (targetr == r->GetID()) { //if we are at the final router, yay, output to client
+    if (targetr == r->GetID()) {  //if we are at the final router, yay, output to client
       out_port = dest % gC;
 
     } else {
@@ -432,15 +431,15 @@ void xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
 
       // randomly select dimension order at first hop
       bool x_then_y = (
-	  (in_channel < gC) ?
-	      (RandomInt(1) > 0) : (f->vc < (vcBegin + available_vcs)));
+          (in_channel < gC) ?
+              (RandomInt(1) > 0) : (f->vc < (vcBegin + available_vcs)));
 
       if (x_then_y) {
-	out_port = flatfly_outport(dest, r->GetID());
-	vcEnd -= available_vcs;
+        out_port = flatfly_outport(dest, r->GetID());
+        vcEnd -= available_vcs;
       } else {
-	out_port = flatfly_outport_yx(dest, r->GetID());
-	vcBegin += available_vcs;
+        out_port = flatfly_outport_yx(dest, r->GetID());
+        vcBegin += available_vcs;
       }
     }
 
@@ -467,9 +466,9 @@ int flatfly_outport_yx(int dest, int rID) {
     if (dID != sID) {
       output = gC + ((gK - 1) * d) - 1;
       if (dID > sID) {
-	output += dID;
+        output += dID;
       } else {
-	output += dID + 1;
+        output += dID + 1;
       }
       return output;
     }
@@ -478,14 +477,14 @@ int flatfly_outport_yx(int dest, int rID) {
   }
   if (output == -1) {
     cout << " ERROR ---- FLATFLY_OUTPORT function : output not found yx"
-	<< endl;
+         << endl;
     exit(-1);
   }
   return -1;
 }
 
 void valiant_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                     OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -537,11 +536,11 @@ void valiant_flatfly(const Router *r, const Flit *f, int in_channel,
       assert(available_vcs > 0);
 
       if (f->ph == 0) {
-	vcEnd -= available_vcs;
+        vcEnd -= available_vcs;
       } else {
-	// If routing to final destination use the second half of the VCs.
-	assert(f->ph == 1);
-	vcBegin += available_vcs;
+        // If routing to final destination use the second half of the VCs.
+        assert(f->ph == 1);
+        vcBegin += available_vcs;
       }
     }
 
@@ -553,7 +552,7 @@ void valiant_flatfly(const Router *r, const Flit *f, int in_channel,
 }
 
 void min_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                 OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -587,9 +586,9 @@ void min_flatfly(const Router *r, const Flit *f, int in_channel,
     //int ydest = ((int)(dest/gC)) / gK;
     //int ycurr = ((r->GetID())) / gK;
 
-    if (targetr == r->GetID()) { //if we are at the final router, yay, output to client
+    if (targetr == r->GetID()) {  //if we are at the final router, yay, output to client
       out_port = dest % gC;
-    } else { //else select a dimension at random
+    } else {  //else select a dimension at random
       out_port = flatfly_outport(dest, r->GetID());
     }
 
@@ -606,7 +605,7 @@ void min_flatfly(const Router *r, const Flit *f, int in_channel,
 
 //same as ugal except uses xyyx routing
 void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                              OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -644,7 +643,7 @@ void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (in_channel < gC) {
       if (gTrace) {
-	cout << "New Flit " << f->src << endl;
+        cout << "New Flit " << f->src << endl;
       }
       f->ph = 0;
     }
@@ -660,8 +659,8 @@ void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (debug) {
       cout << " FLIT ID: " << f->id << " Router: " << rID
-	  << " routing from src : " << f->src << " to dest : " << dest
-	  << " f->ph: " << f->ph << " intm: " << f->intm << endl;
+           << " routing from src : " << f->src << " to dest : " << dest
+           << " f->ph: " << f->ph << " intm: " << f->intm << endl;
     }
     // f->ph == 0  ==> make initial global adaptive decision
     // f->ph == 1  ==> route nonminimaly to random intermediate node
@@ -675,15 +674,15 @@ void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (dest >= rID * _concentration && dest < (rID + 1) * _concentration) {
       if (f->ph == 1) {
-	f->ph = 2;
-	dest = flatfly_transformation(f->dest);
-	if (debug)
-	  cout << "      done routing to intermediate ";
+        f->ph = 2;
+        dest = flatfly_transformation(f->dest);
+        if (debug)
+          cout << "      done routing to intermediate ";
       } else {
-	found = 1;
-	out_port = dest % gC;
-	if (debug)
-	  cout << "      final routing to destination ";
+        found = 1;
+        out_port = dest % gC;
+        if (debug)
+          cout << "      final routing to destination ";
       }
     }
 
@@ -694,96 +693,96 @@ void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
       // randomly select dimension order at first hop
       bool x_then_y = (
-	  (in_channel < gC) ?
-	      (RandomInt(1) > 0) : (f->vc < (vcBegin + xy_available_vcs)));
+          (in_channel < gC) ?
+              (RandomInt(1) > 0) : (f->vc < (vcBegin + xy_available_vcs)));
 
       if (f->ph == 0) {
-	//find the min port and min distance
-	_min_hop = find_distance(flatfly_transformation(f->src), dest);
-	if (x_then_y) {
-	  tmp_out_port = flatfly_outport(dest, rID);
-	} else {
-	  tmp_out_port = flatfly_outport_yx(dest, rID);
-	}
-	if (f->watch) {
-	  cout << " MIN tmp_out_port: " << tmp_out_port;
-	}
-	//sum over all vcs of that port
-	_min_queucnt = r->GetUsedCredit(tmp_out_port);
+        //find the min port and min distance
+        _min_hop = find_distance(flatfly_transformation(f->src), dest);
+        if (x_then_y) {
+          tmp_out_port = flatfly_outport(dest, rID);
+        } else {
+          tmp_out_port = flatfly_outport_yx(dest, rID);
+        }
+        if (f->watch) {
+          cout << " MIN tmp_out_port: " << tmp_out_port;
+        }
+        //sum over all vcs of that port
+        _min_queucnt = r->GetUsedCredit(tmp_out_port);
 
-	//find the nonmin router, nonmin port, nonmin count
-	_ran_intm = find_ran_intm(flatfly_transformation(f->src), dest);
-	_nonmin_hop = find_distance(flatfly_transformation(f->src), _ran_intm)
-	    + find_distance(_ran_intm, dest);
-	if (x_then_y) {
-	  tmp_out_port = flatfly_outport(_ran_intm, rID);
-	} else {
-	  tmp_out_port = flatfly_outport_yx(_ran_intm, rID);
-	}
+        //find the nonmin router, nonmin port, nonmin count
+        _ran_intm = find_ran_intm(flatfly_transformation(f->src), dest);
+        _nonmin_hop = find_distance(flatfly_transformation(f->src), _ran_intm)
+            + find_distance(_ran_intm, dest);
+        if (x_then_y) {
+          tmp_out_port = flatfly_outport(_ran_intm, rID);
+        } else {
+          tmp_out_port = flatfly_outport_yx(_ran_intm, rID);
+        }
 
-	if (f->watch) {
-	  cout << " NONMIN tmp_out_port: " << tmp_out_port << endl;
-	}
-	if (_ran_intm >= rID * _concentration
-	    && _ran_intm < (rID + 1) * _concentration) {
-	  _nonmin_queucnt = numeric_limits<int>::max();
-	} else {
-	  _nonmin_queucnt = r->GetUsedCredit(tmp_out_port);
-	}
+        if (f->watch) {
+          cout << " NONMIN tmp_out_port: " << tmp_out_port << endl;
+        }
+        if (_ran_intm >= rID * _concentration
+            && _ran_intm < (rID + 1) * _concentration) {
+          _nonmin_queucnt = numeric_limits<int>::max();
+        } else {
+          _nonmin_queucnt = r->GetUsedCredit(tmp_out_port);
+        }
 
-	if (debug) {
-	  cout << " _min_hop " << _min_hop << " _min_queucnt: " << _min_queucnt
-	      << " _nonmin_hop: " << _nonmin_hop << " _nonmin_queucnt :"
-	      << _nonmin_queucnt << endl;
-	}
+        if (debug) {
+          cout << " _min_hop " << _min_hop << " _min_queucnt: " << _min_queucnt
+               << " _nonmin_hop: " << _nonmin_hop << " _nonmin_queucnt :"
+               << _nonmin_queucnt << endl;
+        }
 
-	if (_min_hop * _min_queucnt
-	    <= _nonmin_hop * _nonmin_queucnt + threshold) {
+        if (_min_hop * _min_queucnt
+            <= _nonmin_hop * _nonmin_queucnt + threshold) {
 
-	  if (debug)
-	    cout << " Route MINIMALLY " << endl;
-	  f->ph = 2;
-	} else {
-	  // route non-minimally
-	  if (debug) {
-	    cout << " Route NONMINIMALLY int node: " << _ran_intm << endl;
-	  }
-	  f->ph = 1;
-	  f->intm = _ran_intm;
-	  dest = f->intm;
-	  if (dest >= rID * _concentration
-	      && dest < (rID + 1) * _concentration) {
-	    f->ph = 2;
-	    dest = flatfly_transformation(f->dest);
-	  }
-	}
+          if (debug)
+            cout << " Route MINIMALLY " << endl;
+          f->ph = 2;
+        } else {
+          // route non-minimally
+          if (debug) {
+            cout << " Route NONMINIMALLY int node: " << _ran_intm << endl;
+          }
+          f->ph = 1;
+          f->intm = _ran_intm;
+          dest = f->intm;
+          if (dest >= rID * _concentration
+              && dest < (rID + 1) * _concentration) {
+            f->ph = 2;
+            dest = flatfly_transformation(f->dest);
+          }
+        }
       }
 
       //dest here should be == intm if ph==1, or dest == dest if ph == 2
       if (x_then_y) {
-	out_port = flatfly_outport(dest, rID);
-	if (out_port >= gC) {
-	  vcEnd -= xy_available_vcs;
-	}
+        out_port = flatfly_outport(dest, rID);
+        if (out_port >= gC) {
+          vcEnd -= xy_available_vcs;
+        }
       } else {
-	out_port = flatfly_outport_yx(dest, rID);
-	if (out_port >= gC) {
-	  vcBegin += xy_available_vcs;
-	}
+        out_port = flatfly_outport_yx(dest, rID);
+        if (out_port >= gC) {
+          vcBegin += xy_available_vcs;
+        }
       }
 
       // if we haven't reached our destination, restrict VCs appropriately to avoid routing deadlock
       if (out_port >= gC) {
 
-	int const ph_available_vcs = xy_available_vcs / 2;
-	assert(ph_available_vcs > 0);
+        int const ph_available_vcs = xy_available_vcs / 2;
+        assert(ph_available_vcs > 0);
 
-	if (f->ph == 1) {
-	  vcEnd -= ph_available_vcs;
-	} else {
-	  assert(f->ph == 2);
-	  vcBegin += ph_available_vcs;
-	}
+        if (f->ph == 1) {
+          vcEnd -= ph_available_vcs;
+        } else {
+          assert(f->ph == 2);
+          vcBegin += ph_available_vcs;
+        }
       }
 
       found = 1;
@@ -818,7 +817,7 @@ void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
 //ugal now uses modified comparison, modefied getcredit
 void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                         OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -856,7 +855,7 @@ void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (in_channel < gC) {
       if (gTrace) {
-	cout << "New Flit " << f->src << endl;
+        cout << "New Flit " << f->src << endl;
       }
       f->ph = 0;
     }
@@ -872,8 +871,8 @@ void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (debug) {
       cout << " FLIT ID: " << f->id << " Router: " << rID
-	  << " routing from src : " << f->src << " to dest : " << dest
-	  << " f->ph: " << f->ph << " intm: " << f->intm << endl;
+           << " routing from src : " << f->src << " to dest : " << dest
+           << " f->ph: " << f->ph << " intm: " << f->intm << endl;
     }
     // f->ph == 0  ==> make initial global adaptive decision
     // f->ph == 1  ==> route nonminimaly to random intermediate node
@@ -888,72 +887,72 @@ void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
     if (dest >= rID * _concentration && dest < (rID + 1) * _concentration) {
 
       if (f->ph == 1) {
-	f->ph = 2;
-	dest = flatfly_transformation(f->dest);
-	if (debug)
-	  cout << "      done routing to intermediate ";
+        f->ph = 2;
+        dest = flatfly_transformation(f->dest);
+        if (debug)
+          cout << "      done routing to intermediate ";
       } else {
-	found = 1;
-	out_port = dest % gC;
-	if (debug)
-	  cout << "      final routing to destination ";
+        found = 1;
+        out_port = dest % gC;
+        if (debug)
+          cout << "      final routing to destination ";
       }
     }
 
     if (!found) {
 
       if (f->ph == 0) {
-	_min_hop = find_distance(flatfly_transformation(f->src), dest);
-	_ran_intm = find_ran_intm(flatfly_transformation(f->src), dest);
-	tmp_out_port = flatfly_outport(dest, rID);
-	if (f->watch) {
-	  *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
-	      << " MIN tmp_out_port: " << tmp_out_port;
-	}
+        _min_hop = find_distance(flatfly_transformation(f->src), dest);
+        _ran_intm = find_ran_intm(flatfly_transformation(f->src), dest);
+        tmp_out_port = flatfly_outport(dest, rID);
+        if (f->watch) {
+          *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+                     << " MIN tmp_out_port: " << tmp_out_port;
+        }
 
-	_min_queucnt = r->GetUsedCredit(tmp_out_port);
+        _min_queucnt = r->GetUsedCredit(tmp_out_port);
 
-	_nonmin_hop = find_distance(flatfly_transformation(f->src), _ran_intm)
-	    + find_distance(_ran_intm, dest);
-	tmp_out_port = flatfly_outport(_ran_intm, rID);
+        _nonmin_hop = find_distance(flatfly_transformation(f->src), _ran_intm)
+            + find_distance(_ran_intm, dest);
+        tmp_out_port = flatfly_outport(_ran_intm, rID);
 
-	if (f->watch) {
-	  *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
-	      << " NONMIN tmp_out_port: " << tmp_out_port << endl;
-	}
-	if (_ran_intm >= rID * _concentration
-	    && _ran_intm < (rID + 1) * _concentration) {
-	  _nonmin_queucnt = numeric_limits<int>::max();
-	} else {
-	  _nonmin_queucnt = r->GetUsedCredit(tmp_out_port);
-	}
+        if (f->watch) {
+          *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+                     << " NONMIN tmp_out_port: " << tmp_out_port << endl;
+        }
+        if (_ran_intm >= rID * _concentration
+            && _ran_intm < (rID + 1) * _concentration) {
+          _nonmin_queucnt = numeric_limits<int>::max();
+        } else {
+          _nonmin_queucnt = r->GetUsedCredit(tmp_out_port);
+        }
 
-	if (debug) {
-	  cout << " _min_hop " << _min_hop << " _min_queucnt: " << _min_queucnt
-	      << " _nonmin_hop: " << _nonmin_hop << " _nonmin_queucnt :"
-	      << _nonmin_queucnt << endl;
-	}
+        if (debug) {
+          cout << " _min_hop " << _min_hop << " _min_queucnt: " << _min_queucnt
+               << " _nonmin_hop: " << _nonmin_hop << " _nonmin_queucnt :"
+               << _nonmin_queucnt << endl;
+        }
 
-	if (_min_hop * _min_queucnt
-	    <= _nonmin_hop * _nonmin_queucnt + threshold) {
+        if (_min_hop * _min_queucnt
+            <= _nonmin_hop * _nonmin_queucnt + threshold) {
 
-	  if (debug)
-	    cout << " Route MINIMALLY " << endl;
-	  f->ph = 2;
-	} else {
-	  // route non-minimally
-	  if (debug) {
-	    cout << " Route NONMINIMALLY int node: " << _ran_intm << endl;
-	  }
-	  f->ph = 1;
-	  f->intm = _ran_intm;
-	  dest = f->intm;
-	  if (dest >= rID * _concentration
-	      && dest < (rID + 1) * _concentration) {
-	    f->ph = 2;
-	    dest = flatfly_transformation(f->dest);
-	  }
-	}
+          if (debug)
+            cout << " Route MINIMALLY " << endl;
+          f->ph = 2;
+        } else {
+          // route non-minimally
+          if (debug) {
+            cout << " Route NONMINIMALLY int node: " << _ran_intm << endl;
+          }
+          f->ph = 1;
+          f->intm = _ran_intm;
+          dest = f->intm;
+          if (dest >= rID * _concentration
+              && dest < (rID + 1) * _concentration) {
+            f->ph = 2;
+            dest = flatfly_transformation(f->dest);
+          }
+        }
       }
 
       // find minimal correct dimension to route through
@@ -961,14 +960,14 @@ void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
       // if we haven't reached our destination, restrict VCs appropriately to avoid routing deadlock
       if (out_port >= gC) {
-	int const available_vcs = (vcEnd - vcBegin + 1) / 2;
-	assert(available_vcs > 0);
-	if (f->ph == 1) {
-	  vcEnd -= available_vcs;
-	} else {
-	  assert(f->ph == 2);
-	  vcBegin += available_vcs;
-	}
+        int const available_vcs = (vcEnd - vcBegin + 1) / 2;
+        assert(available_vcs > 0);
+        if (f->ph == 1) {
+          vcEnd -= available_vcs;
+        } else {
+          assert(f->ph == 2);
+          vcBegin += available_vcs;
+        }
       }
 
       found = 1;
@@ -1002,7 +1001,7 @@ void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
 // partially non-interfering (i.e., packets ordered by hash of destination) UGAL
 void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                             OutputSet *outputs, bool inject) {
   // ( Traffic Class , Routing Order ) -> Virtual Channel Range
   int vcBegin = 0, vcEnd = gNumVCs - 1;
   if (f->type == Flit::READ_REQUEST) {
@@ -1040,7 +1039,7 @@ void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (in_channel < gC) {
       if (gTrace) {
-	cout << "New Flit " << f->src << endl;
+        cout << "New Flit " << f->src << endl;
       }
       f->ph = 0;
     }
@@ -1056,8 +1055,8 @@ void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
     if (debug) {
       cout << " FLIT ID: " << f->id << " Router: " << rID
-	  << " routing from src : " << f->src << " to dest : " << dest
-	  << " f->ph: " << f->ph << " intm: " << f->intm << endl;
+           << " routing from src : " << f->src << " to dest : " << dest
+           << " f->ph: " << f->ph << " intm: " << f->intm << endl;
     }
     // f->ph == 0  ==> make initial global adaptive decision
     // f->ph == 1  ==> route nonminimaly to random intermediate node
@@ -1072,72 +1071,72 @@ void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
     if (dest >= rID * _concentration && dest < (rID + 1) * _concentration) {
 
       if (f->ph == 1) {
-	f->ph = 2;
-	dest = flatfly_transformation(f->dest);
-	if (debug)
-	  cout << "      done routing to intermediate ";
+        f->ph = 2;
+        dest = flatfly_transformation(f->dest);
+        if (debug)
+          cout << "      done routing to intermediate ";
       } else {
-	found = 1;
-	out_port = dest % gC;
-	if (debug)
-	  cout << "      final routing to destination ";
+        found = 1;
+        out_port = dest % gC;
+        if (debug)
+          cout << "      final routing to destination ";
       }
     }
 
     if (!found) {
 
       if (f->ph == 0) {
-	_min_hop = find_distance(flatfly_transformation(f->src), dest);
-	_ran_intm = find_ran_intm(flatfly_transformation(f->src), dest);
-	tmp_out_port = flatfly_outport(dest, rID);
-	if (f->watch) {
-	  *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
-	      << " MIN tmp_out_port: " << tmp_out_port;
-	}
+        _min_hop = find_distance(flatfly_transformation(f->src), dest);
+        _ran_intm = find_ran_intm(flatfly_transformation(f->src), dest);
+        tmp_out_port = flatfly_outport(dest, rID);
+        if (f->watch) {
+          *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+                     << " MIN tmp_out_port: " << tmp_out_port;
+        }
 
-	_min_queucnt = r->GetUsedCredit(tmp_out_port);
+        _min_queucnt = r->GetUsedCredit(tmp_out_port);
 
-	_nonmin_hop = find_distance(flatfly_transformation(f->src), _ran_intm)
-	    + find_distance(_ran_intm, dest);
-	tmp_out_port = flatfly_outport(_ran_intm, rID);
+        _nonmin_hop = find_distance(flatfly_transformation(f->src), _ran_intm)
+            + find_distance(_ran_intm, dest);
+        tmp_out_port = flatfly_outport(_ran_intm, rID);
 
-	if (f->watch) {
-	  *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
-	      << " NONMIN tmp_out_port: " << tmp_out_port << endl;
-	}
-	if (_ran_intm >= rID * _concentration
-	    && _ran_intm < (rID + 1) * _concentration) {
-	  _nonmin_queucnt = numeric_limits<int>::max();
-	} else {
-	  _nonmin_queucnt = r->GetUsedCredit(tmp_out_port);
-	}
+        if (f->watch) {
+          *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+                     << " NONMIN tmp_out_port: " << tmp_out_port << endl;
+        }
+        if (_ran_intm >= rID * _concentration
+            && _ran_intm < (rID + 1) * _concentration) {
+          _nonmin_queucnt = numeric_limits<int>::max();
+        } else {
+          _nonmin_queucnt = r->GetUsedCredit(tmp_out_port);
+        }
 
-	if (debug) {
-	  cout << " _min_hop " << _min_hop << " _min_queucnt: " << _min_queucnt
-	      << " _nonmin_hop: " << _nonmin_hop << " _nonmin_queucnt :"
-	      << _nonmin_queucnt << endl;
-	}
+        if (debug) {
+          cout << " _min_hop " << _min_hop << " _min_queucnt: " << _min_queucnt
+               << " _nonmin_hop: " << _nonmin_hop << " _nonmin_queucnt :"
+               << _nonmin_queucnt << endl;
+        }
 
-	if (_min_hop * _min_queucnt
-	    <= _nonmin_hop * _nonmin_queucnt + threshold) {
+        if (_min_hop * _min_queucnt
+            <= _nonmin_hop * _nonmin_queucnt + threshold) {
 
-	  if (debug)
-	    cout << " Route MINIMALLY " << endl;
-	  f->ph = 2;
-	} else {
-	  // route non-minimally
-	  if (debug) {
-	    cout << " Route NONMINIMALLY int node: " << _ran_intm << endl;
-	  }
-	  f->ph = 1;
-	  f->intm = _ran_intm;
-	  dest = f->intm;
-	  if (dest >= rID * _concentration
-	      && dest < (rID + 1) * _concentration) {
-	    f->ph = 2;
-	    dest = flatfly_transformation(f->dest);
-	  }
-	}
+          if (debug)
+            cout << " Route MINIMALLY " << endl;
+          f->ph = 2;
+        } else {
+          // route non-minimally
+          if (debug) {
+            cout << " Route NONMINIMALLY int node: " << _ran_intm << endl;
+          }
+          f->ph = 1;
+          f->intm = _ran_intm;
+          dest = f->intm;
+          if (dest >= rID * _concentration
+              && dest < (rID + 1) * _concentration) {
+            f->ph = 2;
+            dest = flatfly_transformation(f->dest);
+          }
+        }
       }
 
       // find minimal correct dimension to route through
@@ -1145,14 +1144,14 @@ void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
 
       // if we haven't reached our destination, restrict VCs appropriately to avoid routing deadlock
       if (out_port >= gC) {
-	int const available_vcs = (vcEnd - vcBegin + 1) / 2;
-	assert(available_vcs > 0);
-	if (f->ph == 1) {
-	  vcEnd -= available_vcs;
-	} else {
-	  assert(f->ph == 2);
-	  vcBegin += available_vcs;
-	}
+        int const available_vcs = (vcEnd - vcBegin + 1) / 2;
+        assert(available_vcs > 0);
+        if (f->ph == 1) {
+          vcEnd -= available_vcs;
+        } else {
+          assert(f->ph == 2);
+          vcBegin += available_vcs;
+        }
       }
 
       found = 1;
@@ -1194,13 +1193,13 @@ void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
     } else {
       int next_dim = (out_port - gC) / (gK - 1) + 1;
       if (next_dim == gN) {
-	next_coord %= gC;
+        next_coord %= gC;
       } else {
-	next_coord /= gC;
-	for (int d = 0; d < next_dim; ++d) {
-	  next_coord /= gK;
-	}
-	next_coord %= gK;
+        next_coord /= gC;
+        for (int d = 0; d < next_dim; ++d) {
+          next_coord /= gK;
+        }
+        next_coord %= gK;
       }
     }
     assert(next_coord >= 0 && next_coord < gK);
@@ -1269,15 +1268,15 @@ int find_ran_intm(int src, int dest) {
     if ((src % gK) == (dest % gK)) {
       _ran_dest += (src % gK) * _dim_size;
       if (debug)
-	cout << "    share same dimension : " << d << " int node : "
-	    << _ran_dest << " src ID : " << src % gK << endl;
+        cout << "    share same dimension : " << d << " int node : "
+             << _ran_dest << " src ID : " << src % gK << endl;
     } else {
       // src and dest are in the same dimension "d" + 1
       // ==> thus generate a random destination within
       _ran_dest += RandomInt(gK - 1) * _dim_size;
       if (debug)
-	cout << "    different  dimension : " << d << " int node : "
-	    << _ran_dest << " _dim_size: " << _dim_size << endl;
+        cout << "    different  dimension : " << d << " int node : "
+             << _ran_dest << " _dim_size: " << _dim_size << endl;
     }
     src = (int) (src / gK);
     dest = (int) (dest / gK);
@@ -1309,9 +1308,9 @@ int flatfly_outport(int dest, int rID) {
       output = gC + ((gK - 1) * d) - 1;
       if (dID > sID) {
 
-	output += dID;
+        output += dID;
       } else {
-	output += dID + 1;
+        output += dID + 1;
       }
 
       return output;

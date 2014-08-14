@@ -37,9 +37,9 @@
 
 #include "module.hpp"
 
-class Arbiter: public Module {
+class Arbiter : public Module {
 
-protected:
+ protected:
 
   typedef struct {
     bool valid;
@@ -54,7 +54,7 @@ protected:
   int _highest_pri;
   int _best_input;
 
-public:
+ public:
   int _num_reqs;
   // Constructors
   Arbiter(Module *parent, const string &name, int size);
@@ -79,7 +79,7 @@ public:
   }
 
   static Arbiter *NewArbiter(Module *parent, const string &name,
-      const string &arb_type, int size);
+                             const string &arb_type, int size);
 };
 
 #endif

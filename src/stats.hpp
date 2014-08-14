@@ -30,7 +30,7 @@
 
 #include "module.hpp"
 
-class Stats: public Module {
+class Stats : public Module {
   int _num_samples;
   double _sample_sum;
   double _sample_squared_sum;
@@ -44,9 +44,9 @@ class Stats: public Module {
 
   vector<int> _hist;
 
-public:
+ public:
   Stats(Module *parent, const string &name, double bin_size = 1.0,
-      int num_bins = 10);
+        int num_bins = 10);
 
   void Clear();
 

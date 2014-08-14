@@ -31,8 +31,10 @@
 #include "prio_arb.hpp"
 
 PriorityArbiter::PriorityArbiter(const Configuration &config, Module *parent,
-    const string& name, int inputs) :
-    Module(parent, name), _rr_ptr(0), _inputs(inputs) {
+                                 const string& name, int inputs)
+    : Module(parent, name),
+      _rr_ptr(0),
+      _inputs(inputs) {
 
 }
 
@@ -115,25 +117,25 @@ void PriorityArbiter::Arbitrate() {
     wrapped = false;
     while ((!wrapped) || (p->in < _rr_ptr)) {
       if (p == _requests.end()) {
-	if (wrapped) {
-	  break;
-	}
-	// p is valid here because empty lists
-	// are skipped (above)
-	p = _requests.begin();
-	wrapped = true;
+        if (wrapped) {
+          break;
+        }
+        // p is valid here because empty lists
+        // are skipped (above)
+        p = _requests.begin();
+        wrapped = true;
       }
 
       // check if request is the highest priority so far
       if ((p->pri > max_pri) || (max_index == -1)) {
-	max_pri = p->pri;
-	max_index = p->in;
+        max_pri = p->pri;
+        max_index = p->in;
       }
 
       p++;
     }
 
-    _match = max_index; // -1 for no match
+    _match = max_index;  // -1 for no match
     if (_match != -1) {
       _rr_ptr = (_match + 1) % _inputs;
     }

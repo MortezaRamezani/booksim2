@@ -75,9 +75,9 @@ Stats * GetStats(const std::string & name) {
 /* printing activity factor*/
 bool gPrintActivity;
 
-int gK; //radix
-int gN; //dimension
-int gC; //concentration
+int gK;  //radix
+int gN;  //dimension
+int gC;  //concentration
 
 int gNodes;
 
@@ -126,7 +126,7 @@ bool Simulate(BookSimConfig const & config) {
   total_time = ((double) (end_time.tv_sec)
       + (double) (end_time.tv_usec) / 1000000.0)
       - ((double) (start_time.tv_sec)
-	  + (double) (start_time.tv_usec) / 1000000.0);
+          + (double) (start_time.tv_usec) / 1000000.0);
 
   cout << "Total run time " << total_time << endl;
 

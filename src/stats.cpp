@@ -42,8 +42,10 @@
 
 #include "stats.hpp"
 
-Stats::Stats(Module *parent, const string &name, double bin_size, int num_bins) :
-    Module(parent, name), _num_bins(num_bins), _bin_size(bin_size) {
+Stats::Stats(Module *parent, const string &name, double bin_size, int num_bins)
+    : Module(parent, name),
+      _num_bins(num_bins),
+      _bin_size(bin_size) {
   Clear();
 }
 

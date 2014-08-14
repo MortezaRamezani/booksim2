@@ -44,8 +44,8 @@
 
 typedef Channel<Credit> CreditChannel;
 
-class Network: public TimedModule {
-protected:
+class Network : public TimedModule {
+ protected:
 
   int _size;
   int _nodes;
@@ -70,7 +70,7 @@ protected:
 
   void _Alloc();
 
-public:
+ public:
   Network(const Configuration &config, const string & name);
   virtual ~Network();
 

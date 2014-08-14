@@ -36,8 +36,8 @@
 #include "module.hpp"
 #include "config_utils.hpp"
 
-class Allocator: public Module {
-protected:
+class Allocator : public Module {
+ protected:
   const int _inputs;
   const int _outputs;
 
@@ -46,7 +46,7 @@ protected:
   vector<int> _inmatch;
   vector<int> _outmatch;
 
-public:
+ public:
 
   struct sRequest {
     int port;
@@ -63,7 +63,7 @@ public:
   virtual bool ReadRequest(sRequest &req, int in, int out) const = 0;
 
   virtual void AddRequest(int in, int out, int label = 1, int in_pri = 0,
-      int out_pri = 0);
+                          int out_pri = 0);
   virtual void RemoveRequest(int in, int out, int label = 1) = 0;
 
   virtual void Allocate() = 0;
@@ -81,8 +81,9 @@ public:
   void PrintGrants(ostream * os = NULL) const;
 
   static Allocator *NewAllocator(Module *parent, const string& name,
-      const string &alloc_type, int inputs, int outputs,
-      Configuration const * const config = NULL);
+                                 const string &alloc_type, int inputs,
+                                 int outputs,
+                                 Configuration const * const config = NULL);
 };
 
 //==================================================
@@ -90,11 +91,11 @@ public:
 // matrix.
 //==================================================
 
-class DenseAllocator: public Allocator {
-protected:
+class DenseAllocator : public Allocator {
+ protected:
   vector<vector<sRequest> > _request;
 
-public:
+ public:
   DenseAllocator(Module *parent, const string& name, int inputs, int outputs);
 
   void Clear();
@@ -103,7 +104,7 @@ public:
   bool ReadRequest(sRequest &req, int in, int out) const;
 
   void AddRequest(int in, int out, int label = 1, int in_pri = 0, int out_pri =
-      0);
+                      0);
   void RemoveRequest(int in, int out, int label = 1);
 
   bool OutputHasRequests(int out) const;
@@ -121,15 +122,15 @@ public:
 // (allows for a more efficient implementation).
 //==================================================
 
-class SparseAllocator: public Allocator {
-protected:
+class SparseAllocator : public Allocator {
+ protected:
   set<int> _in_occ;
   set<int> _out_occ;
 
   vector<map<int, sRequest> > _in_req;
   vector<map<int, sRequest> > _out_req;
 
-public:
+ public:
   SparseAllocator(Module *parent, const string& name, int inputs, int outputs);
 
   void Clear();
@@ -138,7 +139,7 @@ public:
   bool ReadRequest(sRequest &req, int in, int out) const;
 
   void AddRequest(int in, int out, int label = 1, int in_pri = 0, int out_pri =
-      0);
+                      0);
   void RemoveRequest(int in, int out, int label = 1);
 
   bool OutputHasRequests(int out) const;

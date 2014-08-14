@@ -40,9 +40,9 @@
 
 typedef Channel<Credit> CreditChannel;
 
-class Router: public TimedModule {
+class Router : public TimedModule {
 
-protected:
+ protected:
 
   static int const STALL_BUFFER_BUSY;
   static int const STALL_BUFFER_CONFLICT;
@@ -90,17 +90,18 @@ protected:
 
   virtual void _InternalStep() = 0;
 
-public:
+ public:
   Router(const Configuration& config, Module *parent, const string & name,
-      int id, int inputs, int outputs);
+         int id, int inputs, int outputs);
 
   static Router *NewRouter(const Configuration& config, Module *parent,
-      const string & name, int id, int inputs, int outputs);
+                           const string & name, int id, int inputs,
+                           int outputs);
 
   virtual void AddInputChannel(FlitChannel *channel,
-      CreditChannel *backchannel);
+                               CreditChannel *backchannel);
   virtual void AddOutputChannel(FlitChannel *channel,
-      CreditChannel *backchannel);
+                                CreditChannel *backchannel);
 
   inline FlitChannel * GetInputChannel(int input) const {
     assert((input >= 0) && (input < _inputs));

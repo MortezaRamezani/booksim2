@@ -29,8 +29,10 @@
 
 #include "flit.hpp"
 
-BufferMonitor::BufferMonitor(int inputs, int classes) :
-    _cycles(0), _inputs(inputs), _classes(classes) {
+BufferMonitor::BufferMonitor(int inputs, int classes)
+    : _cycles(0),
+      _inputs(inputs),
+      _classes(classes) {
   _reads.resize(inputs * classes, 0);
   _writes.resize(inputs * classes, 0);
 }
@@ -58,7 +60,7 @@ void BufferMonitor::display(ostream & os) const {
     os << "[ " << i << " ] ";
     for (int c = 0; c < _classes; c++) {
       os << "Type=" << c << ":(R#" << _reads[index(i, c)] << "," << "W#"
-	  << _writes[index(i, c)] << ")" << " ";
+         << _writes[index(i, c)] << ")" << " ";
     }
     os << endl;
   }

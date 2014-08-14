@@ -33,7 +33,7 @@
 
 class Credit {
 
-public:
+ public:
 
   set<int> vc;
 
@@ -47,7 +47,7 @@ public:
   void Free();
   static void FreeAll();
   static int OutStanding();
-private:
+ private:
 
   static stack<Credit *> _all;
   static stack<Credit *> _free;

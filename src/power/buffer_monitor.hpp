@@ -42,7 +42,7 @@ class BufferMonitor {
   vector<int> _reads;
   vector<int> _writes;
   int index(int input, int cl) const;
-public:
+ public:
   BufferMonitor(int inputs, int classes);
   void cycle();
   void write(int input, Flit const * f);

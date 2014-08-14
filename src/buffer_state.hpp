@@ -36,14 +36,14 @@
 #include "credit.hpp"
 #include "config_utils.hpp"
 
-class BufferState: public Module {
+class BufferState : public Module {
 
-  class BufferPolicy: public Module {
-  protected:
+  class BufferPolicy : public Module {
+   protected:
     BufferState const * const _buffer_state;
-  public:
+   public:
     BufferPolicy(Configuration const & config, BufferState * parent,
-	const string & name);
+                 const string & name);
     virtual void SetMinLatency(int min_latency) {
     }
     virtual void TakeBuffer(int vc = 0);
@@ -54,23 +54,23 @@ class BufferState: public Module {
     virtual int LimitFor(int vc = 0) const = 0;
 
     static BufferPolicy * New(Configuration const & config,
-	BufferState * parent, const string & name);
+                              BufferState * parent, const string & name);
   };
 
-  class PrivateBufferPolicy: public BufferPolicy {
-  protected:
+  class PrivateBufferPolicy : public BufferPolicy {
+   protected:
     int _vc_buf_size;
-  public:
+   public:
     PrivateBufferPolicy(Configuration const & config, BufferState * parent,
-	const string & name);
+                        const string & name);
     virtual void SendingFlit(Flit const * const f);
     virtual bool IsFullFor(int vc = 0) const;
     virtual int AvailableFor(int vc = 0) const;
     virtual int LimitFor(int vc = 0) const;
   };
 
-  class SharedBufferPolicy: public BufferPolicy {
-  protected:
+  class SharedBufferPolicy : public BufferPolicy {
+   protected:
     int _buf_size;
     vector<int> _private_buf_vc_map;
     vector<int> _private_buf_size;
@@ -79,9 +79,9 @@ class BufferState: public Module {
     int _shared_buf_occupancy;
     vector<int> _reserved_slots;
     void ProcessFreeSlot(int vc = 0);
-  public:
+   public:
     SharedBufferPolicy(Configuration const & config, BufferState * parent,
-	const string & name);
+                       const string & name);
     virtual void SendingFlit(Flit const * const f);
     virtual void FreeSlotFor(int vc = 0);
     virtual bool IsFullFor(int vc = 0) const;
@@ -89,14 +89,14 @@ class BufferState: public Module {
     virtual int LimitFor(int vc = 0) const;
   };
 
-  class LimitedSharedBufferPolicy: public SharedBufferPolicy {
-  protected:
+  class LimitedSharedBufferPolicy : public SharedBufferPolicy {
+   protected:
     int _vcs;
     int _active_vcs;
     int _max_held_slots;
-  public:
+   public:
     LimitedSharedBufferPolicy(Configuration const & config,
-	BufferState * parent, const string & name);
+                              BufferState * parent, const string & name);
     virtual void TakeBuffer(int vc = 0);
     virtual void SendingFlit(Flit const * const f);
     virtual bool IsFullFor(int vc = 0) const;
@@ -104,24 +104,26 @@ class BufferState: public Module {
     virtual int LimitFor(int vc = 0) const;
   };
 
-  class DynamicLimitedSharedBufferPolicy: public LimitedSharedBufferPolicy {
-  public:
+  class DynamicLimitedSharedBufferPolicy : public LimitedSharedBufferPolicy {
+   public:
     DynamicLimitedSharedBufferPolicy(Configuration const & config,
-	BufferState * parent, const string & name);
+                                     BufferState * parent, const string & name);
     virtual void TakeBuffer(int vc = 0);
     virtual void SendingFlit(Flit const * const f);
   };
 
-  class ShiftingDynamicLimitedSharedBufferPolicy: public DynamicLimitedSharedBufferPolicy {
-  public:
+  class ShiftingDynamicLimitedSharedBufferPolicy :
+      public DynamicLimitedSharedBufferPolicy {
+   public:
     ShiftingDynamicLimitedSharedBufferPolicy(Configuration const & config,
-	BufferState * parent, const string & name);
+                                             BufferState * parent,
+                                             const string & name);
     virtual void TakeBuffer(int vc = 0);
     virtual void SendingFlit(Flit const * const f);
   };
 
-  class FeedbackSharedBufferPolicy: public SharedBufferPolicy {
-  protected:
+  class FeedbackSharedBufferPolicy : public SharedBufferPolicy {
+   protected:
     int _ComputeRTT(int vc, int last_rtt) const;
     int _ComputeLimit(int rtt) const;
     int _ComputeMaxSlots(int vc) const;
@@ -133,9 +135,9 @@ class BufferState: public Module {
     int _total_mapped_size;
     int _aging_scale;
     int _offset;
-  public:
+   public:
     FeedbackSharedBufferPolicy(Configuration const & config,
-	BufferState * parent, const string & name);
+                               BufferState * parent, const string & name);
     virtual void SetMinLatency(int min_latency);
     virtual void SendingFlit(Flit const * const f);
     virtual void FreeSlotFor(int vc = 0);
@@ -144,12 +146,12 @@ class BufferState: public Module {
     virtual int LimitFor(int vc = 0) const;
   };
 
-  class SimpleFeedbackSharedBufferPolicy: public FeedbackSharedBufferPolicy {
-  protected:
+  class SimpleFeedbackSharedBufferPolicy : public FeedbackSharedBufferPolicy {
+   protected:
     vector<int> _pending_credits;
-  public:
+   public:
     SimpleFeedbackSharedBufferPolicy(Configuration const & config,
-	BufferState * parent, const string & name);
+                                     BufferState * parent, const string & name);
     virtual void SendingFlit(Flit const * const f);
     virtual void FreeSlotFor(int vc = 0);
   };
@@ -173,7 +175,7 @@ class BufferState: public Module {
   vector<int> _class_occupancy;
 #endif
 
-public:
+ public:
 
   BufferState(const Configuration& config, Module *parent, const string& name);
 

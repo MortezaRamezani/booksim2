@@ -34,9 +34,9 @@
 #include "stats.hpp"
 #include "trafficmanager.hpp"
 
-class BatchTrafficManager: public TrafficManager {
+class BatchTrafficManager : public TrafficManager {
 
-protected:
+ protected:
 
   int _max_outstanding;
   int _batch_size;
@@ -61,10 +61,10 @@ protected:
 
   virtual string _OverallStatsCSV(int c = 0) const;
 
-public:
+ public:
 
   BatchTrafficManager(const Configuration &config,
-      const vector<Network *> & net);
+                      const vector<Network *> & net);
   virtual ~BatchTrafficManager();
 
   virtual void WriteStats(ostream & os = cout) const;

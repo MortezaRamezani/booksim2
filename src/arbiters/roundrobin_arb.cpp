@@ -37,8 +37,9 @@
 using namespace std;
 
 RoundRobinArbiter::RoundRobinArbiter(Module *parent, const string &name,
-    int size) :
-    Arbiter(parent, name, size), _pointer(0) {
+                                     int size)
+    : Arbiter(parent, name, size),
+      _pointer(0) {
 }
 
 void RoundRobinArbiter::PrintState() const {
@@ -55,7 +56,7 @@ void RoundRobinArbiter::UpdateState() {
 void RoundRobinArbiter::AddRequest(int input, int id, int pri) {
   if (!_request[input].valid || (_request[input].pri < pri)) {
     if ((_num_reqs == 0)
-	|| Supersedes(input, pri, _best_input, _highest_pri, _pointer, _size)) {
+        || Supersedes(input, pri, _best_input, _highest_pri, _pointer, _size)) {
       _highest_pri = pri;
       _best_input = input;
     }

@@ -33,7 +33,7 @@
 #include "routefunc.hpp"
 #include <cassert>
 
-class FlatFlyOnChip: public Network {
+class FlatFlyOnChip : public Network {
 
   int _m;
   int _n;
@@ -53,7 +53,7 @@ class FlatFlyOnChip: public Network {
   int _OutChannel(int stage, int addr, int port, int outputs) const;
   int _InChannel(int stage, int addr, int port) const;
 
-public:
+ public:
   FlatFlyOnChip(const Configuration &config, const string & name);
 
   int GetN() const;
@@ -64,19 +64,19 @@ public:
   void InsertRandomFaults(const Configuration &config);
 };
 void adaptive_xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                           OutputSet *outputs, bool inject);
 void xyyx_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                  OutputSet *outputs, bool inject);
 void min_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                 OutputSet *outputs, bool inject);
 void ugal_xyyx_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                              OutputSet *outputs, bool inject);
 void ugal_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                         OutputSet *outputs, bool inject);
 void ugal_pni_flatfly_onchip(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                             OutputSet *outputs, bool inject);
 void valiant_flatfly(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                     OutputSet *outputs, bool inject);
 
 int find_distance(int src, int dest);
 int find_ran_intm(int src, int dest);

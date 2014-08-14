@@ -44,8 +44,8 @@
 #include "qtree.hpp"
 #include "misc_utils.hpp"
 
-QTree::QTree(const Configuration& config, const string & name) :
-    Network(config, name) {
+QTree::QTree(const Configuration& config, const string & name)
+    : Network(config, name) {
   _ComputeSize(config);
   _Alloc();
   _BuildNet(config);
@@ -103,10 +103,10 @@ void QTree::_BuildNet(const Configuration& config) {
     for (port = 0; port < _k; port++) {
 
       _routers[r]->AddInputChannel(_inject[_k * pos + port],
-	  _inject_cred[_k * pos + port]);
+                                   _inject_cred[_k * pos + port]);
 
       _routers[r]->AddOutputChannel(_eject[_k * pos + port],
-	  _eject_cred[_k * pos + port]);
+                                    _eject_cred[_k * pos + port]);
     }
   }
 
@@ -115,25 +115,25 @@ void QTree::_BuildNet(const Configuration& config) {
     for (pos = 0; pos < powi(_k, h); ++pos) {
       for (port = 0; port < _k; port++) {
 
-	r = _RouterIndex(h, pos);
+        r = _RouterIndex(h, pos);
 
-	if (h < _n - 1) {
-	  // Channels to Children Nodes
-	  c = _InputIndex(h, pos, port);
-	  _routers[r]->AddInputChannel(_chan[c], _chan_cred[c]);
+        if (h < _n - 1) {
+          // Channels to Children Nodes
+          c = _InputIndex(h, pos, port);
+          _routers[r]->AddInputChannel(_chan[c], _chan_cred[c]);
 
-	  c = _OutputIndex(h, pos, port);
-	  _routers[r]->AddOutputChannel(_chan[c], _chan_cred[c]);
+          c = _OutputIndex(h, pos, port);
+          _routers[r]->AddOutputChannel(_chan[c], _chan_cred[c]);
 
-	}
+        }
       }
       if (h > 0) {
-	// Channels to Parent Nodes
-	c = _OutputIndex(h - 1, pos / _k, pos % _k);
-	_routers[r]->AddInputChannel(_chan[c], _chan_cred[c]);
+        // Channels to Parent Nodes
+        c = _OutputIndex(h - 1, pos / _k, pos % _k);
+        _routers[r]->AddInputChannel(_chan[c], _chan_cred[c]);
 
-	c = _InputIndex(h - 1, pos / _k, pos % _k);
-	_routers[r]->AddOutputChannel(_chan[c], _chan_cred[c]);
+        c = _InputIndex(h - 1, pos / _k, pos % _k);
+        _routers[r]->AddOutputChannel(_chan[c], _chan_cred[c]);
       }
     }
   }

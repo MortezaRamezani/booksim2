@@ -34,7 +34,7 @@
 #include "config_utils.hpp"
 
 typedef void (*tRoutingFunction)(const Router *, const Flit *, int in_channel,
-    OutputSet *, bool);
+                                 OutputSet *, bool);
 
 void InitializeRoutingMap(const Configuration & config);
 

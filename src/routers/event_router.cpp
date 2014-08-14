@@ -36,8 +36,8 @@
 #include "globals.hpp"
 
 EventRouter::EventRouter(const Configuration& config, Module *parent,
-    const string & name, int id, int inputs, int outputs) :
-    Router(config, parent, name, id, inputs, outputs) {
+                         const string & name, int id, int inputs, int outputs)
+    : Router(config, parent, name, id, inputs, outputs) {
   ostringstream module_name;
 
   _vcs = config.GetInt("num_vcs");
@@ -88,7 +88,7 @@ EventRouter::EventRouter(const Configuration& config, Module *parent,
   for (int o = 0; o < _outputs; ++o) {
     module_name << "arrival_arb_output" << o;
     _arrival_arbiter[o] = new PriorityArbiter(config, this, module_name.str(),
-	_inputs);
+                                              _inputs);
     module_name.seekp(0, ios::beg);
   }
 
@@ -97,20 +97,21 @@ EventRouter::EventRouter(const Configuration& config, Module *parent,
   for (int i = 0; i < _inputs; ++i) {
     module_name << "transport_arb_input" << i;
     _transport_arbiter[i] = new PriorityArbiter(config, this, module_name.str(),
-	_outputs);
+                                                _outputs);
     module_name.seekp(0, ios::beg);
   }
 
   // Alloc pipelines (to simulate processing/transmission delays)
 
   _crossbar_pipe = new PipelineFIFO<Flit>(this, "crossbar_pipeline", _outputs,
-      _crossbar_delay);
+                                          _crossbar_delay);
 
   _credit_pipe = new PipelineFIFO<Credit>(this, "credit_pipeline", _inputs,
-      _credit_delay);
+                                          _credit_delay);
 
   _arrival_pipe = new PipelineFIFO<tArrivalEvent>(this, "arrival_pipeline",
-      _inputs, 0 /* FIX THIS EVENTUALLY */);
+                                                  _inputs,
+                                                  0 /* FIX THIS EVENTUALLY */);
 
   // Queues
 
@@ -255,7 +256,7 @@ void EventRouter::_ProcessWaiting(int output, int out_vc) {
 
     if (w->watch) {
       cout << "Dequeuing waiting arrival event at " << FullName()
-	  << " for flit " << w->id << endl;
+           << " for flit " << w->id << endl;
     }
 
     credits = _output_state[output]->GetCredits(out_vc);
@@ -266,14 +267,14 @@ void EventRouter::_ProcessWaiting(int output, int out_vc) {
       tevt->src_vc = w->vc;
       tevt->dst_vc = out_vc;
       tevt->input = w->input;
-      tevt->watch = w->watch; // just to have something here
+      tevt->watch = w->watch;  // just to have something here
       tevt->id = w->id;
 
       _transport_queue[output].push(tevt);
 
       if (tevt->watch) {
-	cout << "Injecting transport event at " << FullName() << " for flit "
-	    << tevt->id << endl;
+        cout << "Injecting transport event at " << FullName() << " for flit "
+             << tevt->id << endl;
       }
 
       credits--;
@@ -314,68 +315,68 @@ void EventRouter::_IncomingFlits() {
       // Head flit arriving at idle VC
       if (!_active[input][vc]) {
 
-	if (!f->head) {
-	  cout << "Non-head flit:" << endl;
-	  cout << *f;
-	  Error("Received non-head flit at idle VC");
-	}
+        if (!f->head) {
+          cout << "Non-head flit:" << endl;
+          cout << *f;
+          Error("Received non-head flit at idle VC");
+        }
 
-	const OutputSet *route_set;
-	int out_vc, out_port;
+        const OutputSet *route_set;
+        int out_vc, out_port;
 
-	cur_buf->Route(vc, _rf, this, f, input);
-	route_set = cur_buf->GetRouteSet(vc);
+        cur_buf->Route(vc, _rf, this, f, input);
+        route_set = cur_buf->GetRouteSet(vc);
 
-	if (!route_set->GetPortVC(&out_port, &out_vc)) {
-	  Error(
-	      "The event-driven router requires routing functions with a single (port,vc) output");
-	}
+        if (!route_set->GetPortVC(&out_port, &out_vc)) {
+          Error(
+              "The event-driven router requires routing functions with a single (port,vc) output");
+        }
 
-	cur_buf->SetOutput(vc, out_port, out_vc);
-	_active[input][vc] = true;
+        cur_buf->SetOutput(vc, out_port, out_vc);
+        _active[input][vc] = true;
       } else {
-	if (f->head) {
-	  cout << *f;
-	  Error("Received head flit at non-idle VC.");
-	}
+        if (f->head) {
+          cout << *f;
+          Error("Received head flit at non-idle VC.");
+        }
       }
 
       if (f->watch) {
-	*gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	    << "Received flit at " << FullName() << ".  Output port = "
-	    << cur_buf->GetOutputPort(vc) << ", output VC = "
-	    << cur_buf->GetOutputVC(vc) << endl << *f;
+        *gWatchOut << GetSimTime() << " | " << FullName() << " | "
+                   << "Received flit at " << FullName() << ".  Output port = "
+                   << cur_buf->GetOutputPort(vc) << ", output VC = "
+                   << cur_buf->GetOutputVC(vc) << endl << *f;
       }
 
       // In cut-through mode, only head flits generate arrivals,
       // otherwise all flits generate
 
       if ((!_vct) || (_vct && f->head)) {
-	// Add the arrival event to a delay pipeline to
-	// account for routing/decoding time
+        // Add the arrival event to a delay pipeline to
+        // account for routing/decoding time
 
-	aevt = new tArrivalEvent;
+        aevt = new tArrivalEvent;
 
-	aevt->input = input;
-	aevt->output = cur_buf->GetOutputPort(vc);
-	aevt->src_vc = f->vc;
-	aevt->dst_vc = cur_buf->GetOutputVC(vc);
-	aevt->head = f->head;
-	aevt->tail = f->tail;
+        aevt->input = input;
+        aevt->output = cur_buf->GetOutputPort(vc);
+        aevt->src_vc = f->vc;
+        aevt->dst_vc = cur_buf->GetOutputVC(vc);
+        aevt->head = f->head;
+        aevt->tail = f->tail;
 
-	//if ( f->head && f->tail ) {
-	//	Error( "Head/tail packets not supported." );
-	//}
+        //if ( f->head && f->tail ) {
+        //	Error( "Head/tail packets not supported." );
+        //}
 
-	aevt->watch = f->watch;
-	aevt->id = f->id;
+        aevt->watch = f->watch;
+        aevt->id = f->id;
 
-	_arrival_pipe->Write(aevt, input);
+        _arrival_pipe->Write(aevt, input);
 
-	if (aevt->watch) {
-	  cout << "Injected arrival event at " << FullName() << " for flit "
-	      << aevt->id << endl;
-	}
+        if (aevt->watch) {
+          cout << "Injected arrival event at " << FullName() << " for flit "
+               << aevt->id << endl;
+        }
       }
     }
   }
@@ -421,12 +422,12 @@ void EventRouter::_SendTransport(int input, int output, tArrivalEvent *aevt) {
 
     if (tevt->watch) {
       cout << "Injecting transport event at " << FullName() << " for flit "
-	  << tevt->id << endl;
+           << tevt->id << endl;
     }
   } else {
     if (aevt->watch) {
       cout << "No credits available at " << FullName() << " for flit "
-	  << aevt->id << " storing presence." << endl;
+           << aevt->id << " storing presence." << endl;
     }
 
     // No credits available, just store presence
@@ -466,36 +467,36 @@ void EventRouter::_ArrivalArb(int output) {
       // channel state.
 
       if (c->head) {
-	credits++;
-	_output_state[output]->SetCredits(vc, credits);
-	_ProcessWaiting(output, vc);
+        credits++;
+        _output_state[output]->SetCredits(vc, credits);
+        _ProcessWaiting(output, vc);
       }
     } else {
       credits++;
       _output_state[output]->SetCredits(vc, credits);
 
-      if (c->tail) { // tail flit -- recycle VC
-	if (state != EventNextVCState::busy) {
-	  Error("Received tail credit at non-busy output VC");
-	}
+      if (c->tail) {  // tail flit -- recycle VC
+        if (state != EventNextVCState::busy) {
+          Error("Received tail credit at non-busy output VC");
+        }
 
-	_ProcessWaiting(output, vc);
+        _ProcessWaiting(output, vc);
       } else if ((state == EventNextVCState::busy) && (pres > 0)) {
-	// Flit is present => generate transport event
+        // Flit is present => generate transport event
 
-	tevt = new tTransportEvent;
-	tevt->input = _output_state[output]->GetInput(vc);
-	tevt->src_vc = _output_state[output]->GetInputVC(vc);
-	tevt->dst_vc = vc;
-	tevt->watch = false;
-	tevt->id = -1;
+        tevt = new tTransportEvent;
+        tevt->input = _output_state[output]->GetInput(vc);
+        tevt->src_vc = _output_state[output]->GetInputVC(vc);
+        tevt->dst_vc = vc;
+        tevt->watch = false;
+        tevt->id = -1;
 
-	_transport_queue[output].push(tevt);
+        _transport_queue[output].push(tevt);
 
-	pres--;
-	credits--;
-	_output_state[output]->SetPresence(vc, pres);
-	_output_state[output]->SetCredits(vc, credits);
+        pres--;
+        credits--;
+        _output_state[output]->SetPresence(vc, pres);
+        _output_state[output]->SetCredits(vc, credits);
       }
     }
 
@@ -515,56 +516,56 @@ void EventRouter::_ArrivalArb(int output) {
 
     if (aevt->watch) {
       cout << "Processing arrival event at " << FullName() << " for flit "
-	  << aevt->id << endl;
+           << aevt->id << endl;
     }
 
     EventNextVCState::eNextVCState state = _output_state[output]->GetState(
-	aevt->dst_vc);
+        aevt->dst_vc);
 
-    if (aevt->head) { // Head flits
+    if (aevt->head) {  // Head flits
       if (state == EventNextVCState::idle) {
-	// Allocate the output VC and queue a transport event
-	_output_state[output]->SetState(aevt->dst_vc, EventNextVCState::busy);
-	_output_state[output]->SetInput(aevt->dst_vc, input);
-	_output_state[output]->SetInputVC(aevt->dst_vc, aevt->src_vc);
+        // Allocate the output VC and queue a transport event
+        _output_state[output]->SetState(aevt->dst_vc, EventNextVCState::busy);
+        _output_state[output]->SetInput(aevt->dst_vc, input);
+        _output_state[output]->SetInputVC(aevt->dst_vc, aevt->src_vc);
 
-	_SendTransport(input, output, aevt);
+        _SendTransport(input, output, aevt);
       } else {
-	// VC busy => queue a waiting event
+        // VC busy => queue a waiting event
 
-	w = new EventNextVCState::tWaiting;
+        w = new EventNextVCState::tWaiting;
 
-	w->input = input;
-	w->vc = aevt->src_vc;
-	w->id = aevt->id;
-	w->watch = aevt->watch;
-	w->pres = 1;
+        w->input = input;
+        w->vc = aevt->src_vc;
+        w->id = aevt->id;
+        w->watch = aevt->watch;
+        w->pres = 1;
 
-	_output_state[output]->PushWaiting(aevt->dst_vc, w);
+        _output_state[output]->PushWaiting(aevt->dst_vc, w);
       }
     } else {
       if (_vct) {
-	Error("Received arrival event for non-head flit in cut-through mode");
+        Error("Received arrival event for non-head flit in cut-through mode");
       }
 
       if (state != EventNextVCState::busy) {
-	cout << "flit id = " << aevt->id << endl;
-	Error("Received a body flit at a non-busy output VC");
+        cout << "flit id = " << aevt->id << endl;
+        Error("Received a body flit at a non-busy output VC");
       }
 
       if ((!_output_state[output]->IsInputWaiting(aevt->dst_vc, input,
-	  aevt->src_vc))
-	  && (input == _output_state[output]->GetInput(aevt->dst_vc))
-	  && (aevt->src_vc == _output_state[output]->GetInputVC(aevt->dst_vc))) {
-	// Body flit part of the current active VC => queue transport event
-	// (the weird IsInputWaiting call handles a body flit waiting in addition
-	// to a head flit)
+                                                  aevt->src_vc))
+          && (input == _output_state[output]->GetInput(aevt->dst_vc))
+          && (aevt->src_vc == _output_state[output]->GetInputVC(aevt->dst_vc))) {
+        // Body flit part of the current active VC => queue transport event
+        // (the weird IsInputWaiting call handles a body flit waiting in addition
+        // to a head flit)
 
-	_SendTransport(input, output, aevt);
+        _SendTransport(input, output, aevt);
       } else {
 
-	// VC busy with a differnet transaction => update waiting event
-	_output_state[output]->IncrWaiting(aevt->dst_vc, input, aevt->src_vc);
+        // VC busy with a differnet transaction => update waiting event
+        _output_state[output]->IncrWaiting(aevt->dst_vc, input, aevt->src_vc);
       }
     }
 
@@ -604,7 +605,7 @@ void EventRouter::_TransportArb(int input) {
 
     if (tevt->watch) {
       cout << "Processing transport event at " << FullName() << " for flit "
-	  << tevt->id << endl;
+           << tevt->id << endl;
     }
 
     cur_buf = _buf[input];
@@ -617,7 +618,7 @@ void EventRouter::_TransportArb(int input) {
     }
 
     if (cur_buf->Empty(vc)) {
-      return; //Error( "Empty VC received grant." );
+      return;  //Error( "Empty VC received grant." );
     }
 
     if (tevt->dst_vc != cur_buf->GetOutputVC(vc)) {
@@ -628,16 +629,16 @@ void EventRouter::_TransportArb(int input) {
 
     if (_vct) {
       if (f->tail) {
-	_transport_free[input] = true;
-	_transport_match[input] = -1;
+        _transport_free[input] = true;
+        _transport_match[input] = -1;
 
-	_transport_queue[output].pop();
-	delete tevt;
+        _transport_queue[output].pop();
+        delete tevt;
 
-	_active[input][vc] = false;
+        _active[input][vc] = false;
       } else {
-	_transport_free[input] = false;
-	_transport_match[input] = output;
+        _transport_free[input] = false;
+        _transport_match[input] = output;
       }
     } else {
       _transport_free[input] = true;
@@ -647,7 +648,7 @@ void EventRouter::_TransportArb(int input) {
       delete tevt;
 
       if (f->tail) {
-	_active[input][vc] = false;
+        _active[input][vc] = false;
       }
     }
 
@@ -660,7 +661,7 @@ void EventRouter::_TransportArb(int input) {
 
     if (f->watch && c->tail) {
       *gWatchOut << GetSimTime() << " | " << FullName() << " | " << FullName()
-	  << " sending tail credit back for flit " << f->id << endl;
+                 << " sending tail credit back for flit " << f->id << endl;
     }
 
     // Update and forward the flit to the crossbar
@@ -671,8 +672,8 @@ void EventRouter::_TransportArb(int input) {
 
     if (f->watch) {
       *gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	  << "Forwarding flit through crossbar at " << FullName() << ":" << endl
-	  << *f;
+                 << "Forwarding flit through crossbar at " << FullName() << ":"
+                 << endl << *f;
     }
   }
 }
@@ -725,8 +726,8 @@ void EventRouter::Display(ostream & os) const {
 }
 
 EventNextVCState::EventNextVCState(const Configuration& config, Module *parent,
-    const string& name) :
-    Module(parent, name) {
+                                   const string& name)
+    : Module(parent, name) {
   _buf_size = config.GetInt("vc_buf_size");
   _vcs = config.GetInt("num_vcs");
 
@@ -773,7 +774,7 @@ void EventNextVCState::PushWaiting(int vc, tWaiting *w) {
 
   if (w->watch) {
     cout << FullName() << " pushing flit " << w->id
-	<< " onto a waiting queue of length " << _waiting[vc].size() << endl;
+         << " onto a waiting queue of length " << _waiting[vc].size() << endl;
   }
 
   _waiting[vc].push_back(w);

@@ -31,8 +31,8 @@
 #include "loa.hpp"
 #include "random_utils.hpp"
 
-LOA::LOA(Module *parent, const string& name, int inputs, int outputs) :
-    DenseAllocator(parent, name, inputs, outputs) {
+LOA::LOA(Module *parent, const string& name, int inputs, int outputs)
+    : DenseAllocator(parent, name, inputs, outputs) {
   _req.resize(inputs);
   _counts.resize(outputs);
 
@@ -72,9 +72,9 @@ void LOA::Allocate() {
       output = (o + output_offset) % _outputs;
 
       if ((_request[input][output].label != -1)
-	  && (_counts[output] < lonely_cnt)) {
-	lonely = output;
-	lonely_cnt = _counts[output];
+          && (_counts[output] < lonely_cnt)) {
+        lonely = output;
+        lonely_cnt = _counts[output];
       }
     }
 
@@ -90,15 +90,15 @@ void LOA::Allocate() {
       input = (i + input_offset) % _inputs;
 
       if (_req[input] == output) {
-	// Grant!
+        // Grant!
 
-	_inmatch[input] = output;
-	_outmatch[output] = input;
+        _inmatch[input] = output;
+        _outmatch[output] = input;
 
-	_rptr[input] = (_rptr[input] + 1) % _outputs;
-	_gptr[output] = (_gptr[output] + 1) % _inputs;
+        _rptr[input] = (_rptr[input] + 1) % _outputs;
+        _gptr[output] = (_gptr[output] + 1) % _inputs;
 
-	break;
+        break;
       }
     }
   }

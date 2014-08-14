@@ -81,7 +81,7 @@ long seed; /* selector for different streams */
     }
     if (is_odd(s)) { /* "multiply by z" */
       for (j = KK; j > 0; j--)
-	u[j] = u[j - 1];
+        u[j] = u[j - 1];
       u[0] = u[KK]; /* shift the buffer cyclically */
       u[LL] = mod_sum(u[LL], u[KK]);
     }

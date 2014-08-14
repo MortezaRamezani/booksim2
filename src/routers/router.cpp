@@ -56,9 +56,12 @@ int const Router::STALL_BUFFER_RESERVED = -5;
 int const Router::STALL_CROSSBAR_CONFLICT = -6;
 
 Router::Router(const Configuration& config, Module *parent, const string & name,
-    int id, int inputs, int outputs) :
-    TimedModule(parent, name), _id(id), _inputs(inputs), _outputs(outputs), _partial_internal_cycles(
-	0.0) {
+               int id, int inputs, int outputs)
+    : TimedModule(parent, name),
+      _id(id),
+      _inputs(inputs),
+      _outputs(outputs),
+      _partial_internal_cycles(0.0) {
   _crossbar_delay = (config.GetInt("st_prepare_delay")
       + config.GetInt("st_final_delay"));
   _credit_delay = config.GetInt("credit_delay");
@@ -92,7 +95,7 @@ void Router::AddInputChannel(FlitChannel *channel, CreditChannel *backchannel) {
 }
 
 void Router::AddOutputChannel(FlitChannel *channel,
-    CreditChannel *backchannel) {
+                              CreditChannel *backchannel) {
   _output_channels.push_back(channel);
   _output_credits.push_back(backchannel);
   _channel_faults.push_back(false);
@@ -121,7 +124,8 @@ bool Router::IsFaultyOutput(int c) const {
 
 /*Router constructor*/
 Router *Router::NewRouter(const Configuration& config, Module *parent,
-    const string & name, int id, int inputs, int outputs) {
+                          const string & name, int id, int inputs,
+                          int outputs) {
   const string type = config.GetStr("router");
   Router *r = NULL;
   if (type == "iq") {

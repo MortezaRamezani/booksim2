@@ -32,7 +32,7 @@
 
 #include "allocator.hpp"
 
-class SelAlloc: public SparseAllocator {
+class SelAlloc : public SparseAllocator {
   int _iter;
 
   vector<int> _aptrs;
@@ -40,9 +40,9 @@ class SelAlloc: public SparseAllocator {
 
   vector<int> _outmask;
 
-public:
+ public:
   SelAlloc(Module *parent, const string& name, int inputs, int outputs,
-      int iters);
+           int iters);
 
   void Allocate();
 

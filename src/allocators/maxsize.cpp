@@ -69,8 +69,8 @@
 //#define PRINT_MATCHING
 
 MaxSizeMatch::MaxSizeMatch(Module *parent, const string& name, int inputs,
-    int outputs) :
-    DenseAllocator(parent, name, inputs, outputs) {
+                           int outputs)
+    : DenseAllocator(parent, name, inputs, outputs) {
   _from.resize(outputs);
   _s = new int[inputs];
   _ns = new int[inputs];
@@ -103,7 +103,7 @@ bool MaxSizeMatch::_ShortestAugmenting() {
   // push all unassigned inputs to the stack
   for (i = 0; i < _inputs; ++i) {
     j = (i + _prio) % _inputs;
-    if (_inmatch[j] == -1) { // start with unmatched left nodes
+    if (_inmatch[j] == -1) {  // start with unmatched left nodes
       _s[slen++] = j;
     }
   }
@@ -117,26 +117,26 @@ bool MaxSizeMatch::_ShortestAugmenting() {
       i = _s[e];
 
       for (j = 0; j < _outputs; ++j) {
-	if ((_request[i][j].label != -1) && // edge (i,j) exists
-	    (_inmatch[i] != j) && // (i,j) is not contained in the current matching
-	    (_from[j] == -1)) {      // no shorter path to j exists
+        if ((_request[i][j].label != -1) &&  // edge (i,j) exists
+            (_inmatch[i] != j) &&  // (i,j) is not contained in the current matching
+            (_from[j] == -1)) {      // no shorter path to j exists
 
-	  _from[j] = i;                  // how did we get to j?
-
-#ifdef DEBUG_MAXSIZE
-	  cout << "  got to " << j << " from " << i << endl;
-#endif
-	  if (_outmatch[j] == -1) {   // j is unmatched -- augmenting path found
-	    goto found_augmenting;
-	  } else {                      // j is matched
-	    _ns[nslen] = _outmatch[j]; // add the destination of this edge to the leaf nodes
-	    nslen++;
+          _from[j] = i;                  // how did we get to j?
 
 #ifdef DEBUG_MAXSIZE
-	    cout << "  adding " << _outmatch[j] << endl;
+          cout << "  got to " << j << " from " << i << endl;
 #endif
-	  }
-	}
+          if (_outmatch[j] == -1) {   // j is unmatched -- augmenting path found
+            goto found_augmenting;
+          } else {                      // j is matched
+            _ns[nslen] = _outmatch[j];  // add the destination of this edge to the leaf nodes
+            nslen++;
+
+#ifdef DEBUG_MAXSIZE
+            cout << "  adding " << _outmatch[j] << endl;
+#endif
+          }
+        }
       }
     }
 
@@ -147,7 +147,7 @@ bool MaxSizeMatch::_ShortestAugmenting() {
     slen = nslen;
   }
 
-  return false; // no augmenting paths
+  return false;  // no augmenting paths
 
   found_augmenting:
 

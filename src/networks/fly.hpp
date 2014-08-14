@@ -30,7 +30,7 @@
 
 #include "network.hpp"
 
-class KNFly: public Network {
+class KNFly : public Network {
 
   int _k;
   int _n;
@@ -41,7 +41,7 @@ class KNFly: public Network {
   int _OutChannel(int stage, int addr, int port) const;
   int _InChannel(int stage, int addr, int port) const;
 
-public:
+ public:
   KNFly(const Configuration &config, const string & name);
 
   int GetN() const;

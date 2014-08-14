@@ -44,9 +44,14 @@
 //  $Date: 2007/06/27 23:10:17 $
 //  $Id$
 // ----------------------------------------------------------------------
-FlitChannel::FlitChannel(Module * parent, string const & name, int classes) :
-    Channel<Flit>(parent, name), _routerSource(NULL), _routerSourcePort(-1), _routerSink(
-	NULL), _routerSinkPort(-1), _idle(0) {
+FlitChannel::FlitChannel(Module * parent, string const & name, int classes)
+    : Channel<Flit>(parent, name),
+      _routerSource(NULL),
+      _routerSourcePort(-1),
+      _routerSink(
+      NULL),
+      _routerSinkPort(-1),
+      _idle(0) {
   _active.resize(classes, 0);
 }
 
@@ -73,8 +78,8 @@ void FlitChannel::ReadInputs() {
   Flit const * const & f = _input;
   if (f && f->watch) {
     *gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	<< "Beginning channel traversal for flit " << f->id << " with delay "
-	<< _delay << "." << endl;
+               << "Beginning channel traversal for flit " << f->id
+               << " with delay " << _delay << "." << endl;
   }
   Channel<Flit>::ReadInputs();
 }
@@ -83,7 +88,7 @@ void FlitChannel::WriteOutputs() {
   Channel<Flit>::WriteOutputs();
   if (_output && _output->watch) {
     *gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	<< "Completed channel traversal for flit " << _output->id << "."
-	<< endl;
+               << "Completed channel traversal for flit " << _output->id << "."
+               << endl;
   }
 }

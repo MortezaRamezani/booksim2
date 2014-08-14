@@ -216,9 +216,9 @@ bool ParseArgs(Configuration * cf, int argc, char * * argv) {
       ifstream in(argv[i]);
       cout << "BEGIN Configuration File: " << argv[i] << endl;
       while (!in.eof()) {
-	char c;
-	in.get(c);
-	cout << c;
+        char c;
+        in.get(c);
+        cout << c;
       }
       cout << "END Configuration File: " << argv[i] << endl;
       rc = true;
@@ -316,8 +316,8 @@ vector<string> tokenize_str(string const & data) {
       --nested;
     } else if (!nested) {
       if (curr > start) {
-	string token = data.substr(start, curr - start);
-	values.push_back(token);
+        string token = data.substr(start, curr - start);
+        values.push_back(token);
       }
       start = curr + 1;
     }
@@ -356,8 +356,8 @@ vector<int> tokenize_int(string const & data) {
       --nested;
     } else if (!nested) {
       if (curr > start) {
-	string token = data.substr(start, curr - start);
-	values.push_back(atoi(token.c_str()));
+        string token = data.substr(start, curr - start);
+        values.push_back(atoi(token.c_str()));
       }
       start = curr + 1;
     }
@@ -396,8 +396,8 @@ vector<double> tokenize_float(string const & data) {
       --nested;
     } else if (!nested) {
       if (curr > start) {
-	string token = data.substr(start, curr - start);
-	values.push_back(atof(token.c_str()));
+        string token = data.substr(start, curr - start);
+        values.push_back(atof(token.c_str()));
       }
       start = curr + 1;
     }

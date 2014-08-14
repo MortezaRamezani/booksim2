@@ -49,8 +49,11 @@
 //==================================================
 
 Allocator::Allocator(Module *parent, const string& name, int inputs,
-    int outputs) :
-    Module(parent, name), _inputs(inputs), _outputs(outputs), _dirty(false) {
+                     int outputs)
+    : Module(parent, name),
+      _inputs(inputs),
+      _outputs(outputs),
+      _dirty(false) {
   _inmatch.resize(_inputs, -1);
   _outmatch.resize(_outputs, -1);
 }
@@ -64,7 +67,7 @@ void Allocator::Clear() {
 }
 
 void Allocator::AddRequest(int in, int out, int label, int in_pri,
-    int out_pri) {
+                           int out_pri) {
 
   assert((in >= 0) && (in < _inputs));
   assert((out >= 0) && (out < _outputs));
@@ -108,8 +111,8 @@ void Allocator::PrintGrants(ostream * os) const {
 //==================================================
 
 DenseAllocator::DenseAllocator(Module *parent, const string& name, int inputs,
-    int outputs) :
-    Allocator(parent, name, inputs, outputs) {
+                               int outputs)
+    : Allocator(parent, name, inputs, outputs) {
   _request.resize(_inputs);
 
   for (int i = 0; i < _inputs; ++i) {
@@ -146,7 +149,7 @@ bool DenseAllocator::ReadRequest(sRequest &req, int in, int out) const {
 }
 
 void DenseAllocator::AddRequest(int in, int out, int label, int in_pri,
-    int out_pri) {
+                                int out_pri) {
   Allocator::AddRequest(in, out, label, in_pri, out_pri);
   assert(_request[in][out].label == -1);
 
@@ -211,8 +214,8 @@ void DenseAllocator::PrintRequests(ostream * os) const {
     for (int output = 0; output < _outputs; ++output) {
       const sRequest & req = _request[input][output];
       if (req.label >= 0) {
-	print = true;
-	ss << output << "@" << req.in_pri << " ";
+        print = true;
+        ss << output << "@" << req.in_pri << " ";
       }
     }
     if (print) {
@@ -226,8 +229,8 @@ void DenseAllocator::PrintRequests(ostream * os) const {
     for (int input = 0; input < _inputs; ++input) {
       const sRequest & req = _request[input][output];
       if (req.label >= 0) {
-	print = true;
-	ss << input << "@" << req.out_pri << " ";
+        print = true;
+        ss << input << "@" << req.out_pri << " ";
       }
     }
     if (print) {
@@ -242,8 +245,8 @@ void DenseAllocator::PrintRequests(ostream * os) const {
 //==================================================
 
 SparseAllocator::SparseAllocator(Module *parent, const string& name, int inputs,
-    int outputs) :
-    Allocator(parent, name, inputs, outputs) {
+                                 int outputs)
+    : Allocator(parent, name, inputs, outputs) {
   _in_req.resize(_inputs);
   _out_req.resize(_outputs);
 }
@@ -293,7 +296,7 @@ bool SparseAllocator::ReadRequest(sRequest &req, int in, int out) const {
 }
 
 void SparseAllocator::AddRequest(int in, int out, int label, int in_pri,
-    int out_pri) {
+                                 int out_pri) {
   Allocator::AddRequest(in, out, label, in_pri, out_pri);
   assert(_in_req[in].count(out) == 0);
   assert(_out_req[out].count(in) == 0);
@@ -373,8 +376,8 @@ void SparseAllocator::PrintRequests(ostream * os) const {
     if (!_in_req[input].empty()) {
       *os << input << " -> [ ";
       for (iter = _in_req[input].begin(); iter != _in_req[input].end();
-	  iter++) {
-	*os << iter->second.port << "@" << iter->second.in_pri << " ";
+          iter++) {
+        *os << iter->second.port << "@" << iter->second.in_pri << " ";
       }
       *os << "]  ";
     }
@@ -385,8 +388,8 @@ void SparseAllocator::PrintRequests(ostream * os) const {
       *os << output << " -> ";
       *os << "[ ";
       for (iter = _out_req[output].begin(); iter != _out_req[output].end();
-	  iter++) {
-	*os << iter->second.port << "@" << iter->second.out_pri << " ";
+          iter++) {
+        *os << iter->second.port << "@" << iter->second.out_pri << " ";
       }
       *os << "]  ";
     }
@@ -399,8 +402,9 @@ void SparseAllocator::PrintRequests(ostream * os) const {
 //==================================================
 
 Allocator *Allocator::NewAllocator(Module *parent, const string& name,
-    const string &alloc_type, int inputs, int outputs,
-    Configuration const * const config) {
+                                   const string &alloc_type, int inputs,
+                                   int outputs,
+                                   Configuration const * const config) {
   Allocator *a = 0;
 
   string alloc_name;
@@ -421,15 +425,15 @@ Allocator *Allocator::NewAllocator(Module *parent, const string& name,
     a = new MaxSizeMatch(parent, name, inputs, outputs);
   } else if (alloc_name == "pim") {
     int iters =
-	param_str.empty() ?
-	    (config ? config->GetInt("alloc_iters") : 1) :
-	    atoi(param_str.c_str());
+        param_str.empty() ?
+            (config ? config->GetInt("alloc_iters") : 1) :
+            atoi(param_str.c_str());
     a = new PIM(parent, name, inputs, outputs, iters);
   } else if (alloc_name == "islip") {
     int iters =
-	param_str.empty() ?
-	    (config ? config->GetInt("alloc_iters") : 1) :
-	    atoi(param_str.c_str());
+        param_str.empty() ?
+            (config ? config->GetInt("alloc_iters") : 1) :
+            atoi(param_str.c_str());
     a = new iSLIP_Sparse(parent, name, inputs, outputs, iters);
   } else if (alloc_name == "loa") {
     a = new LOA(parent, name, inputs, outputs);
@@ -439,22 +443,22 @@ Allocator *Allocator::NewAllocator(Module *parent, const string& name,
     a = new Wavefront(parent, name, inputs, outputs, true);
   } else if (alloc_name == "select") {
     int iters =
-	param_str.empty() ?
-	    (config ? config->GetInt("alloc_iters") : 1) :
-	    atoi(param_str.c_str());
+        param_str.empty() ?
+            (config ? config->GetInt("alloc_iters") : 1) :
+            atoi(param_str.c_str());
     a = new SelAlloc(parent, name, inputs, outputs, iters);
   } else if (alloc_name == "separable_input_first") {
     string arb_type =
-	param_str.empty() ?
-	    (config ? config->GetStr("arb_type") : "round_robin") : param_str;
+        param_str.empty() ?
+            (config ? config->GetStr("arb_type") : "round_robin") : param_str;
     a = new SeparableInputFirstAllocator(parent, name, inputs, outputs,
-	arb_type);
+                                         arb_type);
   } else if (alloc_name == "separable_output_first") {
     string arb_type =
-	param_str.empty() ?
-	    (config ? config->GetStr("arb_type") : "round_robin") : param_str;
+        param_str.empty() ?
+            (config ? config->GetStr("arb_type") : "round_robin") : param_str;
     a = new SeparableOutputFirstAllocator(parent, name, inputs, outputs,
-	arb_type);
+                                          arb_type);
   }
 
 //==================================================

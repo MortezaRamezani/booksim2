@@ -42,12 +42,12 @@ class Configuration {
   FILE * _config_file;
   string _config_string;
 
-protected:
+ protected:
   map<string, string> _str_map;
   map<string, int> _int_map;
   map<string, double> _float_map;
 
-public:
+ public:
   Configuration();
 
   void AddStrField(string const & field, string const & value);

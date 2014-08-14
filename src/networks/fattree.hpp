@@ -42,7 +42,7 @@
 
 #include "network.hpp"
 
-class FatTree: public Network {
+class FatTree : public Network {
 
   int _k;
   int _n;
@@ -57,7 +57,7 @@ class FatTree: public Network {
   int* _outputChannelMap;
   int* _latencyMap;
 
-public:
+ public:
 
   FatTree(const Configuration& config, const string & name);
   static void RegisterRoutingFunctions();

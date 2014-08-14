@@ -49,8 +49,8 @@ using namespace std;
 
 class Router;
 
-class FlitChannel: public Channel<Flit> {
-public:
+class FlitChannel : public Channel<Flit> {
+ public:
   FlitChannel(Module * parent, string const & name, int classes);
 
   void SetSource(Router const * const router, int port);
@@ -77,7 +77,7 @@ public:
   virtual void ReadInputs();
   virtual void WriteOutputs();
 
-private:
+ private:
 
   ////////////////////////////////////////
   //

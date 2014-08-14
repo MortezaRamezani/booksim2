@@ -30,8 +30,8 @@
 #include "random_utils.hpp"
 #include "traffic.hpp"
 
-TrafficPattern::TrafficPattern(int nodes) :
-    _nodes(nodes) {
+TrafficPattern::TrafficPattern(int nodes)
+    : _nodes(nodes) {
   if (nodes <= 0) {
     cout << "Error: Traffic patterns require at least one node." << endl;
     exit(-1);
@@ -43,7 +43,7 @@ void TrafficPattern::reset() {
 }
 
 TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
-    Configuration const * const config) {
+                                     Configuration const * const config) {
   string pattern_name;
   string param_str;
   size_t left = pattern.find_first_of('(');
@@ -73,17 +73,17 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     int perm_seed = -1;
     if (params.empty()) {
       if (config) {
-	if (config->GetStr("perm_seed") == "time") {
-	  perm_seed = int(time(NULL));
-	  cout << "SEED: perm_seed=" << perm_seed << endl;
-	} else {
-	  perm_seed = config->GetInt("perm_seed");
-	}
+        if (config->GetStr("perm_seed") == "time") {
+          perm_seed = int(time(NULL));
+          cout << "SEED: perm_seed=" << perm_seed << endl;
+        } else {
+          perm_seed = config->GetInt("perm_seed");
+        }
       } else {
-	cout
-	    << "Error: Missing parameter for random permutation traffic pattern: "
-	    << pattern << endl;
-	exit(-1);
+        cout
+            << "Error: Missing parameter for random permutation traffic pattern: "
+            << pattern << endl;
+        exit(-1);
       }
     } else {
       perm_seed = atoi(params[0].c_str());
@@ -105,9 +105,9 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     int k = -1;
     if (params.size() < 1) {
       if (config) {
-	k = config->GetInt("k");
+        k = config->GetInt("k");
       } else {
-	missing_params = true;
+        missing_params = true;
       }
     } else {
       k = atoi(params[0].c_str());
@@ -115,17 +115,17 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     int n = -1;
     if (params.size() < 2) {
       if (config) {
-	n = config->GetInt("n");
+        n = config->GetInt("n");
       } else {
-	missing_params = true;
+        missing_params = true;
       }
     } else {
       n = atoi(params[1].c_str());
     }
     if (missing_params) {
       cout
-	  << "Error: Missing parameters for dragonfly bad permutation traffic pattern: "
-	  << pattern << endl;
+          << "Error: Missing parameters for dragonfly bad permutation traffic pattern: "
+          << pattern << endl;
       exit(-1);
     }
     result = new BadPermDFlyTrafficPattern(nodes, k, n);
@@ -135,9 +135,9 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     int k = -1;
     if (params.size() < 1) {
       if (config) {
-	k = config->GetInt("k");
+        k = config->GetInt("k");
       } else {
-	missing_params = true;
+        missing_params = true;
       }
     } else {
       k = atoi(params[0].c_str());
@@ -145,9 +145,9 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     int n = -1;
     if (params.size() < 2) {
       if (config) {
-	n = config->GetInt("n");
+        n = config->GetInt("n");
       } else {
-	missing_params = true;
+        missing_params = true;
       }
     } else {
       n = atoi(params[1].c_str());
@@ -155,17 +155,17 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     int xr = -1;
     if (params.size() < 3) {
       if (config) {
-	xr = config->GetInt("xr");
+        xr = config->GetInt("xr");
       } else {
-	missing_params = true;
+        missing_params = true;
       }
     } else {
       xr = atoi(params[2].c_str());
     }
     if (missing_params) {
       cout
-	  << "Error: Missing parameters for digit permutation traffic pattern: "
-	  << pattern << endl;
+          << "Error: Missing parameters for digit permutation traffic pattern: "
+          << pattern << endl;
       exit(-1);
     }
     if (pattern_name == "tornado") {
@@ -182,7 +182,7 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     vector<int> hotspots = tokenize_int(params[0]);
     for (size_t i = 0; i < hotspots.size(); ++i) {
       if (hotspots[i] < 0) {
-	hotspots[i] = RandomInt(nodes - 1);
+        hotspots[i] = RandomInt(nodes - 1);
       }
     }
     vector<int> rates;
@@ -200,22 +200,22 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
   return result;
 }
 
-PermutationTrafficPattern::PermutationTrafficPattern(int nodes) :
-    TrafficPattern(nodes) {
+PermutationTrafficPattern::PermutationTrafficPattern(int nodes)
+    : TrafficPattern(nodes) {
 
 }
 
-BitPermutationTrafficPattern::BitPermutationTrafficPattern(int nodes) :
-    PermutationTrafficPattern(nodes) {
+BitPermutationTrafficPattern::BitPermutationTrafficPattern(int nodes)
+    : PermutationTrafficPattern(nodes) {
   if ((nodes & -nodes) != nodes) {
     cout << "Error: Bit permutation traffic patterns require the number of "
-	<< "nodes to be a power of two." << endl;
+         << "nodes to be a power of two." << endl;
     exit(-1);
   }
 }
 
-BitCompTrafficPattern::BitCompTrafficPattern(int nodes) :
-    BitPermutationTrafficPattern(nodes) {
+BitCompTrafficPattern::BitCompTrafficPattern(int nodes)
+    : BitPermutationTrafficPattern(nodes) {
 
 }
 
@@ -225,14 +225,15 @@ int BitCompTrafficPattern::dest(int source) {
   return ~source & mask;
 }
 
-TransposeTrafficPattern::TransposeTrafficPattern(int nodes) :
-    BitPermutationTrafficPattern(nodes), _shift(0) {
+TransposeTrafficPattern::TransposeTrafficPattern(int nodes)
+    : BitPermutationTrafficPattern(nodes),
+      _shift(0) {
   while (nodes >>= 1) {
     ++_shift;
   }
   if (_shift % 2) {
     cout << "Error: Transpose traffic pattern requires the number of nodes to "
-	<< "be an even power of two." << endl;
+         << "be an even power of two." << endl;
     exit(-1);
   }
   _shift >>= 1;
@@ -245,8 +246,8 @@ int TransposeTrafficPattern::dest(int source) {
   return (((source >> _shift) & mask_lo) | ((source << _shift) & mask_hi));
 }
 
-BitRevTrafficPattern::BitRevTrafficPattern(int nodes) :
-    BitPermutationTrafficPattern(nodes) {
+BitRevTrafficPattern::BitRevTrafficPattern(int nodes)
+    : BitPermutationTrafficPattern(nodes) {
 
 }
 
@@ -260,8 +261,8 @@ int BitRevTrafficPattern::dest(int source) {
   return result;
 }
 
-ShuffleTrafficPattern::ShuffleTrafficPattern(int nodes) :
-    BitPermutationTrafficPattern(nodes) {
+ShuffleTrafficPattern::ShuffleTrafficPattern(int nodes)
+    : BitPermutationTrafficPattern(nodes) {
 
 }
 
@@ -272,13 +273,16 @@ int ShuffleTrafficPattern::dest(int source) {
 }
 
 DigitPermutationTrafficPattern::DigitPermutationTrafficPattern(int nodes, int k,
-    int n, int xr) :
-    PermutationTrafficPattern(nodes), _k(k), _n(n), _xr(xr) {
+                                                               int n, int xr)
+    : PermutationTrafficPattern(nodes),
+      _k(k),
+      _n(n),
+      _xr(xr) {
 
 }
 
-TornadoTrafficPattern::TornadoTrafficPattern(int nodes, int k, int n, int xr) :
-    DigitPermutationTrafficPattern(nodes, k, n, xr) {
+TornadoTrafficPattern::TornadoTrafficPattern(int nodes, int k, int n, int xr)
+    : DigitPermutationTrafficPattern(nodes, k, n, xr) {
 
 }
 
@@ -290,15 +294,15 @@ int TornadoTrafficPattern::dest(int source) {
 
   for (int n = 0; n < _n; ++n) {
     result += offset
-	* (((source / offset) % (_xr * _k) + ((_xr * _k + 1) / 2 - 1))
-	    % (_xr * _k));
+        * (((source / offset) % (_xr * _k) + ((_xr * _k + 1) / 2 - 1))
+            % (_xr * _k));
     offset *= (_xr * _k);
   }
   return result;
 }
 
-NeighborTrafficPattern::NeighborTrafficPattern(int nodes, int k, int n, int xr) :
-    DigitPermutationTrafficPattern(nodes, k, n, xr) {
+NeighborTrafficPattern::NeighborTrafficPattern(int nodes, int k, int n, int xr)
+    : DigitPermutationTrafficPattern(nodes, k, n, xr) {
 
 }
 
@@ -316,8 +320,8 @@ int NeighborTrafficPattern::dest(int source) {
 }
 
 RandomPermutationTrafficPattern::RandomPermutationTrafficPattern(int nodes,
-    int seed) :
-    TrafficPattern(nodes) {
+                                                                 int seed)
+    : TrafficPattern(nodes) {
   _dest.resize(nodes);
   randomize(seed);
 }
@@ -337,7 +341,7 @@ void RandomPermutationTrafficPattern::randomize(int seed) {
     int cnt = 0;
     while ((cnt < ind) || (_dest[j] != -1)) {
       if (_dest[j] == -1) {
-	++cnt;
+        ++cnt;
       }
       ++j;
       assert(j < _nodes);
@@ -355,13 +359,13 @@ int RandomPermutationTrafficPattern::dest(int source) {
   return _dest[source];
 }
 
-RandomTrafficPattern::RandomTrafficPattern(int nodes) :
-    TrafficPattern(nodes) {
+RandomTrafficPattern::RandomTrafficPattern(int nodes)
+    : TrafficPattern(nodes) {
 
 }
 
-UniformRandomTrafficPattern::UniformRandomTrafficPattern(int nodes) :
-    RandomTrafficPattern(nodes) {
+UniformRandomTrafficPattern::UniformRandomTrafficPattern(int nodes)
+    : RandomTrafficPattern(nodes) {
 
 }
 
@@ -370,9 +374,9 @@ int UniformRandomTrafficPattern::dest(int source) {
   return RandomInt(_nodes - 1);
 }
 
-UniformBackgroundTrafficPattern::UniformBackgroundTrafficPattern(int nodes,
-    vector<int> excluded_nodes) :
-    RandomTrafficPattern(nodes) {
+UniformBackgroundTrafficPattern::UniformBackgroundTrafficPattern(
+    int nodes, vector<int> excluded_nodes)
+    : RandomTrafficPattern(nodes) {
   for (size_t i = 0; i < excluded_nodes.size(); ++i) {
     int const node = excluded_nodes[i];
     assert((node >= 0) && (node < _nodes));
@@ -392,8 +396,8 @@ int UniformBackgroundTrafficPattern::dest(int source) {
   return result;
 }
 
-DiagonalTrafficPattern::DiagonalTrafficPattern(int nodes) :
-    RandomTrafficPattern(nodes) {
+DiagonalTrafficPattern::DiagonalTrafficPattern(int nodes)
+    : RandomTrafficPattern(nodes) {
 
 }
 
@@ -402,8 +406,8 @@ int DiagonalTrafficPattern::dest(int source) {
   return ((RandomInt(2) == 0) ? ((source + 1) % _nodes) : source);
 }
 
-AsymmetricTrafficPattern::AsymmetricTrafficPattern(int nodes) :
-    RandomTrafficPattern(nodes) {
+AsymmetricTrafficPattern::AsymmetricTrafficPattern(int nodes)
+    : RandomTrafficPattern(nodes) {
 
 }
 
@@ -413,11 +417,11 @@ int AsymmetricTrafficPattern::dest(int source) {
   return (source % half) + (RandomInt(1) ? half : 0);
 }
 
-Taper64TrafficPattern::Taper64TrafficPattern(int nodes) :
-    RandomTrafficPattern(nodes) {
+Taper64TrafficPattern::Taper64TrafficPattern(int nodes)
+    : RandomTrafficPattern(nodes) {
   if (nodes != 64) {
     cout << "Error: Tthe Taper64 traffic pattern requires the number of nodes "
-	<< "to be exactly 64." << endl;
+         << "to be exactly 64." << endl;
     exit(-1);
   }
 }
@@ -431,8 +435,8 @@ int Taper64TrafficPattern::dest(int source) {
   }
 }
 
-BadPermDFlyTrafficPattern::BadPermDFlyTrafficPattern(int nodes, int k, int n) :
-    DigitPermutationTrafficPattern(nodes, k, n, 1) {
+BadPermDFlyTrafficPattern::BadPermDFlyTrafficPattern(int nodes, int k, int n)
+    : DigitPermutationTrafficPattern(nodes, k, n, 1) {
 
 }
 
@@ -447,8 +451,8 @@ int BadPermDFlyTrafficPattern::dest(int source) {
 }
 
 BadPermYarcTrafficPattern::BadPermYarcTrafficPattern(int nodes, int k, int n,
-    int xr) :
-    DigitPermutationTrafficPattern(nodes, k, n, xr) {
+                                                     int xr)
+    : DigitPermutationTrafficPattern(nodes, k, n, xr) {
 
 }
 
@@ -459,8 +463,11 @@ int BadPermYarcTrafficPattern::dest(int source) {
 }
 
 HotSpotTrafficPattern::HotSpotTrafficPattern(int nodes, vector<int> hotspots,
-    vector<int> rates) :
-    TrafficPattern(nodes), _hotspots(hotspots), _rates(rates), _max_val(-1) {
+                                             vector<int> rates)
+    : TrafficPattern(nodes),
+      _hotspots(hotspots),
+      _rates(rates),
+      _max_val(-1) {
   assert(!_hotspots.empty());
   size_t const size = _hotspots.size();
   _rates.resize(size, _rates.empty() ? 1 : _rates.back());

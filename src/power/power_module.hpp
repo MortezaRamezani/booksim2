@@ -44,9 +44,9 @@ struct wire {
   double N;
 };
 
-class Power_Module: public Module {
+class Power_Module : public Module {
 
-protected:
+ protected:
   //network undersimulation
   Network * net;
   int classes;
@@ -160,7 +160,7 @@ protected:
   //switch
   void calcSwitch(const SwitchMonitor *sm);
   double powerCrossbar(double width, double inputs, double outputs, double from,
-      double to);
+                       double to);
   double powerCrossbarCtrl(double width, double inputs, double outputs);
   double powerCrossbarLeak(double width, double inputs, double outputs);
 
@@ -174,7 +174,7 @@ protected:
   double areaInputModule(double Words);
   double areaOutputModule(double Outputs);
 
-public:
+ public:
   Power_Module(Network * net, const Configuration &config);
   ~Power_Module();
 

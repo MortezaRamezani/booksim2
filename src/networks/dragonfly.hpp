@@ -29,7 +29,7 @@
 #include "network.hpp"
 #include "routefunc.hpp"
 
-class DragonFlyNew: public Network {
+class DragonFlyNew : public Network {
 
   int _m;
   int _n;
@@ -48,7 +48,7 @@ class DragonFlyNew: public Network {
   void _ComputeSize(const Configuration &config);
   void _BuildNet(const Configuration &config);
 
-public:
+ public:
   DragonFlyNew(const Configuration &config, const string & name);
 
   int GetN() const;
@@ -62,8 +62,8 @@ public:
 int dragonfly_port(int rID, int source, int dest);
 
 void ugal_dragonflynew(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                       OutputSet *outputs, bool inject);
 void min_dragonflynew(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject);
+                      OutputSet *outputs, bool inject);
 
 #endif 

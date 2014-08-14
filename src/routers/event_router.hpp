@@ -41,10 +41,12 @@
 #include "outputset.hpp"
 #include "pipefifo.hpp"
 
-class EventNextVCState: public Module {
-public:
+class EventNextVCState : public Module {
+ public:
   enum eNextVCState {
-    idle, busy, tail_pending
+    idle,
+    busy,
+    tail_pending
   };
 
   struct tWaiting {
@@ -55,7 +57,7 @@ public:
     bool watch;
   };
 
-private:
+ private:
   int _buf_size;
   int _vcs;
 
@@ -68,10 +70,10 @@ private:
 
   vector<eNextVCState> _state;
 
-public:
+ public:
 
   EventNextVCState(const Configuration& config, Module *parent,
-      const string& name);
+                   const string& name);
 
   eNextVCState GetState(int vc) const;
   int GetPresence(int vc) const;
@@ -93,7 +95,7 @@ public:
   void SetInputVC(int vc, int in_vc);
 };
 
-class EventRouter: public Router {
+class EventRouter : public Router {
   int _vcs;
 
   int _vct;
@@ -123,7 +125,7 @@ class EventRouter: public Router {
     bool tail;
 
     int id;    // debug
-    bool watch; // debug
+    bool watch;  // debug
   };
 
   PipelineFIFO<tArrivalEvent> *_arrival_pipe;
@@ -136,7 +138,7 @@ class EventRouter: public Router {
     int dst_vc;
 
     int id;    // debug
-    bool watch; // debug
+    bool watch;  // debug
   };
 
   vector<queue<tTransportEvent *> > _transport_queue;
@@ -162,9 +164,9 @@ class EventRouter: public Router {
 
   virtual void _InternalStep();
 
-public:
+ public:
   EventRouter(const Configuration& config, Module *parent, const string & name,
-      int id, int inputs, int outputs);
+              int id, int inputs, int outputs);
   virtual ~EventRouter();
 
   virtual void ReadInputs();

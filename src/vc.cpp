@@ -43,9 +43,16 @@
 const char * const VC::VCSTATE[] = { "idle", "routing", "vc_alloc", "active" };
 
 VC::VC(const Configuration& config, int outputs, Module *parent,
-    const string& name) :
-    Module(parent, name), _state(idle), _out_port(-1), _out_vc(-1), _pri(0), _watched(
-	false), _expected_pid(-1), _last_id(-1), _last_pid(-1) {
+       const string& name)
+    : Module(parent, name),
+      _state(idle),
+      _out_port(-1),
+      _out_vc(-1),
+      _pri(0),
+      _watched(false),
+      _expected_pid(-1),
+      _last_id(-1),
+      _last_pid(-1) {
   _lookahead_routing = !config.GetInt("routing_delay");
   _route_set = _lookahead_routing ? NULL : new OutputSet();
 
@@ -78,7 +85,7 @@ void VC::AddFlit(Flit *f) {
     if (f->pid != _expected_pid) {
       ostringstream err;
       err << "Received flit " << f->id << " with unexpected packet ID: "
-	  << f->pid << " (expected: " << _expected_pid << ")";
+          << f->pid << " (expected: " << _expected_pid << ")";
       Error(err.str());
     } else if (f->tail) {
       _expected_pid = -1;
@@ -119,8 +126,8 @@ void VC::SetState(eVCState s) {
 
   if (f && f->watch)
     *gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	<< "Changing state from " << VC::VCSTATE[_state] << " to "
-	<< VC::VCSTATE[s] << "." << endl;
+               << "Changing state from " << VC::VCSTATE[_state] << " to "
+               << VC::VCSTATE[s] << "." << endl;
 
   _state = s;
 }
@@ -150,25 +157,26 @@ void VC::UpdatePriority() {
     if ((_pri_type != local_age_based) && _priority_donation) {
       Flit * df = f;
       for (size_t i = 1; i < _buffer.size(); ++i) {
-	Flit * bf = _buffer[i];
-	if (bf->pri > df->pri)
-	  df = bf;
+        Flit * bf = _buffer[i];
+        if (bf->pri > df->pri)
+          df = bf;
       }
       if ((df != f) && (df->watch || f->watch)) {
-	*gWatchOut << GetSimTime() << " | " << FullName() << " | " << "Flit "
-	    << df->id << " donates priority to flit " << f->id << "." << endl;
+        *gWatchOut << GetSimTime() << " | " << FullName() << " | " << "Flit "
+                   << df->id << " donates priority to flit " << f->id << "."
+                   << endl;
       }
       f = df;
     }
     if (f->watch)
       *gWatchOut << GetSimTime() << " | " << FullName() << " | " << "Flit "
-	  << f->id << " sets priority to " << f->pri << "." << endl;
+                 << f->id << " sets priority to " << f->pri << "." << endl;
     _pri = f->pri;
   }
 }
 
 void VC::Route(tRoutingFunction rf, const Router* router, const Flit* f,
-    int in_channel) {
+               int in_channel) {
   rf(router, f, in_channel, _route_set, false);
   _out_port = -1;
   _out_vc = -1;

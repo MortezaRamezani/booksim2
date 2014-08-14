@@ -42,12 +42,12 @@ stack<Flit *> Flit::_free;
 
 ostream& operator<<(ostream& os, const Flit& f) {
   os << "  Flit ID: " << f.id << " (" << &f << ")" << " Packet ID: " << f.pid
-      << " Type: " << f.type << " Head: " << f.head << " Tail: " << f.tail
-      << endl;
+     << " Type: " << f.type << " Head: " << f.head << " Tail: " << f.tail
+     << endl;
   os << "  Source: " << f.src << "  Dest: " << f.dest << " Intm: " << f.intm
-      << endl;
+     << endl;
   os << "  Creation time: " << f.ctime << " Injection time: " << f.itime
-      << " Arrival time: " << f.atime << " Phase: " << f.ph << endl;
+     << " Arrival time: " << f.atime << " Phase: " << f.ph << endl;
   os << "  VC: " << f.vc << endl;
   return os;
 }

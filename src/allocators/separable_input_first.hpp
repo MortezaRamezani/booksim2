@@ -37,12 +37,12 @@
 
 #include "separable.hpp"
 
-class SeparableInputFirstAllocator: public SeparableAllocator {
+class SeparableInputFirstAllocator : public SeparableAllocator {
 
-public:
+ public:
 
   SeparableInputFirstAllocator(Module* parent, const string& name, int inputs,
-      int outputs, const string& arb_type);
+                               int outputs, const string& arb_type);
 
   virtual void Allocate();
 

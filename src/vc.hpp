@@ -35,8 +35,8 @@
 #include "routefunc.hpp"
 #include "config_utils.hpp"
 
-class VC: public Module {
-public:
+class VC : public Module {
+ public:
   enum eVCState {
     state_min = 0,
     idle = state_min,
@@ -50,7 +50,7 @@ public:
   };
   static const char * const VCSTATE[];
 
-private:
+ private:
 
   deque<Flit *> _buffer;
 
@@ -60,7 +60,11 @@ private:
   int _out_port, _out_vc;
 
   enum ePrioType {
-    local_age_based, queue_length_based, hop_count_based, none, other
+    local_age_based,
+    queue_length_based,
+    hop_count_based,
+    none,
+    other
   };
 
   ePrioType _pri_type;
@@ -78,10 +82,10 @@ private:
 
   bool _lookahead_routing;
 
-public:
+ public:
 
   VC(const Configuration& config, int outputs, Module *parent,
-      const string& name);
+     const string& name);
   ~VC();
 
   void AddFlit(Flit *f);
@@ -120,7 +124,7 @@ public:
     return _pri;
   }
   void Route(tRoutingFunction rf, const Router* router, const Flit* f,
-      int in_channel);
+             int in_channel);
 
   inline int GetOccupancy() const {
     return (int) _buffer.size();

@@ -41,7 +41,7 @@
 #include "pipefifo.hpp"
 #include "vc.hpp"
 
-class ChaosRouter: public Router {
+class ChaosRouter : public Router {
 
   tRoutingFunction _rf;
 
@@ -104,9 +104,9 @@ class ChaosRouter: public Router {
 
   virtual void _InternalStep();
 
-public:
+ public:
   ChaosRouter(const Configuration& config, Module *parent, const string & name,
-      int id, int inputs, int outputs);
+              int id, int inputs, int outputs);
 
   virtual ~ChaosRouter();
 

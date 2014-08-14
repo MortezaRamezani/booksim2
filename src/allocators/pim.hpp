@@ -32,10 +32,10 @@
 
 #include "allocator.hpp"
 
-class PIM: public DenseAllocator {
+class PIM : public DenseAllocator {
   int _PIM_iter;
 
-public:
+ public:
   PIM(Module *parent, const string& name, int inputs, int outputs, int iters);
 
   ~PIM();

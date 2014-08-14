@@ -39,17 +39,17 @@
 
 class Arbiter;
 
-class SeparableAllocator: public SparseAllocator {
+class SeparableAllocator : public SparseAllocator {
 
-protected:
+ protected:
 
   vector<Arbiter*> _input_arb;
   vector<Arbiter*> _output_arb;
 
-public:
+ public:
 
   SeparableAllocator(Module* parent, const string& name, int inputs,
-      int outputs, const string& arb_type);
+                     int outputs, const string& arb_type);
 
   virtual ~SeparableAllocator();
 

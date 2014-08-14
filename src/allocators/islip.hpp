@@ -32,15 +32,15 @@
 
 #include "allocator.hpp"
 
-class iSLIP_Sparse: public SparseAllocator {
+class iSLIP_Sparse : public SparseAllocator {
   int _iSLIP_iter;
 
   vector<int> _gptrs;
   vector<int> _aptrs;
 
-public:
+ public:
   iSLIP_Sparse(Module *parent, const string& name, int inputs, int outputs,
-      int iters);
+               int iters);
 
   void Allocate();
 };

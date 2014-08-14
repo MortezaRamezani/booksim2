@@ -73,11 +73,11 @@ int dragonflynew_hopcnt(int src, int dest) {
       dest_grp_output = src_grp_ID;
     }
     grp_output_RID = ((int) (grp_output / (gP)))
-	+ src_grp_ID * _grp_num_routers;
+        + src_grp_ID * _grp_num_routers;
     src_intm = grp_output_RID * gP;
 
     grp_output_RID = ((int) (dest_grp_output / (gP)))
-	+ dest_grp_ID * _grp_num_routers;
+        + dest_grp_ID * _grp_num_routers;
     dest_intm = grp_output_RID * gP;
 
     //hop count in source group
@@ -146,8 +146,8 @@ int dragonfly_port(int rID, int source, int dest) {
   return out_port;
 }
 
-DragonFlyNew::DragonFlyNew(const Configuration &config, const string & name) :
-    Network(config, name) {
+DragonFlyNew::DragonFlyNew(const Configuration &config, const string & name)
+    : Network(config, name) {
 
   _ComputeSize(config);
   _Alloc();
@@ -236,7 +236,7 @@ void DragonFlyNew::_BuildNet(const Configuration &config) {
     router_name << "_" << node;
 
     _routers[node] = Router::NewRouter(config, this, router_name.str(), node,
-	_k, _k);
+                                       _k, _k);
     _timed_modules.push_back(_routers[node]);
 
     router_name.str("");
@@ -272,13 +272,13 @@ void DragonFlyNew::_BuildNet(const Configuration &config) {
     // add intra-group output channel
     for (int dim = 0; dim < _n; ++dim) {
       for (int cnt = 0; cnt < (2 * _p - 1); ++cnt) {
-	_output = (2 * _p - 1 + _p) * _n * node + (2 * _p - 1) * dim + cnt;
+        _output = (2 * _p - 1 + _p) * _n * node + (2 * _p - 1) * dim + cnt;
 
-	_routers[node]->AddOutputChannel(_chan[_output], _chan_cred[_output]);
+        _routers[node]->AddOutputChannel(_chan[_output], _chan_cred[_output]);
 
 #ifdef DRAGON_LATENCY
-	_chan[_output]->SetLatency(10);
-	_chan_cred[_output]->SetLatency(10);
+        _chan[_output]->SetLatency(10);
+        _chan_cred[_output]->SetLatency(10);
 #endif
       }
     }
@@ -314,25 +314,25 @@ void DragonFlyNew::_BuildNet(const Configuration &config) {
 
       for (int cnt = 0; cnt < (2 * _p - 1); ++cnt) {
 
-	if (cnt < _dim_ID) {
+        if (cnt < _dim_ID) {
 
-	  _input = grp_ID * _num_ports_per_switch * _a
-	      - (_dim_ID - cnt) * _num_ports_per_switch
-	      + _dim_ID * _num_ports_per_switch + (_dim_ID - 1);
-	} else {
+          _input = grp_ID * _num_ports_per_switch * _a
+              - (_dim_ID - cnt) * _num_ports_per_switch
+              + _dim_ID * _num_ports_per_switch + (_dim_ID - 1);
+        } else {
 
-	  _input = grp_ID * _num_ports_per_switch * _a
-	      + _dim_ID * _num_ports_per_switch
-	      + (cnt - _dim_ID + 1) * _num_ports_per_switch + _dim_ID;
+          _input = grp_ID * _num_ports_per_switch * _a
+              + _dim_ID * _num_ports_per_switch
+              + (cnt - _dim_ID + 1) * _num_ports_per_switch + _dim_ID;
 
-	}
+        }
 
-	if (_input < 0) {
-	  cout << " ERROR: _input less than zero " << endl;
-	  exit(-1);
-	}
+        if (_input < 0) {
+          cout << " ERROR: _input less than zero " << endl;
+          exit(-1);
+        }
 
-	_routers[node]->AddInputChannel(_chan[_input], _chan_cred[_input]);
+        _routers[node]->AddInputChannel(_chan[_input], _chan_cred[_input]);
       }
     }
 
@@ -350,15 +350,15 @@ void DragonFlyNew::_BuildNet(const Configuration &config) {
 
       if (grp_ID > grp_output) {
 
-	_input = (grp_output) * _num_ports_per_switch * _a + // starting point of group
-	    (_num_ports_per_switch - _p) * (int) ((grp_ID - 1) / _p) + // find the correct router within grp
-	    (_num_ports_per_switch - _p) + 	// add offset within router
-	    grp_ID - 1;
+        _input = (grp_output) * _num_ports_per_switch * _a +  // starting point of group
+            (_num_ports_per_switch - _p) * (int) ((grp_ID - 1) / _p) +  // find the correct router within grp
+            (_num_ports_per_switch - _p) + 	// add offset within router
+            grp_ID - 1;
       } else {
 
-	_input = (grp_output + 1) * _num_ports_per_switch * _a
-	    + (_num_ports_per_switch - _p) * (int) ((grp_ID) / _p) + // find the correct router within grp
-	    (_num_ports_per_switch - _p) + grp_ID;
+        _input = (grp_output + 1) * _num_ports_per_switch * _a
+            + (_num_ports_per_switch - _p) * (int) ((grp_ID) / _p) +  // find the correct router within grp
+            (_num_ports_per_switch - _p) + grp_ID;
       }
 
       _routers[node]->AddInputChannel(_chan[_input], _chan_cred[_input]);
@@ -392,7 +392,7 @@ void DragonFlyNew::RegisterRoutingFunctions() {
 }
 
 void min_dragonflynew(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                      OutputSet *outputs, bool inject) {
   outputs->Clear();
 
   if (inject) {
@@ -430,14 +430,14 @@ void min_dragonflynew(const Router *r, const Flit *f, int in_channel,
   out_vc = f->ph;
   if (debug)
     *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
-	<< "	through output port : " << out_port << " out vc: " << out_vc
-	<< endl;
+               << "	through output port : " << out_port << " out vc: " << out_vc
+               << endl;
   outputs->AddRange(out_port, out_vc, out_vc);
 }
 
 //Basic adaptive routign algorithm for the dragonfly
 void ugal_dragonflynew(const Router *r, const Flit *f, int in_channel,
-    OutputSet *outputs, bool inject) {
+                       OutputSet *outputs, bool inject) {
   //need 3 VCs for deadlock freedom
 
   assert(gNumVCs == 3);
@@ -484,33 +484,33 @@ void ugal_dragonflynew(const Router *r, const Flit *f, int in_channel,
       f->intm = RandomInt(_network_size - 1);
       intm_grp_ID = (int) (f->intm / _grp_num_nodes);
       if (debug) {
-	cout << "Intermediate node " << f->intm << " grp id " << intm_grp_ID
-	    << endl;
+        cout << "Intermediate node " << f->intm << " grp id " << intm_grp_ID
+             << endl;
       }
 
       //random intermediate are in the same group, use minimum routing
       if (grp_ID == intm_grp_ID) {
-	f->ph = 1;
+        f->ph = 1;
       } else {
-	//congestion metrics using queue length, obtained by GetUsedCredit()
-	min_hopcnt = dragonflynew_hopcnt(f->src, f->dest);
-	min_router_output = dragonfly_port(rID, f->src, f->dest);
-	min_queue_size = max(r->GetUsedCredit(min_router_output), 0);
+        //congestion metrics using queue length, obtained by GetUsedCredit()
+        min_hopcnt = dragonflynew_hopcnt(f->src, f->dest);
+        min_router_output = dragonfly_port(rID, f->src, f->dest);
+        min_queue_size = max(r->GetUsedCredit(min_router_output), 0);
 
-	nonmin_hopcnt = dragonflynew_hopcnt(f->src, f->intm)
-	    + dragonflynew_hopcnt(f->intm, f->dest);
-	nonmin_router_output = dragonfly_port(rID, f->src, f->intm);
-	nonmin_queue_size = max(r->GetUsedCredit(nonmin_router_output), 0);
+        nonmin_hopcnt = dragonflynew_hopcnt(f->src, f->intm)
+            + dragonflynew_hopcnt(f->intm, f->dest);
+        nonmin_router_output = dragonfly_port(rID, f->src, f->intm);
+        nonmin_queue_size = max(r->GetUsedCredit(nonmin_router_output), 0);
 
-	//congestion comparison, could use hopcnt instead of 1 and 2
-	if ((1 * min_queue_size)
-	    <= (2 * nonmin_queue_size) + adaptive_threshold) {
-	  if (debug)
-	    cout << " MINIMAL routing " << endl;
-	  f->ph = 1;
-	} else {
-	  f->ph = 0;
-	}
+        //congestion comparison, could use hopcnt instead of 1 and 2
+        if ((1 * min_queue_size)
+            <= (2 * nonmin_queue_size) + adaptive_threshold) {
+          if (debug)
+            cout << " MINIMAL routing " << endl;
+          f->ph = 1;
+        } else {
+          f->ph = 0;
+        }
       }
     }
   }

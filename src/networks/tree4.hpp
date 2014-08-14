@@ -43,7 +43,7 @@
 #include <cassert>
 #include "network.hpp"
 
-class Tree4: public Network {
+class Tree4 : public Network {
 
   int _k;
   int _n;
@@ -57,7 +57,7 @@ class Tree4: public Network {
 
   int _WireLatency(int height1, int pos1, int height2, int pos2);
 
-public:
+ public:
 
   Tree4(const Configuration& config, const string & name);
   static void RegisterRoutingFunctions();

@@ -35,13 +35,18 @@
 #include "wavefront.hpp"
 
 Wavefront::Wavefront(Module *parent, const string& name, int inputs,
-    int outputs, bool skip_diags) :
-    DenseAllocator(parent, name, inputs, outputs), _last_in(-1), _last_out(-1), _skip_diags(
-	skip_diags), _square(max(inputs, outputs)), _pri(0), _num_requests(0) {
+                     int outputs, bool skip_diags)
+    : DenseAllocator(parent, name, inputs, outputs),
+      _last_in(-1),
+      _last_out(-1),
+      _skip_diags(skip_diags),
+      _square(max(inputs, outputs)),
+      _pri(0),
+      _num_requests(0) {
 }
 
 void Wavefront::AddRequest(int in, int out, int label, int in_pri,
-    int out_pri) {
+                           int out_pri) {
   DenseAllocator::AddRequest(in, out, label, in_pri, out_pri);
   _num_requests++;
   _last_in = in;
@@ -70,24 +75,24 @@ void Wavefront::Allocate() {
     // otherwise we have to loop through the diagonals of request matrix
 
     for (set<pair<int, int> >::const_reverse_iterator iter =
-	_priorities.rbegin(); iter != _priorities.rend(); ++iter) {
+        _priorities.rbegin(); iter != _priorities.rend(); ++iter) {
 
       for (int p = 0; p < _square; ++p) {
-	for (int output = 0; output < _square; ++output) {
-	  int input = ((_pri + p) + (_square - output)) % _square;
-	  if ((input < _inputs) && (output < _outputs)
-	      && (_inmatch[input] == -1) && (_outmatch[output] == -1)
-	      && (_request[input][output].label != -1)
-	      && (_request[input][output].in_pri == iter->second)
-	      && (_request[input][output].out_pri == iter->first)) {
-	    // Grant!
-	    _inmatch[input] = output;
-	    _outmatch[output] = input;
-	    if (first_diag < 0) {
-	      first_diag = input + output;
-	    }
-	  }
-	}
+        for (int output = 0; output < _square; ++output) {
+          int input = ((_pri + p) + (_square - output)) % _square;
+          if ((input < _inputs) && (output < _outputs)
+              && (_inmatch[input] == -1) && (_outmatch[output] == -1)
+              && (_request[input][output].label != -1)
+              && (_request[input][output].in_pri == iter->second)
+              && (_request[input][output].out_pri == iter->first)) {
+            // Grant!
+            _inmatch[input] = output;
+            _outmatch[output] = input;
+            if (first_diag < 0) {
+              first_diag = input + output;
+            }
+          }
+        }
       }
     }
   }

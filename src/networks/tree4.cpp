@@ -51,8 +51,8 @@
 #include "tree4.hpp"
 #include "misc_utils.hpp"
 
-Tree4::Tree4(const Configuration& config, const string & name) :
-    Network(config, name) {
+Tree4::Tree4(const Configuration& config, const string & name)
+    : Network(config, name) {
   _ComputeSize(config);
   _Alloc();
   _BuildNet(config);
@@ -96,15 +96,15 @@ void Tree4::_BuildNet(const Configuration& config) {
     nPos = (4 >> h) * powi(_k, h);
     for (pos = 0; pos < nPos; ++pos) {
       if (h < _n - 1)
-	degree = 8;
+        degree = 8;
       else
-	degree = 6;
+        degree = 6;
 
       name.str("");
       name << "router_" << h << "_" << pos;
       id = h * powi(_k, _n - 1) + pos;
       Router * r = Router::NewRouter(config, this, name.str(), id, degree,
-	  degree);
+                                     degree);
       _Router(h, pos) = r;
       _timed_modules.push_back(r);
     }
@@ -125,13 +125,13 @@ void Tree4::_BuildNet(const Configuration& config) {
     for (int port = 0; port < _k; ++port) {
 
       _Router(_n - 1, pos)->AddInputChannel(_inject[_k * pos + port],
-	  _inject_cred[_k * pos + port]);
+                                            _inject_cred[_k * pos + port]);
 
       _inject[_k * pos + port]->SetLatency(1);
       _inject_cred[_k * pos + port]->SetLatency(1);
 
       _Router(_n - 1, pos)->AddOutputChannel(_eject[_k * pos + port],
-	  _eject_cred[_k * pos + port]);
+                                             _eject_cred[_k * pos + port]);
 
       _eject[_k * pos + port]->SetLatency(1);
       _eject_cred[_k * pos + port]->SetLatency(1);
@@ -252,63 +252,63 @@ int Tree4::_WireLatency(int height1, int pos1, int height2, int pos2) {
   else {
     if (posChild == 0 || posChild == 6)
       switch (posParent) {
-	case 0:
-	  L = _length_d1_d0_0;
-	  break;
-	case 1:
-	  L = _length_d1_d0_1;
-	  break;
-	case 2:
-	  L = _length_d1_d0_2;
-	  break;
-	case 3:
-	  L = _length_d1_d0_3;
-	  break;
+        case 0:
+          L = _length_d1_d0_0;
+          break;
+        case 1:
+          L = _length_d1_d0_1;
+          break;
+        case 2:
+          L = _length_d1_d0_2;
+          break;
+        case 3:
+          L = _length_d1_d0_3;
+          break;
       }
     if (posChild == 1 || posChild == 7)
       switch (posParent) {
-	case 0:
-	  L = _length_d1_d0_3;
-	  break;
-	case 1:
-	  L = _length_d1_d0_2;
-	  break;
-	case 2:
-	  L = _length_d1_d0_1;
-	  break;
-	case 3:
-	  L = _length_d1_d0_0;
-	  break;
+        case 0:
+          L = _length_d1_d0_3;
+          break;
+        case 1:
+          L = _length_d1_d0_2;
+          break;
+        case 2:
+          L = _length_d1_d0_1;
+          break;
+        case 3:
+          L = _length_d1_d0_0;
+          break;
       }
     if (posChild == 2 || posChild == 4)
       switch (posParent) {
-	case 0:
-	  L = _length_d1_d0_0;
-	  break;
-	case 1:
-	  L = _length_d1_d0_1;
-	  break;
-	case 2:
-	  L = _length_d1_d0_2;
-	  break;
-	case 3:
-	  L = _length_d1_d0_3;
-	  break;
+        case 0:
+          L = _length_d1_d0_0;
+          break;
+        case 1:
+          L = _length_d1_d0_1;
+          break;
+        case 2:
+          L = _length_d1_d0_2;
+          break;
+        case 3:
+          L = _length_d1_d0_3;
+          break;
       }
     if (posChild == 3 || posChild == 5)
       switch (posParent) {
-	case 0:
-	  L = _length_d1_d0_3;
-	  break;
-	case 1:
-	  L = _length_d1_d0_2;
-	  break;
-	case 2:
-	  L = _length_d1_d0_1;
-	  break;
-	case 3:
-	  L = _length_d1_d0_0;
-	  break;
+        case 0:
+          L = _length_d1_d0_3;
+          break;
+        case 1:
+          L = _length_d1_d0_2;
+          break;
+        case 2:
+          L = _length_d1_d0_1;
+          break;
+        case 3:
+          L = _length_d1_d0_0;
+          break;
       }
   }
   return L;

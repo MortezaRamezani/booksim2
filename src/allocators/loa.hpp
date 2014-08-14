@@ -32,14 +32,14 @@
 
 #include "allocator.hpp"
 
-class LOA: public DenseAllocator {
+class LOA : public DenseAllocator {
   vector<int> _counts;
   vector<int> _req;
 
   vector<int> _rptr;
   vector<int> _gptr;
 
-public:
+ public:
   LOA(Module *parent, const string& name, int inputs, int outputs);
 
   void Allocate();

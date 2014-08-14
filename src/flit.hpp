@@ -36,7 +36,7 @@
 
 class Flit {
 
-public:
+ public:
 
   const static int NUM_FLIT_TYPES = 5;
   enum FlitType {
@@ -91,7 +91,7 @@ public:
   void Free();
   static void FreeAll();
 
-private:
+ private:
 
   Flit();
   ~Flit() {

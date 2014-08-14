@@ -29,8 +29,11 @@
 
 #include "flit.hpp"
 
-SwitchMonitor::SwitchMonitor(int inputs, int outputs, int classes) :
-    _cycles(0), _inputs(inputs), _outputs(outputs), _classes(classes) {
+SwitchMonitor::SwitchMonitor(int inputs, int outputs, int classes)
+    : _cycles(0),
+      _inputs(inputs),
+      _outputs(outputs),
+      _classes(classes) {
   _event.resize(inputs * outputs * classes, 0);
 }
 
@@ -54,7 +57,7 @@ void SwitchMonitor::display(ostream & os) const {
     for (int o = 0; o < _outputs; o++) {
       os << "[" << i << " -> " << o << "] ";
       for (int c = 0; c < _classes; c++) {
-	os << c << ":" << _event[index(i, o, c)] << " ";
+        os << c << ":" << _event[index(i, o, c)] << " ";
       }
       os << endl;
     }
