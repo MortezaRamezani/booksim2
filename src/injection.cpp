@@ -31,6 +31,7 @@
 #include <limits>
 #include "random_utils.hpp"
 #include "injection.hpp"
+#include "globals.hpp"
 
 using namespace std;
 
@@ -71,6 +72,7 @@ InjectionProcess * InjectionProcess::New(string const & inject, int nodes,
       param_str = inject.substr(left+1, right-left-1);
     }
   }
+
   vector<string> params = tokenize_str(param_str);
 
   InjectionProcess * result = NULL;
@@ -115,6 +117,10 @@ InjectionProcess * InjectionProcess::New(string const & inject, int nodes,
       cout << "Invalid parameters for injection process: " << inject << endl;
       exit(-1);
     }
+
+    if(mrDebug)
+    	  cout << "[mrDebug]: " << alpha << " - " << beta << " - " << r1 << endl;
+
     vector<int> initial(nodes);
     if(params.size() > 3) {
       initial = tokenize_int(params[2]);
@@ -169,6 +175,10 @@ OnOffInjectionProcess::OnOffInjectionProcess(int nodes, double rate,
     assert(r1 < 0.0);
     _r1 = rate * (alpha + beta) / alpha;
   }
+
+  if(mrDebug)
+	  cout << "[mrDebug]: " << "_alpha:" << _alpha << " ,_beta:" << _beta << " ,_r1:" << _r1 << endl;
+
   reset();
 }
 

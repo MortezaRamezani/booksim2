@@ -939,7 +939,7 @@ void TrafficManager::_Inject(){
                     if(!_use_read_write[c] || (stype >= 0)){
                         ++_qtime[input][c];
                         if(mrDebug)
-                        	cout << "Morteza: " << input << " - [ " << _qtime[input][c] << " - " << _time << "] : "<< stype << endl;
+                        	cout << "[mrDebug]: " << input << " - [ " << _qtime[input][c] << " - " << _time << "] : "<< stype << endl;
                     }
                 }
 	

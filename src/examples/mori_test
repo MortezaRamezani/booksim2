@@ -12,7 +12,11 @@ sample_period = 10;
 
 routing_delay = 1;
 
-// injection_process = aj;
+injection_process = on_off({0.3,0.6,-0.5});
+//burst_alpha = ;
+//burst_beta = ;
+//burst_r1 = ;
+
 // use_read_write = ;
 
 //print_activity = 1;
