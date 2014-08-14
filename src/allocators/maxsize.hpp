@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _MAXSIZE_HPP_
 #define _MAXSIZE_HPP_
@@ -32,20 +32,19 @@
 
 #include "allocator.hpp"
 
-class MaxSizeMatch : public DenseAllocator {
+class MaxSizeMatch: public DenseAllocator {
   vector<int> _from;   // array to hold breadth-first tree
   int *_s;      // stack of leaf nodes in tree
   int *_ns;     // next stack
   int _prio;    // priority pointer to ensure fairness
- 
-  bool _ShortestAugmenting( );
+
+  bool _ShortestAugmenting();
 
 public:
-  MaxSizeMatch( Module *parent, const string& name,
-		int inputs, int ouputs ); 
-  ~MaxSizeMatch( );
-  
-  void Allocate( );
+  MaxSizeMatch(Module *parent, const string& name, int inputs, int ouputs);
+  ~MaxSizeMatch();
+
+  void Allocate();
 };
 
 #endif 

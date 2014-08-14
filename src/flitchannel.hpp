@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
@@ -33,7 +33,6 @@
 //   transmission delay. The channel latency can be specified as 
 //   an integer number of simulator cycles.
 // ----------------------------------------------------------------------
-
 #ifndef FLITCHANNEL_HPP
 #define FLITCHANNEL_HPP
 
@@ -48,20 +47,20 @@
 
 using namespace std;
 
-class Router ;
+class Router;
 
-class FlitChannel : public Channel<Flit> {
+class FlitChannel: public Channel<Flit> {
 public:
   FlitChannel(Module * parent, string const & name, int classes);
 
-  void SetSource(Router const * const router, int port) ;
+  void SetSource(Router const * const router, int port);
   inline Router const * const GetSource() const {
     return _routerSource;
   }
   inline int const & GetSourcePort() const {
     return _routerSourcePort;
   }
-  void SetSink(Router const * const router, int port) ;
+  void SetSink(Router const * const router, int port);
   inline Router const * const GetSink() const {
     return _routerSink;
   }
@@ -79,7 +78,7 @@ public:
   virtual void WriteOutputs();
 
 private:
-  
+
   ////////////////////////////////////////
   //
   // Power Models OBSOLETE

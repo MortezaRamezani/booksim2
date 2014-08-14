@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -38,35 +38,33 @@
 //  $Id$
 // 
 ////////////////////////////////////////////////////////////////////////
-
 #ifndef _TREE4_HPP_
 #define _TREE4_HPP_
 #include <cassert>
 #include "network.hpp"
 
-class Tree4 : public Network {
+class Tree4: public Network {
 
   int _k;
   int _n;
 
   int _channelWidth;
 
-  void _ComputeSize( const Configuration& config );
-  void _BuildNet( const Configuration& config );
+  void _ComputeSize(const Configuration& config);
+  void _BuildNet(const Configuration& config);
 
+  Router*& _Router(int height, int pos);
 
-  Router*& _Router( int height, int pos );
-
-  int _WireLatency( int height1, int pos1, int height2, int pos2 );
+  int _WireLatency(int height1, int pos1, int height2, int pos2);
 
 public:
 
-  Tree4( const Configuration& config, const string & name );
-  static void RegisterRoutingFunctions() ;
-  
-  static int HeightFromID( int id );
-  static int PosFromID( int id );
-  static int SpeedUp( int height );
+  Tree4(const Configuration& config, const string & name);
+  static void RegisterRoutingFunctions();
+
+  static int HeightFromID(int id);
+  static int PosFromID(int id);
+  static int SpeedUp(int height);
 };
 
 #endif

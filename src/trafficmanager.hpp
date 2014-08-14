@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _TRAFFICMANAGER_HPP_
 #define _TRAFFICMANAGER_HPP_
@@ -47,7 +47,7 @@
 //register the requests to a node
 class PacketReplyInfo;
 
-class TrafficManager : public Module {
+class TrafficManager: public Module {
 
 private:
 
@@ -65,7 +65,7 @@ protected:
 
   // ============ Traffic ============ 
 
-  int    _classes;
+  int _classes;
 
   vector<double> _load;
 
@@ -88,7 +88,16 @@ protected:
 
   // ============ Message priorities ============ 
 
-  enum ePriority { class_based, age_based, network_age_based, local_age_based, queue_length_based, hop_count_based, sequence_based, none };
+  enum ePriority {
+    class_based,
+    age_based,
+    network_age_based,
+    local_age_based,
+    queue_length_based,
+    hop_count_based,
+    sequence_based,
+    none
+  };
 
   ePriority _pri_type;
 
@@ -139,20 +148,20 @@ protected:
 
   // ============ Statistics ============
 
-  vector<Stats *> _plat_stats;     
-  vector<double> _overall_min_plat;  
-  vector<double> _overall_avg_plat;  
-  vector<double> _overall_max_plat;  
+  vector<Stats *> _plat_stats;
+  vector<double> _overall_min_plat;
+  vector<double> _overall_avg_plat;
+  vector<double> _overall_max_plat;
 
-  vector<Stats *> _nlat_stats;     
-  vector<double> _overall_min_nlat;  
-  vector<double> _overall_avg_nlat;  
-  vector<double> _overall_max_nlat;  
+  vector<Stats *> _nlat_stats;
+  vector<double> _overall_min_nlat;
+  vector<double> _overall_avg_nlat;
+  vector<double> _overall_max_nlat;
 
-  vector<Stats *> _flat_stats;     
-  vector<double> _overall_min_flat;  
-  vector<double> _overall_avg_flat;  
-  vector<double> _overall_max_flat;  
+  vector<Stats *> _flat_stats;
+  vector<double> _overall_min_flat;
+  vector<double> _overall_avg_flat;
+  vector<double> _overall_max_flat;
 
   vector<Stats *> _frag_stats;
   vector<double> _overall_min_frag;
@@ -203,20 +212,22 @@ protected:
 
   // ============ Simulation parameters ============ 
 
-  enum eSimState { warming_up, running, draining, done };
+  enum eSimState {
+    warming_up, running, draining, done
+  };
   eSimState _sim_state;
 
   bool _measure_latency;
 
-  int   _reset_time;
-  int   _drain_time;
+  int _reset_time;
+  int _drain_time;
 
-  int   _total_sims;
-  int   _sample_period;
-  int   _max_samples;
-  int   _warmup_periods;
+  int _total_sims;
+  int _sample_period;
+  int _max_samples;
+  int _warmup_periods;
 
-  int   _include_queuing;
+  int _include_queuing;
 
   vector<int> _measure_stats;
   bool _pair_stats;
@@ -262,24 +273,25 @@ protected:
   // ============ Internal methods ============ 
 protected:
 
-  virtual void _RetireFlit( Flit *f, int dest );
+  virtual void _RetireFlit(Flit *f, int dest);
 
   void _Inject();
-  void _Step( );
+  void _Step();
 
-  bool _PacketsOutstanding( ) const;
-  
-  virtual int  _IssuePacket( int source, int cl );
-  void _GeneratePacket( int source, int size, int cl, int time );
+  bool _PacketsOutstanding() const;
 
-  virtual void _ClearStats( );
+  virtual int _IssuePacket(int source, int cl);
+  void _GeneratePacket(int source, int size, int cl, int time);
 
-  void _ComputeStats( const vector<int> & stats, int *sum, int *min = NULL, int *max = NULL, int *min_pos = NULL, int *max_pos = NULL ) const;
+  virtual void _ClearStats();
 
-  virtual bool _SingleSim( );
+  void _ComputeStats(const vector<int> & stats, int *sum, int *min = NULL,
+      int *max = NULL, int *min_pos = NULL, int *max_pos = NULL) const;
 
-  void _DisplayRemaining( ostream & os = cout ) const;
-  
+  virtual bool _SingleSim();
+
+  void _DisplayRemaining(ostream & os = cout) const;
+
   void _LoadWatchList(const string & filename);
 
   virtual void _UpdateOverallStats();
@@ -291,31 +303,35 @@ protected:
 
 public:
 
-  static TrafficManager * New(Configuration const & config, 
-			      vector<Network *> const & net);
+  static TrafficManager * New(Configuration const & config,
+      vector<Network *> const & net);
 
-  TrafficManager( const Configuration &config, const vector<Network *> & net );
-  virtual ~TrafficManager( );
+  TrafficManager(const Configuration &config, const vector<Network *> & net);
+  virtual ~TrafficManager();
 
-  bool Run( );
+  bool Run();
 
-  virtual void WriteStats( ostream & os = cout ) const ;
-  virtual void UpdateStats( ) ;
-  virtual void DisplayStats( ostream & os = cout ) const ;
-  virtual void DisplayOverallStats( ostream & os = cout ) const ;
-  virtual void DisplayOverallStatsCSV( ostream & os = cout ) const ;
+  virtual void WriteStats(ostream & os = cout) const;
+  virtual void UpdateStats();
+  virtual void DisplayStats(ostream & os = cout) const;
+  virtual void DisplayOverallStats(ostream & os = cout) const;
+  virtual void DisplayOverallStatsCSV(ostream & os = cout) const;
 
-  inline int getTime() { return _time;}
-  Stats * getStats(const string & name) { return _stats[name]; }
+  inline int getTime() {
+    return _time;
+  }
+  Stats * getStats(const string & name) {
+    return _stats[name];
+  }
 
 };
 
 template<class T>
 ostream & operator<<(ostream & os, const vector<T> & v) {
-  for(size_t i = 0; i < v.size() - 1; ++i) {
+  for (size_t i = 0; i < v.size() - 1; ++i) {
     os << v[i] << ",";
   }
-  os << v[v.size()-1];
+  os << v[v.size() - 1];
   return os;
 }
 

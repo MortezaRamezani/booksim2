@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 /*credit.cpp
  *
@@ -36,22 +36,20 @@
 stack<Credit *> Credit::_all;
 stack<Credit *> Credit::_free;
 
-Credit::Credit()
-{
+Credit::Credit() {
   Reset();
 }
 
-void Credit::Reset()
-{
+void Credit::Reset() {
   vc.clear();
   head = false;
   tail = false;
-  id   = -1;
+  id = -1;
 }
 
 Credit * Credit::New() {
   Credit * c;
-  if(_free.empty()) {
+  if (_free.empty()) {
     c = new Credit();
     _all.push(c);
   } else {
@@ -67,13 +65,12 @@ void Credit::Free() {
 }
 
 void Credit::FreeAll() {
-  while(!_all.empty()) {
+  while (!_all.empty()) {
     delete _all.top();
     _all.pop();
   }
 }
 
-
-int Credit::OutStanding(){
-  return _all.size()-_free.size();
+int Credit::OutStanding() {
+  return _all.size() - _free.size();
 }

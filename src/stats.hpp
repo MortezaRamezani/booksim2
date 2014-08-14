@@ -23,15 +23,15 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _STATS_HPP_
 #define _STATS_HPP_
 
 #include "module.hpp"
 
-class Stats : public Module {
-  int    _num_samples;
+class Stats: public Module {
+  int _num_samples;
   double _sample_sum;
   double _sample_squared_sum;
 
@@ -39,33 +39,35 @@ class Stats : public Module {
   double _min;
   double _max;
 
-  int    _num_bins;
+  int _num_bins;
   double _bin_size;
 
   vector<int> _hist;
 
 public:
-  Stats( Module *parent, const string &name,
-	 double bin_size = 1.0, int num_bins = 10 );
+  Stats(Module *parent, const string &name, double bin_size = 1.0,
+      int num_bins = 10);
 
-  void Clear( );
+  void Clear();
 
-  double Average( ) const;
-  double Variance( ) const;
-  double Max( ) const;
-  double Min( ) const;
-  double Sum( ) const;
-  double SquaredSum( ) const;
-  int    NumSamples( ) const;
+  double Average() const;
+  double Variance() const;
+  double Max() const;
+  double Min() const;
+  double Sum() const;
+  double SquaredSum() const;
+  int NumSamples() const;
 
-  void AddSample( double val );
-  inline void AddSample( int val ) {
-    AddSample( (double)val );
+  void AddSample(double val);
+  inline void AddSample(int val) {
+    AddSample((double) val);
   }
 
-  int GetBin(int b){ return _hist[b];}
+  int GetBin(int b) {
+    return _hist[b];
+  }
 
-  void Display( ostream & os = cout ) const;
+  void Display(ostream & os = cout) const;
 
   friend ostream & operator<<(ostream & os, const Stats & s);
 

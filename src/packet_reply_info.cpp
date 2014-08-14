@@ -23,17 +23,16 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #include "packet_reply_info.hpp"
 
 stack<PacketReplyInfo*> PacketReplyInfo::_all;
 stack<PacketReplyInfo*> PacketReplyInfo::_free;
 
-PacketReplyInfo * PacketReplyInfo::New()
-{
+PacketReplyInfo * PacketReplyInfo::New() {
   PacketReplyInfo * pr;
-  if(_free.empty()) {
+  if (_free.empty()) {
     pr = new PacketReplyInfo();
     _all.push(pr);
   } else {
@@ -43,14 +42,12 @@ PacketReplyInfo * PacketReplyInfo::New()
   return pr;
 }
 
-void PacketReplyInfo::Free()
-{
+void PacketReplyInfo::Free() {
   _free.push(this);
 }
 
-void PacketReplyInfo::FreeAll()
-{
-  while(!_all.empty()) {
+void PacketReplyInfo::FreeAll() {
+  while (!_all.empty()) {
     delete _all.top();
     _all.pop();
   }

@@ -23,32 +23,30 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
 //  SeparableAllocator: Separable Allocator Base Class
 //
 // ----------------------------------------------------------------------
-
 #include "separable.hpp"
 
 #include <sstream>
 
 #include "arbiter.hpp"
 
-SeparableAllocator::SeparableAllocator( Module* parent, const string& name,
-					int inputs, int outputs,
-					const string& arb_type )
-  : SparseAllocator( parent, name, inputs, outputs )
-{
-  
+SeparableAllocator::SeparableAllocator(Module* parent, const string& name,
+    int inputs, int outputs, const string& arb_type) :
+    SparseAllocator(parent, name, inputs, outputs) {
+
   _input_arb.resize(inputs);
 
   for (int i = 0; i < inputs; ++i) {
     ostringstream arb_name("arb_i");
     arb_name << i;
-    _input_arb[i] = Arbiter::NewArbiter(this, arb_name.str(), arb_type, outputs);
+    _input_arb[i] = Arbiter::NewArbiter(this, arb_name.str(), arb_type,
+	outputs);
   }
 
   _output_arb.resize(outputs);
@@ -56,7 +54,8 @@ SeparableAllocator::SeparableAllocator( Module* parent, const string& name,
   for (int i = 0; i < outputs; ++i) {
     ostringstream arb_name("arb_o");
     arb_name << i;
-    _output_arb[i] = Arbiter::NewArbiter(this, arb_name.str( ), arb_type, inputs);
+    _output_arb[i] = Arbiter::NewArbiter(this, arb_name.str(), arb_type,
+	inputs);
   }
 
 }
@@ -74,12 +73,12 @@ SeparableAllocator::~SeparableAllocator() {
 }
 
 void SeparableAllocator::Clear() {
-  for ( int i = 0 ; i < _inputs ; i++ ) {
-    if(_input_arb[i]-> _num_reqs)
+  for (int i = 0; i < _inputs; i++) {
+    if (_input_arb[i]->_num_reqs)
       _input_arb[i]->Clear();
   }
-  for ( int o = 0; o < _outputs; o++ ) {
-    if(_output_arb[o]->_num_reqs)
+  for (int o = 0; o < _outputs; o++) {
+    if (_output_arb[o]->_num_reqs)
       _output_arb[o]->Clear();
   }
   SparseAllocator::Clear();

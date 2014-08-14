@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _CONFIG_UTILS_HPP_
 #define _CONFIG_UTILS_HPP_
@@ -43,10 +43,10 @@ class Configuration {
   string _config_string;
 
 protected:
-  map<string,string> _str_map;
-  map<string,int>    _int_map;
-  map<string,double> _float_map;
-  
+  map<string, string> _str_map;
+  map<string, int> _int_map;
+  map<string, double> _float_map;
+
 public:
   Configuration();
 
@@ -66,9 +66,9 @@ public:
 
   void ParseFile(string const & filename);
   void ParseString(string const & str);
-  int  Input(char * line, int max_size);
+  int Input(char * line, int max_size);
   void ParseError(string const & msg, unsigned int lineno = 0) const;
-  
+
   void WriteFile(string const & filename);
   void WriteMatlabFile(ostream * o) const;
 

@@ -23,29 +23,29 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #include "booksim.hpp"
 #include "misc_utils.hpp"
 
-int powi( int x, int y ) // compute x to the y
-{
+int powi(int x, int y) // compute x to the y
+    {
   int r = 1;
 
-  for ( int i = 0; i < y; ++i ) {
+  for (int i = 0; i < y; ++i) {
     r *= x;
   }
 
   return r;
 }
 
-int log_two( int x )
-{
+int log_two(int x) {
   int r = 0;
 
   x >>= 1;
-  while( x ) {
-    r++; x >>= 1;
+  while (x) {
+    r++;
+    x >>= 1;
   }
 
   return r;

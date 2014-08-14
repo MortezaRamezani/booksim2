@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _BATCHTRAFFICMANAGER_HPP_
 #define _BATCHTRAFFICMANAGER_HPP_
@@ -34,7 +34,7 @@
 #include "stats.hpp"
 #include "trafficmanager.hpp"
 
-class BatchTrafficManager : public TrafficManager {
+class BatchTrafficManager: public TrafficManager {
 
 protected:
 
@@ -51,24 +51,25 @@ protected:
 
   ostream * _sent_packets_out;
 
-  virtual void _RetireFlit( Flit *f, int dest );
+  virtual void _RetireFlit(Flit *f, int dest);
 
-  virtual int _IssuePacket( int source, int cl );
-  virtual void _ClearStats( );
-  virtual bool _SingleSim( );
+  virtual int _IssuePacket(int source, int cl);
+  virtual void _ClearStats();
+  virtual bool _SingleSim();
 
-  virtual void _UpdateOverallStats( );
+  virtual void _UpdateOverallStats();
 
   virtual string _OverallStatsCSV(int c = 0) const;
 
 public:
 
-  BatchTrafficManager( const Configuration &config, const vector<Network *> & net );
-  virtual ~BatchTrafficManager( );
+  BatchTrafficManager(const Configuration &config,
+      const vector<Network *> & net);
+  virtual ~BatchTrafficManager();
 
-  virtual void WriteStats( ostream & os = cout ) const;
-  virtual void DisplayStats( ostream & os = cout ) const;
-  virtual void DisplayOverallStats( ostream & os = cout ) const;
+  virtual void WriteStats(ostream & os = cout) const;
+  virtual void DisplayStats(ostream & os = cout) const;
+  virtual void DisplayOverallStats(ostream & os = cout) const;
 
 };
 

@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _WAVEFRONT_HPP_
 #define _WAVEFRONT_HPP_
@@ -32,7 +32,7 @@
 
 #include "allocator.hpp"
 
-class Wavefront : public DenseAllocator {
+class Wavefront: public DenseAllocator {
 
 private:
   int _last_in;
@@ -46,12 +46,12 @@ protected:
   int _num_requests;
 
 public:
-  Wavefront( Module *parent, const string& name,
-	     int inputs, int outputs, bool skip_diags = false );
-  
-  virtual void AddRequest( int in, int out, int label = 1, 
-			   int in_pri = 0, int out_pri = 0 );
-  virtual void Allocate( );
+  Wavefront(Module *parent, const string& name, int inputs, int outputs,
+      bool skip_diags = false);
+
+  virtual void AddRequest(int in, int out, int label = 1, int in_pri = 0,
+      int out_pri = 0);
+  virtual void Allocate();
 };
 
 #endif

@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _MODULE_HPP_
 #define _MODULE_HPP_
@@ -42,21 +42,26 @@ private:
   vector<Module *> _children;
 
 protected:
-  void _AddChild( Module *child );
+  void _AddChild(Module *child);
 
 public:
-  Module( Module *parent, const string& name );
-  virtual ~Module( ) { }
-  
-  inline const string & Name() const { return _name; }
-  inline const string & FullName() const { return _fullname; }
+  Module(Module *parent, const string& name);
+  virtual ~Module() {
+  }
 
-  void DisplayHierarchy( int level = 0, ostream & os = cout ) const;
+  inline const string & Name() const {
+    return _name;
+  }
+  inline const string & FullName() const {
+    return _fullname;
+  }
 
-  void Error( const string& msg ) const;
-  void Debug( const string& msg ) const;
+  void DisplayHierarchy(int level = 0, ostream & os = cout) const;
 
-  virtual void Display( ostream & os = cout ) const;
+  void Error(const string& msg) const;
+  void Debug(const string& msg) const;
+
+  virtual void Display(ostream & os = cout) const;
 };
 
 #endif

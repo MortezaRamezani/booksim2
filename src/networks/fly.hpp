@@ -23,31 +23,33 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _FLY_HPP_
 #define _FLY_HPP_
 
 #include "network.hpp"
 
-class KNFly : public Network {
+class KNFly: public Network {
 
   int _k;
   int _n;
 
-  void _ComputeSize( const Configuration &config );
-  void _BuildNet( const Configuration &config );
+  void _ComputeSize(const Configuration &config);
+  void _BuildNet(const Configuration &config);
 
-  int _OutChannel( int stage, int addr, int port ) const;
-  int _InChannel( int stage, int addr, int port ) const;
- 
+  int _OutChannel(int stage, int addr, int port) const;
+  int _InChannel(int stage, int addr, int port) const;
+
 public:
-  KNFly( const Configuration &config, const string & name );
+  KNFly(const Configuration &config, const string & name);
 
-  int GetN( ) const;
-  int GetK( ) const;
-  static void RegisterRoutingFunctions(){};
-  double Capacity( ) const;
+  int GetN() const;
+  int GetK() const;
+  static void RegisterRoutingFunctions() {
+  }
+  ;
+  double Capacity() const;
 };
 
 #endif 

@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #include "booksim.hpp"
 #include <iostream>
@@ -31,10 +31,8 @@
 #include "loa.hpp"
 #include "random_utils.hpp"
 
-LOA::LOA( Module *parent, const string& name,
-	  int inputs, int outputs ) :
-  DenseAllocator( parent, name, inputs, outputs )
-{
+LOA::LOA(Module *parent, const string& name, int inputs, int outputs) :
+    DenseAllocator(parent, name, inputs, outputs) {
   _req.resize(inputs);
   _counts.resize(outputs);
 
@@ -42,8 +40,7 @@ LOA::LOA( Module *parent, const string& name,
   _gptr.resize(outputs);
 }
 
-void LOA::Allocate( )
-{
+void LOA::Allocate() {
   int input;
   int output;
 
@@ -56,26 +53,26 @@ void LOA::Allocate( )
   // Count phase --- the number of requests
   // per output is counted
 
-  for ( int j = 0; j < _outputs; ++j ) {
+  for (int j = 0; j < _outputs; ++j) {
     _counts[j] = 0;
-    for ( int i = 0; i < _inputs; ++i ) {
-      _counts[j] += ( _request[i][j].label != -1 ) ? 1 : 0;
+    for (int i = 0; i < _inputs; ++i) {
+      _counts[j] += (_request[i][j].label != -1) ? 1 : 0;
     }
   }
 
   // Request phase
-  for ( input = 0; input < _inputs; ++input ) {
+  for (input = 0; input < _inputs; ++input) {
 
     // Find the lonely output
     output_offset = _rptr[input];
-    lonely        = -1;
-    lonely_cnt    = _inputs + 1;
+    lonely = -1;
+    lonely_cnt = _inputs + 1;
 
-    for ( int o = 0; o < _outputs; ++o ) {
-      output = ( o + output_offset ) % _outputs;
+    for (int o = 0; o < _outputs; ++o) {
+      output = (o + output_offset) % _outputs;
 
-      if ( ( _request[input][output].label != -1 ) && 
-	   ( _counts[output] < lonely_cnt ) ) {
+      if ((_request[input][output].label != -1)
+	  && (_counts[output] < lonely_cnt)) {
 	lonely = output;
 	lonely_cnt = _counts[output];
       }
@@ -86,27 +83,25 @@ void LOA::Allocate( )
   }
 
   // Grant phase
-  for ( output = 0; output < _outputs; ++output ) {
+  for (output = 0; output < _outputs; ++output) {
     input_offset = _gptr[output];
 
-    for ( int i = 0; i < _inputs; ++i ) {
-      input = ( i + input_offset ) % _inputs;  
-      
-      if ( _req[input] == output ) {
+    for (int i = 0; i < _inputs; ++i) {
+      input = (i + input_offset) % _inputs;
+
+      if (_req[input] == output) {
 	// Grant!
-	
-	_inmatch[input]   = output;
+
+	_inmatch[input] = output;
 	_outmatch[output] = input;
-	
-	_rptr[input] = ( _rptr[input] + 1 ) % _outputs;
-	_gptr[output] = ( _gptr[output] + 1 ) % _inputs;
-	
+
+	_rptr[input] = (_rptr[input] + 1) % _outputs;
+	_gptr[output] = (_gptr[output] + 1) % _inputs;
+
 	break;
       }
     }
   }
 
-
 }
-
 

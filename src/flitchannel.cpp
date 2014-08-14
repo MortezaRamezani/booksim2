@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
@@ -31,7 +31,6 @@
 //  Author: James Balfour, Rebecca Schultz
 //
 // ----------------------------------------------------------------------
-
 #include "flitchannel.hpp"
 
 #include <iostream>
@@ -45,9 +44,9 @@
 //  $Date: 2007/06/27 23:10:17 $
 //  $Id$
 // ----------------------------------------------------------------------
-FlitChannel::FlitChannel(Module * parent, string const & name, int classes)
-: Channel<Flit>(parent, name), _routerSource(NULL), _routerSourcePort(-1), 
-  _routerSink(NULL), _routerSinkPort(-1), _idle(0) {
+FlitChannel::FlitChannel(Module * parent, string const & name, int classes) :
+    Channel<Flit>(parent, name), _routerSource(NULL), _routerSourcePort(-1), _routerSink(
+	NULL), _routerSinkPort(-1), _idle(0) {
   _active.resize(classes, 0);
 }
 
@@ -62,7 +61,7 @@ void FlitChannel::SetSink(Router const * const router, int port) {
 }
 
 void FlitChannel::Send(Flit * f) {
-  if(f) {
+  if (f) {
     ++_active[f->cl];
   } else {
     ++_idle;
@@ -72,20 +71,19 @@ void FlitChannel::Send(Flit * f) {
 
 void FlitChannel::ReadInputs() {
   Flit const * const & f = _input;
-  if(f && f->watch) {
+  if (f && f->watch) {
     *gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	       << "Beginning channel traversal for flit " << f->id
-	       << " with delay " << _delay
-	       << "." << endl;
+	<< "Beginning channel traversal for flit " << f->id << " with delay "
+	<< _delay << "." << endl;
   }
   Channel<Flit>::ReadInputs();
 }
 
 void FlitChannel::WriteOutputs() {
   Channel<Flit>::WriteOutputs();
-  if(_output && _output->watch) {
+  if (_output && _output->watch) {
     *gWatchOut << GetSimTime() << " | " << FullName() << " | "
-	       << "Completed channel traversal for flit " << _output->id
-	       << "." << endl;
+	<< "Completed channel traversal for flit " << _output->id << "."
+	<< endl;
   }
 }

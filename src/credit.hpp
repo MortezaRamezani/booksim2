@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _CREDIT_HPP_
 #define _CREDIT_HPP_
@@ -39,10 +39,10 @@ public:
 
   // these are only used by the event router
   bool head, tail;
-  int  id;
+  int id;
 
   void Reset();
-  
+
   static Credit * New();
   void Free();
   static void FreeAll();
@@ -53,7 +53,8 @@ private:
   static stack<Credit *> _free;
 
   Credit();
-  ~Credit() {}
+  ~Credit() {
+  }
 
 };
 

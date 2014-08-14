@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _EVENT_ROUTER_HPP_
 #define _EVENT_ROUTER_HPP_
@@ -41,15 +41,17 @@
 #include "outputset.hpp"
 #include "pipefifo.hpp"
 
-class EventNextVCState : public Module {
+class EventNextVCState: public Module {
 public:
-  enum eNextVCState { idle, busy, tail_pending };
+  enum eNextVCState {
+    idle, busy, tail_pending
+  };
 
   struct tWaiting {
-    int  input;
-    int  vc;
-    int  id;
-    int  pres;
+    int input;
+    int vc;
+    int id;
+    int pres;
     bool watch;
   };
 
@@ -63,35 +65,35 @@ private:
   vector<int> _inputVC;
 
   vector<list<tWaiting *> > _waiting;
- 
+
   vector<eNextVCState> _state;
 
 public:
 
-  EventNextVCState( const Configuration& config, 
-		    Module *parent, const string& name );
+  EventNextVCState(const Configuration& config, Module *parent,
+      const string& name);
 
-  eNextVCState GetState( int vc ) const;
-  int GetPresence( int vc ) const;
-  int GetCredits( int vc ) const;
-  int GetInput( int vc ) const;
-  int GetInputVC( int vc ) const;
+  eNextVCState GetState(int vc) const;
+  int GetPresence(int vc) const;
+  int GetCredits(int vc) const;
+  int GetInput(int vc) const;
+  int GetInputVC(int vc) const;
 
-  bool IsWaiting( int vc ) const;
-  bool IsInputWaiting( int vc, int w_input, int w_vc ) const;
+  bool IsWaiting(int vc) const;
+  bool IsInputWaiting(int vc, int w_input, int w_vc) const;
 
-  void PushWaiting( int vc, tWaiting *w );
-  void IncrWaiting( int vc, int w_input, int w_vc );
-  tWaiting *PopWaiting( int vc );
+  void PushWaiting(int vc, tWaiting *w);
+  void IncrWaiting(int vc, int w_input, int w_vc);
+  tWaiting *PopWaiting(int vc);
 
-  void SetState( int vc, eNextVCState state );
-  void SetCredits( int vc, int value );
-  void SetPresence( int vc, int value );
-  void SetInput( int vc, int input );
-  void SetInputVC( int vc, int in_vc );
+  void SetState(int vc, eNextVCState state);
+  void SetCredits(int vc, int value);
+  void SetPresence(int vc, int value);
+  void SetInput(int vc, int input);
+  void SetInputVC(int vc, int in_vc);
 };
 
-class EventRouter : public Router {
+class EventRouter: public Router {
   int _vcs;
 
   int _vct;
@@ -99,11 +101,11 @@ class EventRouter : public Router {
   vector<Buffer *> _buf;
   vector<vector<bool> > _active;
 
-  tRoutingFunction   _rf;
+  tRoutingFunction _rf;
 
   vector<EventNextVCState *> _output_state;
 
-  PipelineFIFO<Flit>   *_crossbar_pipe;
+  PipelineFIFO<Flit> *_crossbar_pipe;
   PipelineFIFO<Credit> *_credit_pipe;
 
   vector<queue<Flit *> > _input_buffer;
@@ -113,14 +115,14 @@ class EventRouter : public Router {
   vector<queue<Credit *> > _out_cred_buffer;
 
   struct tArrivalEvent {
-    int  input;
-    int  output;
-    int  src_vc;
-    int  dst_vc;
+    int input;
+    int output;
+    int src_vc;
+    int dst_vc;
     bool head;
     bool tail;
-    
-    int  id;    // debug
+
+    int id;    // debug
     bool watch; // debug
   };
 
@@ -129,11 +131,11 @@ class EventRouter : public Router {
   vector<PriorityArbiter*> _arrival_arbiter;
 
   struct tTransportEvent {
-    int  input;
-    int  src_vc;
-    int  dst_vc;
+    int input;
+    int src_vc;
+    int dst_vc;
 
-    int  id;    // debug
+    int id;    // debug
     bool watch; // debug
   };
 
@@ -143,45 +145,54 @@ class EventRouter : public Router {
   vector<bool> _transport_free;
   vector<int> _transport_match;
 
-  void _ReceiveFlits( );
-  void _ReceiveCredits( );
+  void _ReceiveFlits();
+  void _ReceiveCredits();
 
-  void _IncomingFlits( );
-  void _ArrivalRequests( int input );
-  void _ArrivalArb( int output );
-  void _SendTransport( int input, int output, tArrivalEvent *aevt );
-  void _ProcessWaiting( int output, int out_vc );
-  void _TransportRequests( int output );
-  void _TransportArb( int input );
-  void _OutputQueuing( );
+  void _IncomingFlits();
+  void _ArrivalRequests(int input);
+  void _ArrivalArb(int output);
+  void _SendTransport(int input, int output, tArrivalEvent *aevt);
+  void _ProcessWaiting(int output, int out_vc);
+  void _TransportRequests(int output);
+  void _TransportArb(int input);
+  void _OutputQueuing();
 
-  void _SendFlits( );
-  void _SendCredits( );
+  void _SendFlits();
+  void _SendCredits();
 
-  virtual void _InternalStep( );
+  virtual void _InternalStep();
 
 public:
-  EventRouter( const Configuration& config,
-	       Module *parent, const string & name, int id,
-	       int inputs, int outputs );
-  virtual ~EventRouter( );
+  EventRouter(const Configuration& config, Module *parent, const string & name,
+      int id, int inputs, int outputs);
+  virtual ~EventRouter();
 
-  virtual void ReadInputs( );
-  virtual void WriteOutputs( );
+  virtual void ReadInputs();
+  virtual void WriteOutputs();
 
-  virtual int GetUsedCredit(int o) const {return 0;}
-  virtual int GetBufferOccupancy(int i) const {return 0;}
+  virtual int GetUsedCredit(int o) const {
+    return 0;
+  }
+  virtual int GetBufferOccupancy(int i) const {
+    return 0;
+  }
 
 #ifdef TRACK_BUFFERS
   virtual int GetUsedCreditForClass(int output, int cl) const {return 0;}
   virtual int GetBufferOccupancyForClass(int input, int cl) const {return 0;}
 #endif
 
-  virtual vector<int> UsedCredits() const { return vector<int>(); }
-  virtual vector<int> FreeCredits() const { return vector<int>(); }
-  virtual vector<int> MaxCredits() const { return vector<int>(); }
+  virtual vector<int> UsedCredits() const {
+    return vector<int>();
+  }
+  virtual vector<int> FreeCredits() const {
+    return vector<int>();
+  }
+  virtual vector<int> MaxCredits() const {
+    return vector<int>();
+  }
 
-  void Display( ostream & os = cout ) const;
+  void Display(ostream & os = cout) const;
 };
 
 #endif

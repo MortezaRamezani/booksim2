@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _INJECTION_HPP_
 #define _INJECTION_HPP_
@@ -38,20 +38,21 @@ protected:
   double _rate;
   InjectionProcess(int nodes, double rate);
 public:
-  virtual ~InjectionProcess() {}
+  virtual ~InjectionProcess() {
+  }
   virtual bool test(int source, int destination) = 0;
   virtual void reset();
-  static InjectionProcess * New(string const & inject, int nodes, double load, 
-				Configuration const * const config = NULL);
+  static InjectionProcess * New(string const & inject, int nodes, double load,
+      Configuration const * const config = NULL);
 };
 
-class BernoulliInjectionProcess : public InjectionProcess {
+class BernoulliInjectionProcess: public InjectionProcess {
 public:
   BernoulliInjectionProcess(int nodes, double rate);
   virtual bool test(int source, int destination);
 };
 
-class OnOffInjectionProcess : public InjectionProcess {
+class OnOffInjectionProcess: public InjectionProcess {
 private:
   vector<double> _alpha;
   vector<double> _beta;
@@ -59,8 +60,8 @@ private:
   vector<int> _initial;
   vector<int> _state;
 public:
-  OnOffInjectionProcess(int nodes, double rate, vector<double> alpha, vector<double> beta,
-		  vector<double> r1, vector<int> initial);
+  OnOffInjectionProcess(int nodes, double rate, vector<double> alpha,
+      vector<double> beta, vector<double> r1, vector<int> initial);
   virtual void reset();
   virtual bool test(int source, int destination);
 };

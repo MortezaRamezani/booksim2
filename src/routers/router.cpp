@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 /*router.cpp
  *
@@ -55,19 +55,17 @@ int const Router::STALL_BUFFER_FULL = -4;
 int const Router::STALL_BUFFER_RESERVED = -5;
 int const Router::STALL_CROSSBAR_CONFLICT = -6;
 
-Router::Router( const Configuration& config,
-		Module *parent, const string & name, int id,
-		int inputs, int outputs ) :
-TimedModule( parent, name ), _id( id ), _inputs( inputs ), _outputs( outputs ),
-   _partial_internal_cycles(0.0)
-{
-  _crossbar_delay   = ( config.GetInt( "st_prepare_delay" ) + 
-			config.GetInt( "st_final_delay" ) );
-  _credit_delay     = config.GetInt( "credit_delay" );
-  _input_speedup    = config.GetInt( "input_speedup" );
-  _output_speedup   = config.GetInt( "output_speedup" );
-  _internal_speedup = config.GetFloat( "internal_speedup" );
-  _classes          = config.GetInt( "classes" );
+Router::Router(const Configuration& config, Module *parent, const string & name,
+    int id, int inputs, int outputs) :
+    TimedModule(parent, name), _id(id), _inputs(inputs), _outputs(outputs), _partial_internal_cycles(
+	0.0) {
+  _crossbar_delay = (config.GetInt("st_prepare_delay")
+      + config.GetInt("st_final_delay"));
+  _credit_delay = config.GetInt("credit_delay");
+  _input_speedup = config.GetInt("input_speedup");
+  _output_speedup = config.GetInt("output_speedup");
+  _internal_speedup = config.GetFloat("internal_speedup");
+  _classes = config.GetInt("classes");
 
 #ifdef TRACK_FLOWS
   _received_flits.resize(_classes, vector<int>(_inputs, 0));
@@ -87,57 +85,51 @@ TimedModule( parent, name ), _id( id ), _inputs( inputs ), _outputs( outputs ),
 
 }
 
-void Router::AddInputChannel( FlitChannel *channel, CreditChannel *backchannel )
-{
-  _input_channels.push_back( channel );
-  _input_credits.push_back( backchannel );
-  channel->SetSink( this, _input_channels.size() - 1 ) ;
+void Router::AddInputChannel(FlitChannel *channel, CreditChannel *backchannel) {
+  _input_channels.push_back(channel);
+  _input_credits.push_back(backchannel);
+  channel->SetSink(this, _input_channels.size() - 1);
 }
 
-void Router::AddOutputChannel( FlitChannel *channel, CreditChannel *backchannel )
-{
-  _output_channels.push_back( channel );
-  _output_credits.push_back( backchannel );
-  _channel_faults.push_back( false );
-  channel->SetSource( this, _output_channels.size() - 1 ) ;
+void Router::AddOutputChannel(FlitChannel *channel,
+    CreditChannel *backchannel) {
+  _output_channels.push_back(channel);
+  _output_credits.push_back(backchannel);
+  _channel_faults.push_back(false);
+  channel->SetSource(this, _output_channels.size() - 1);
 }
 
-void Router::Evaluate( )
-{
+void Router::Evaluate() {
   _partial_internal_cycles += _internal_speedup;
-  while( _partial_internal_cycles >= 1.0 ) {
-    _InternalStep( );
+  while (_partial_internal_cycles >= 1.0) {
+    _InternalStep();
     _partial_internal_cycles -= 1.0;
   }
 }
 
-void Router::OutChannelFault( int c, bool fault )
-{
-  assert( ( c >= 0 ) && ( (size_t)c < _channel_faults.size( ) ) );
+void Router::OutChannelFault(int c, bool fault) {
+  assert((c >= 0) && ((size_t )c < _channel_faults.size()));
 
   _channel_faults[c] = fault;
 }
 
-bool Router::IsFaultyOutput( int c ) const
-{
-  assert( ( c >= 0 ) && ( (size_t)c < _channel_faults.size( ) ) );
+bool Router::IsFaultyOutput(int c) const {
+  assert((c >= 0) && ((size_t )c < _channel_faults.size()));
 
   return _channel_faults[c];
 }
 
 /*Router constructor*/
-Router *Router::NewRouter( const Configuration& config,
-			   Module *parent, const string & name, int id,
-			   int inputs, int outputs )
-{
-  const string type = config.GetStr( "router" );
+Router *Router::NewRouter(const Configuration& config, Module *parent,
+    const string & name, int id, int inputs, int outputs) {
+  const string type = config.GetStr("router");
   Router *r = NULL;
-  if ( type == "iq" ) {
-    r = new IQRouter( config, parent, name, id, inputs, outputs );
-  } else if ( type == "event" ) {
-    r = new EventRouter( config, parent, name, id, inputs, outputs );
-  } else if ( type == "chaos" ) {
-    r = new ChaosRouter( config, parent, name, id, inputs, outputs );
+  if (type == "iq") {
+    r = new IQRouter(config, parent, name, id, inputs, outputs);
+  } else if (type == "event") {
+    r = new EventRouter(config, parent, name, id, inputs, outputs);
+  } else if (type == "chaos") {
+    r = new ChaosRouter(config, parent, name, id, inputs, outputs);
   } else {
     cerr << "Unknown router type: " << type << endl;
   }
@@ -148,8 +140,4 @@ Router *Router::NewRouter( const Configuration& config,
 
   return r;
 }
-
-
-
-
 

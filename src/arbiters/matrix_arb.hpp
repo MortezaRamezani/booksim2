@@ -23,14 +23,13 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
 //  Matrix: Matrix Arbiter
 //
 // ----------------------------------------------------------------------
-
 #ifndef _MATRIX_ARB_HPP_
 #define _MATRIX_ARB_HPP_
 
@@ -40,32 +39,32 @@
 
 using namespace std;
 
-class MatrixArbiter : public Arbiter {
+class MatrixArbiter: public Arbiter {
 
   // Priority matrix
-  vector<vector<int> > _matrix ;
+  vector<vector<int> > _matrix;
 
-  int  _last_req ;
+  int _last_req;
 
 public:
 
   // Constructors
-  MatrixArbiter( Module *parent, const string &name, int size ) ;
+  MatrixArbiter(Module *parent, const string &name, int size);
 
   // Print priority matrix to standard output
-  virtual void PrintState() const ;
-  
+  virtual void PrintState() const;
+
   // Update priority matrix based on last aribtration result
-  virtual void UpdateState() ; 
+  virtual void UpdateState();
 
   // Arbitrate amongst requests. Returns winning input and 
   // updates pointers to metadata when valid pointers are passed
-  virtual int Arbitrate( int* id = 0, int* pri = 0) ;
+  virtual int Arbitrate(int* id = 0, int* pri = 0);
 
-  virtual void AddRequest( int input, int id, int pri ) ;
+  virtual void AddRequest(int input, int id, int pri);
 
   virtual void Clear();
 
-} ;
+};
 
 #endif

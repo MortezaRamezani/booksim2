@@ -23,22 +23,21 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
 //  TreeArbiter
 //
 // ----------------------------------------------------------------------
-
 #ifndef _TREE_ARB_HPP_
 #define _TREE_ARB_HPP_
 
 #include "arbiter.hpp"
 
-class TreeArbiter : public Arbiter {
+class TreeArbiter: public Arbiter {
 
-  int  _group_size ;
+  int _group_size;
 
   vector<Arbiter *> _group_arbiters;
   Arbiter * _global_arbiter;
@@ -48,24 +47,25 @@ class TreeArbiter : public Arbiter {
 public:
 
   // Constructors
-  TreeArbiter( Module *parent, const string &name, int size, int groups, const string & arb_type ) ;
+  TreeArbiter(Module *parent, const string &name, int size, int groups,
+      const string & arb_type);
 
   ~TreeArbiter();
 
   // Print priority matrix to standard output
-  virtual void PrintState() const ;
-  
+  virtual void PrintState() const;
+
   // Update priority matrix based on last aribtration result
-  virtual void UpdateState() ; 
+  virtual void UpdateState();
 
   // Arbitrate amongst requests. Returns winning input and 
   // updates pointers to metadata when valid pointers are passed
-  virtual int Arbitrate( int* id = 0, int* pri = 0) ;
+  virtual int Arbitrate(int* id = 0, int* pri = 0);
 
-  virtual void AddRequest( int input, int id, int pri ) ;
+  virtual void AddRequest(int input, int id, int pri);
 
   virtual void Clear();
 
-} ;
+};
 
 #endif

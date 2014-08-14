@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _ROUTEFUNC_HPP_
 #define _ROUTEFUNC_HPP_
@@ -33,9 +33,10 @@
 #include "outputset.hpp"
 #include "config_utils.hpp"
 
-typedef void (*tRoutingFunction)( const Router *, const Flit *, int in_channel, OutputSet *, bool );
+typedef void (*tRoutingFunction)(const Router *, const Flit *, int in_channel,
+    OutputSet *, bool);
 
-void InitializeRoutingMap( const Configuration & config );
+void InitializeRoutingMap(const Configuration & config);
 
 extern map<string, tRoutingFunction> gRoutingFunctionMap;
 

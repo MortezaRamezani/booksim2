@@ -23,28 +23,27 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
 //  SeparableOutputFirstAllocator: Separable Output-First Allocator
 //
 // ----------------------------------------------------------------------
-
 #ifndef _SEPARABLE_OUTPUT_FIRST_HPP_
 #define _SEPARABLE_OUTPUT_FIRST_HPP_
 
 #include "separable.hpp"
 
-class SeparableOutputFirstAllocator : public SeparableAllocator {
+class SeparableOutputFirstAllocator: public SeparableAllocator {
 
 public:
-  
-  SeparableOutputFirstAllocator( Module* parent, const string& name, int inputs,
-				 int outputs, const string& arb_type ) ;
-  
-  virtual void Allocate() ;
 
-} ;
+  SeparableOutputFirstAllocator(Module* parent, const string& name, int inputs,
+      int outputs, const string& arb_type);
+
+  virtual void Allocate();
+
+};
 
 #endif
