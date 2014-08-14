@@ -90,7 +90,8 @@ bool gTrace;
 
 ostream * gWatchOut;
 
-
+//Morteza Ramezani exclusive debug mode!
+bool mrDebug;
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -170,6 +171,8 @@ int main( int argc, char **argv )
   gPrintActivity = (config.GetInt("print_activity") > 0);
   gTrace = (config.GetInt("viewer_trace") > 0);
   
+  mrDebug = (config.GetInt("mr_debug") > 0);
+
   string watch_out_file = config.GetStr( "watch_out" );
   if(watch_out_file == "") {
     gWatchOut = NULL;

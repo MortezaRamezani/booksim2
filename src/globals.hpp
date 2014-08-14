@@ -47,6 +47,7 @@ extern int gC;
 extern int gNodes;
 
 extern bool gTrace;
+extern bool mrDebug;
 
 extern std::ostream * gWatchOut;
 

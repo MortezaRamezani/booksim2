@@ -938,6 +938,8 @@ void TrafficManager::_Inject(){
                     // only advance time if this is not a reply packet
                     if(!_use_read_write[c] || (stype >= 0)){
                         ++_qtime[input][c];
+                        if(mrDebug)
+                        	cout << "Morteza: " << input << " - [ " << _qtime[input][c] << " - " << _time << "] : "<< stype << endl;
                     }
                 }
 	
@@ -1269,6 +1271,8 @@ void TrafficManager::_Step( )
     assert(_time);
     if(gTrace){
         cout<<"TIME "<<_time<<endl;
+        if(mrDebug)
+        	cout << "---------------------------" << endl;
     }
 
 }

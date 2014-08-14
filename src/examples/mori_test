@@ -2,13 +2,26 @@
 
 //simple 8X8 torus under injection mode 
 
+viewer_trace = 1;
+mr_debug = 1;
 
-sample_period = 100;
-//routing_delay = ;
-print_activity = 1;
-print_csv_results = 1;
-watch_out = -;
-stats_out = -;
+//warmup_periods = 3;
+max_samples = 6;
+
+sample_period = 10;
+
+routing_delay = 1;
+
+// injection_process = aj;
+// use_read_write = ;
+
+//print_activity = 1;
+//print_csv_results = 1;
+
+//stats_out = -;
+
+//watch_out = -;
+//watch_file = ./src/examples/w.txt;
 
 // Topology
 topology = torus;

@@ -276,6 +276,8 @@ BookSimConfig::BookSimConfig( )
 
   _int_map["viewer_trace"] = 0;
 
+  _int_map["mr_debug"] = 0;
+
   AddStrField("watch_file", "");
   
   AddStrField("watch_flits", "");
