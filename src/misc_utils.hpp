@@ -31,4 +31,7 @@
 int log_two(int x);
 int powi(int x, int y);
 
+void set_bit(int &x, int p, int y);
+int get_bit(int x, int p);
+
 #endif 

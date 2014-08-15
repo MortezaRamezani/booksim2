@@ -83,6 +83,12 @@ class ShuffleTrafficPattern : public BitPermutationTrafficPattern {
   virtual int dest(int source);
 };
 
+class ButterflyTrafficPattern : public BitPermutationTrafficPattern{
+ public:
+  ButterflyTrafficPattern(int nodes);
+  virtual int dest(int source);
+};
+
 class DigitPermutationTrafficPattern : public PermutationTrafficPattern {
  protected:
   int _k;

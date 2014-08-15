@@ -50,3 +50,18 @@ int log_two(int x) {
 
   return r;
 }
+
+void set_bit(int &x, int p, int y) {
+  int mask = 1 << p;
+
+  if (y == 1)
+    x = x | mask;
+  else if (y == 0)
+    x = x & ~mask;
+  else
+    assert(false);
+}
+
+int get_bit(int x, int p) {
+  return (x >> p) & 1;
+}

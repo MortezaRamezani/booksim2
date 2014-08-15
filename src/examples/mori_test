@@ -17,7 +17,8 @@ routing_delay = 1;
 //print_activity = 1;
 //print_csv_results = 1;
 
-//stats_out = -;
+stats_out = ./results/stats.txt;
+pair_stats = 1;
 
 //watch_out = -;
 //watch_file = ./src/examples/w.txt;
@@ -34,7 +35,7 @@ routing_function = dim_order;
 num_vcs = 2;
 
 // Traffic
-traffic = uniform;
+traffic = butterfly;
 
 injection_rate = 0.15;
 

@@ -29,6 +29,8 @@
 #include <sstream>
 #include "random_utils.hpp"
 #include "traffic.hpp"
+#include "misc_utils.hpp"
+#include "globals.hpp"
 
 TrafficPattern::TrafficPattern(int nodes)
     : _nodes(nodes) {
@@ -69,6 +71,8 @@ TrafficPattern * TrafficPattern::New(string const & pattern, int nodes,
     result = new BitRevTrafficPattern(nodes);
   } else if (pattern_name == "shuffle") {
     result = new ShuffleTrafficPattern(nodes);
+  } else if (pattern_name == "butterfly") {
+    result = new ButterflyTrafficPattern(nodes);
   } else if (pattern_name == "randperm") {
     int perm_seed = -1;
     if (params.empty()) {
@@ -270,6 +274,29 @@ int ShuffleTrafficPattern::dest(int source) {
   assert((source >= 0) && (source < _nodes));
   int const shifted = source << 1;
   return ((shifted & (_nodes - 1)) | bool(shifted & _nodes));
+}
+
+ButterflyTrafficPattern::ButterflyTrafficPattern(int nodes)
+    : BitPermutationTrafficPattern(nodes) {
+
+}
+
+int ButterflyTrafficPattern::dest(int source) {
+  assert((source >= 0) && (source < _nodes));
+  int num_bits = 0;
+  int destination = 0;
+  num_bits = log_two(_nodes);
+
+  if(mrDebug)
+    cout << "[mrDebug] : log2 " << num_bits <<endl;
+
+  for (int i = 1; i < num_bits - 1; i++)
+    set_bit(destination, i, get_bit(source, i));
+
+  set_bit(destination, 0, get_bit(source, num_bits - 1));
+  set_bit(destination, num_bits - 1, get_bit(source, 0));
+
+  return destination;
 }
 
 DigitPermutationTrafficPattern::DigitPermutationTrafficPattern(int nodes, int k,

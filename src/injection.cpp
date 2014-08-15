@@ -200,7 +200,7 @@ bool OnOffInjectionProcess::test(int source, int destination) {
   assert((source >= 0) && (source < _nodes));
 
   if (mrDebug)
-    cout << "[mrDebug]: Destination is :" << destination << endl;
+    cout << "[mrDebug]: source is: " << source <<" and destination is :" << destination << endl;
 
   int index = source * _nodes + destination;
 
