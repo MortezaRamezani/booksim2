@@ -35,6 +35,13 @@ class Stats : public Module {
   double _sample_sum;
   double _sample_squared_sum;
 
+  // variance on-line calculation variable
+  double _sample_variance;
+  double _var_e_t;
+  double _var_avg;
+  double _var_sse;
+
+
   //bool _reset;
   double _min;
   double _max;
@@ -62,6 +69,8 @@ class Stats : public Module {
   inline void AddSample(int val) {
     AddSample((double) val);
   }
+
+  void UpdateVariance(double val);
 
   int GetBin(int b) {
     return _hist[b];

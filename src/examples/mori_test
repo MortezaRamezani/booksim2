@@ -21,7 +21,7 @@ stats_out = ./results/stats.txt;
 pair_stats = 1;
 
 //watch_out = -;
-//watch_file = ./src/examples/w.txt;
+watch_file = ./src/examples/w.txt;
 
 // Topology
 topology = torus;
@@ -35,7 +35,7 @@ routing_function = dim_order;
 num_vcs = 2;
 
 // Traffic
-traffic = butterfly;
+traffic = bitcomp;
 
 injection_rate = 0.15;
 

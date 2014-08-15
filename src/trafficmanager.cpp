@@ -746,6 +746,9 @@ void TrafficManager::_RetireFlit(Flit *f, int dest) {
             f->atime - head->ctime);
         _pair_nlat[f->cl][f->src * _nodes + dest]->AddSample(
             f->atime - head->itime);
+        if (mrDebug)
+          cout << "{MR DEBUG} " << f->src << " - " << dest << " - " << head->id
+               << " = " << (f->atime - head->ctime) << endl;
       }
     }
 
@@ -1814,6 +1817,12 @@ void TrafficManager::WriteStats(ostream & os) const {
       for (int i = 0; i < _nodes; ++i) {
         for (int j = 0; j < _nodes; ++j) {
           os << _pair_flat[c][i * _nodes + j]->Average() << " ";
+        }
+      }
+      os << "];" << endl << "variance_plat(" << c + 1 << ",:) = [ ";
+      for (int i = 0; i < _nodes; ++i) {
+        for (int j = 0; j < _nodes; ++j) {
+          os << _pair_plat[c][i * _nodes + j]->Variance() << " ";
         }
       }
     }

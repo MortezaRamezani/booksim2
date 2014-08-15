@@ -67,9 +67,10 @@ double Stats::Average() const {
 }
 
 double Stats::Variance() const {
-  return (_sample_squared_sum * (double) _num_samples
-      - _sample_sum * _sample_sum)
-      / ((double) _num_samples * (double) _num_samples);
+//  return (_sample_squared_sum * (double) _num_samples
+//      - _sample_sum * _sample_sum)
+//      / ((double) _num_samples * (double) _num_samples);
+  return _sample_variance;
 }
 
 double Stats::Min() const {
@@ -92,9 +93,18 @@ int Stats::NumSamples() const {
   return _num_samples;
 }
 
+void Stats::UpdateVariance(double val) {
+  _var_e_t = val - _var_avg;
+  _var_avg = _var_avg + (_var_e_t / _num_samples);
+  _var_sse = _var_sse + _var_e_t * (val - _var_avg);
+  _sample_variance = _var_sse / (_num_samples - 1);
+}
+
 void Stats::AddSample(double val) {
   ++_num_samples;
   _sample_sum += val;
+
+  UpdateVariance(val);
 
   // NOTE: the negation ensures that NaN values are handled correctly!
   _max = !(val <= _max) ? val : _max;
