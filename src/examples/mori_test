@@ -24,7 +24,7 @@ routing_delay = 1;
 
 // Topology
 topology = torus;
-k = 4;
+k = 2;
 n = 2;
 
 // Routing
