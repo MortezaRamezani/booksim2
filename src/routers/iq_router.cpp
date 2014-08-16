@@ -537,6 +537,9 @@ void IQRouter::_VCAllocEvaluate() {
 
   bool watched = false;
 
+  if(mrDebug)
+    cout << "How many time??????? " << GetID() << endl;
+
   for (deque<pair<int, pair<pair<int, int>, int> > >::iterator iter =
       _vc_alloc_vcs.begin(); iter != _vc_alloc_vcs.end(); ++iter) {
 
@@ -544,6 +547,9 @@ void IQRouter::_VCAllocEvaluate() {
     if (time >= 0) {
       break;
     }
+
+    if(mrDebug)
+      cout << "[Morteza Debug] first for : " << iter->first << " size is : " << _vc_alloc_vcs.size() << endl;
 
     int const input = iter->second.first.first;
     assert((input >= 0) && (input < _inputs));
@@ -680,10 +686,16 @@ void IQRouter::_VCAllocEvaluate() {
     _vc_allocator->PrintGrants(gWatchOut);
   }
 
+  if(mrDebug)
+    cout << "[Morteza Debug] before second for : " << " size is : " << _vc_alloc_vcs.size() << endl;
+
   for (deque<pair<int, pair<pair<int, int>, int> > >::iterator iter =
       _vc_alloc_vcs.begin(); iter != _vc_alloc_vcs.end(); ++iter) {
 
     int const time = iter->first;
+    if(mrDebug)
+      cout << "[Morteza Debug] second for : " << iter->first << " size is : " << _vc_alloc_vcs.size() << endl;
+
     if (time >= 0) {
       break;
     }
@@ -746,10 +758,16 @@ void IQRouter::_VCAllocEvaluate() {
     return;
   }
 
+  if(mrDebug)
+      cout << "[Morteza Debug] before third for : " << " size is : " << _vc_alloc_vcs.size() << endl;
+
   for (deque<pair<int, pair<pair<int, int>, int> > >::iterator iter =
       _vc_alloc_vcs.begin(); iter != _vc_alloc_vcs.end(); ++iter) {
 
     int const time = iter->first;
+    if(mrDebug)
+      cout << "[Morteza Debug] third for : " << time << " size is : " << _vc_alloc_vcs.size() << endl;
+
     assert(time >= 0);
     if (GetSimTime() < time) {
       break;
