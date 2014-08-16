@@ -5,3 +5,4 @@ y.tab.h
 *.o
 *.d
 *.exe
+/netrace/
