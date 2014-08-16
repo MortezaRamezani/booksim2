@@ -54,15 +54,14 @@ class BernoulliInjectionProcess : public InjectionProcess {
 
 class OnOffInjectionProcess : public InjectionProcess {
  private:
-  vector<double> _alpha;
-  vector<double> _beta;
-  vector<double> _r1;
+  double _alpha;
+  double _beta;
+  double _r1;
   vector<int> _initial;
   vector<int> _state;
  public:
-  OnOffInjectionProcess(int nodes, double rate, vector<double> alpha,
-                        vector<double> beta, vector<double> r1,
-                        vector<int> initial);
+  OnOffInjectionProcess(int nodes, double rate, double alpha, double beta,
+                        double r1, vector<int> initial);
   virtual void reset();
   virtual bool test(int source, int destination);
 };

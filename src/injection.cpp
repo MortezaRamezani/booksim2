@@ -78,53 +78,63 @@ InjectionProcess::New(string const & inject, int nodes, double load,
     result = new BernoulliInjectionProcess(nodes, load);
   } else if (process_name == "on_off") {
     bool missing_params = false;
-    vector<double> alpha(nodes * nodes, numeric_limits<double>::quiet_NaN());
+//    vector<double> alpha(nodes * nodes, numeric_limits<double>::quiet_NaN());
+    double alpha = numeric_limits<double>::quiet_NaN();
     if (params.size() < 1) {
       if (config) {
-//	alpha = config->GetFloat("burst_alpha");
-        alpha = config->GetFloatArray("mr_burst_alphas");
+        alpha = config->GetFloat("burst_alpha");
+//        alpha = config->GetFloatArray("mr_burst_alphas");
       } else {
         missing_params = true;
       }
     } else {
-//      alpha = atof(params[0].c_str());
+      alpha = atof(params[0].c_str());
     }
-    vector<double> beta(nodes * nodes, numeric_limits<double>::quiet_NaN());
+//    vector<double> beta(nodes * nodes, numeric_limits<double>::quiet_NaN());
+    double beta = numeric_limits<double>::quiet_NaN();
     if (params.size() < 2) {
       if (config) {
-//	beta = config->GetFloat("burst_beta");
-        beta = config->GetFloatArray("mr_burst_betas");
+        beta = config->GetFloat("burst_beta");
+//        beta = config->GetFloatArray("mr_burst_betas");
       } else {
         missing_params = true;
       }
     } else {
-//      beta = atof(params[1].c_str());
+      beta = atof(params[1].c_str());
     }
-    vector<double> r1(nodes * nodes, numeric_limits<double>::quiet_NaN());
+//    vector<double> r1(nodes * nodes, numeric_limits<double>::quiet_NaN());
+    double r1 = numeric_limits<double>::quiet_NaN();
     if (params.size() < 3) {
-//      r1 = config ? config->GetFloat("burst_r1") : -1.0;
-      r1 = config->GetFloatArray("mr_burst_r1s");
+      r1 = config ? config->GetFloat("burst_r1") : -1.0;
+//      r1 = config->GetFloatArray("mr_burst_r1s");
     } else {
-//      r1 = atof(params[2].c_str());
+      r1 = atof(params[2].c_str());
     }
     if (missing_params) {
       cout << "Missing parameters for injection process: " << inject << endl;
       exit(-1);
     }
 
-    for (int n = 0; n < nodes * nodes; n++) {
-      if ((alpha[n] < 0.0 && beta[n] < 0.0) || (alpha[n] < 0.0 && r1[n] < 0.0)
-          || (beta[n] < 0.0 && r1[n] < 0.0)
-          || (alpha[n] >= 0.0 && beta[n] >= 0.0 && r1[n] >= 0.0)) {
-        cout << "Invalid parameters for injection process: " << inject << endl;
-        exit(-1);
-      }
+//    for (int n = 0; n < nodes * nodes; n++) {
+//      if ((alpha[n] < 0.0 && beta[n] < 0.0) || (alpha[n] < 0.0 && r1[n] < 0.0)
+//          || (beta[n] < 0.0 && r1[n] < 0.0)
+//          || (alpha[n] >= 0.0 && beta[n] >= 0.0 && r1[n] >= 0.0)) {
+//        cout << "Invalid parameters for injection process: " << inject << endl;
+//        exit(-1);
+//      }
+
+    if ((alpha < 0.0 && beta < 0.0) || (alpha < 0.0 && r1 < 0.0)
+        || (beta < 0.0 && r1 < 0.0)
+        || (alpha >= 0.0 && beta >= 0.0 && r1 >= 0.0)) {
+      cout << "Invalid parameters for injection process: " << inject << endl;
+      exit(-1);
     }
 
     if (mrDebug)
-      for (int n = 0; n < nodes * nodes; n++)
-        cout << "[mrDebug]: " << alpha[n] << " - " << beta[n] << " - " << r1[n]
-             << endl;
+//      for (int n = 0; n < nodes * nodes; n++)
+//        cout << "[mrDebug]: " << alpha[n] << " - " << beta[n] << " - " << r1[n]
+//            << endl;
+      cout << "[mrDebug]: " << alpha << " - " << beta << " - " << r1 << endl;
 
     vector<int> initial(nodes);
     if (params.size() > 3) {
@@ -158,37 +168,54 @@ bool BernoulliInjectionProcess::test(int source, int destination) {
 //=============================================================
 
 OnOffInjectionProcess::OnOffInjectionProcess(int nodes, double rate,
-                                             vector<double> alpha,
-                                             vector<double> beta,
-                                             vector<double> r1,
-                                             vector<int> initial)
+                                             double alpha, double beta,
+                                             double r1, vector<int> initial)
     : InjectionProcess(nodes, rate),
       _alpha(alpha),
       _beta(beta),
       _r1(r1),
       _initial(initial) {
-  for (int n = 0; n < nodes * nodes; n++) {
-    assert(alpha[n] <= 1.0);
-    assert(beta[n] <= 1.0);
-    assert(r1[n] <= 1.0);
-    if (alpha[n] < 0.0) {
-      assert(beta[n] >= 0.0);
-      assert(r1[n] >= 0.0);
-      _alpha[n] = beta[n] * rate / (r1[n] - rate);
-    } else if (beta[n] < 0.0) {
-      assert(alpha[n] >= 0.0);
-      assert(r1[n] >= 0.0);
-      _beta[n] = alpha[n] * (r1[n] - rate) / rate;
-    } else {
-      assert(r1[n] < 0.0);
-      _r1[n] = rate * (alpha[n] + beta[n]) / alpha[n];
-    }
-
-    if (mrDebug)
-      cout << "[mrDebug]: " << "_alpha:" << _alpha[n] << " ,_beta:" << _beta[n]
-           << " ,_r1:" << _r1[n] << ", _initial:" << initial[int(n / nodes)]
-           << endl;
+//  for (int n = 0; n < nodes * nodes; n++) {
+//    assert(alpha[n] <= 1.0);
+//    assert(beta[n] <= 1.0);
+//    assert(r1[n] <= 1.0);
+//    if (alpha[n] < 0.0) {
+//      assert(beta[n] >= 0.0);
+//      assert(r1[n] >= 0.0);
+//      _alpha[n] = beta[n] * rate / (r1[n] - rate);
+//    } else if (beta[n] < 0.0) {
+//      assert(alpha[n] >= 0.0);
+//      assert(r1[n] >= 0.0);
+//      _beta[n] = alpha[n] * (r1[n] - rate) / rate;
+//    } else {
+//      assert(r1[n] < 0.0);
+//      _r1[n] = rate * (alpha[n] + beta[n]) / alpha[n];
+//    }
+//
+//    if (mrDebug)
+//      cout << "[mrDebug]: " << "_alpha:" << _alpha[n] << " ,_beta:" << _beta[n]
+//           << " ,_r1:" << _r1[n] << ", _initial:" << initial[int(n / nodes)]
+//           << endl;
+//  }
+  assert(alpha <= 1.0);
+  assert(beta <= 1.0);
+  assert(r1 <= 1.0);
+  if (alpha < 0.0) {
+    assert(beta >= 0.0);
+    assert(r1 >= 0.0);
+    _alpha = beta * rate / (r1 - rate);
+  } else if (beta < 0.0) {
+    assert(alpha >= 0.0);
+    assert(r1 >= 0.0);
+    _beta = alpha * (r1 - rate) / rate;
+  } else {
+    assert(r1 < 0.0);
+    _r1 = rate * (alpha + beta) / alpha;
   }
+
+  if (mrDebug)
+    cout << "[mrDebug]: " << "_alpha:" << _alpha << " ,_beta:" << _beta
+        << " ,_r1:" << _r1 << ", _initial:" << endl;
   reset();
 }
 
@@ -200,15 +227,15 @@ bool OnOffInjectionProcess::test(int source, int destination) {
   assert((source >= 0) && (source < _nodes));
 
   if (mrDebug)
-    cout << "[mrDebug]: source is: " << source <<" and destination is :" << destination << endl;
+    cout << "[mrDebug]: source is: " << source << " and destination is :"
+         << destination << endl;
 
   int index = source * _nodes + destination;
 
   // advance state
   _state[source] =
-      _state[source] ?
-          (RandomFloat() >= _beta[index]) : (RandomFloat() < _alpha[index]);
+      _state[source] ? (RandomFloat() >= _beta) : (RandomFloat() < _alpha);
 
   // generate packet
-  return _state[source] && (RandomFloat() < _r1[index]);
+  return _state[source] && (RandomFloat() < _r1);
 }
