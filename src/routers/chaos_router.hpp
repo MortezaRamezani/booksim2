@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _CHAOS_ROUTER_HPP_
 #define _CHAOS_ROUTER_HPP_
@@ -43,7 +43,7 @@
 
 class ChaosRouter : public Router {
 
-  tRoutingFunction   _rf;
+  tRoutingFunction _rf;
 
   vector<OutputSet*> _input_route;
   vector<OutputSet*> _mq_route;
@@ -57,7 +57,7 @@ class ChaosRouter : public Router {
     shared         // >**HT**>
   };
 
-  PipelineFIFO<Flit>   *_crossbar_pipe;
+  PipelineFIFO<Flit> *_crossbar_pipe;
 
   int _multi_queue_size;
   int _buffer_size;
@@ -85,48 +85,57 @@ class ChaosRouter : public Router {
   int _cur_channel;
   int _read_stall;
 
-  bool _IsInjectionChan( int chan ) const;
-  bool _IsEjectionChan( int chan ) const;
+  bool _IsInjectionChan(int chan) const;
+  bool _IsEjectionChan(int chan) const;
 
-  bool _InputReady( int input ) const;
-  bool _OutputFull( int out ) const;
-  bool _OutputAvail( int out ) const;
-  bool _MultiQueueFull( int mq ) const;
+  bool _InputReady(int input) const;
+  bool _OutputFull(int out) const;
+  bool _OutputAvail(int out) const;
+  bool _MultiQueueFull(int mq) const;
 
-  int  _InputForOutput( int output ) const;
-  int  _MultiQueueForOutput( int output ) const;
-  int  _FindAvailMultiQueue( ) const;
+  int _InputForOutput(int output) const;
+  int _MultiQueueForOutput(int output) const;
+  int _FindAvailMultiQueue() const;
 
-  void _NextInterestingChannel( );
-  void _OutputAdvance( );
-  void _SendFlits( );
-  void _SendCredits( );
+  void _NextInterestingChannel();
+  void _OutputAdvance();
+  void _SendFlits();
+  void _SendCredits();
 
-  virtual void _InternalStep( );
+  virtual void _InternalStep();
 
-public:
-  ChaosRouter( const Configuration& config,
-	    Module *parent, const string & name, int id,
-	    int inputs, int outputs );
+ public:
+  ChaosRouter(const Configuration& config, Module *parent, const string & name,
+              int id, int inputs, int outputs);
 
-  virtual ~ChaosRouter( );
+  virtual ~ChaosRouter();
 
-  virtual void ReadInputs( );
-  virtual void WriteOutputs( );
+  virtual void ReadInputs();
+  virtual void WriteOutputs();
 
-  virtual int GetUsedCredit(int out) const {return 0;}
-  virtual int GetBufferOccupancy(int i) const {return 0;}
+  virtual int GetUsedCredit(int out) const {
+    return 0;
+  }
+  virtual int GetBufferOccupancy(int i) const {
+    return 0;
+  }
 
 #ifdef TRACK_BUFFERS
   virtual int GetUsedCreditForClass(int output, int cl) const {return 0;}
   virtual int GetBufferOccupancyForClass(int input, int cl) const {return 0;}
 #endif
 
-  virtual vector<int> UsedCredits() const { return vector<int>(); }
-  virtual vector<int> FreeCredits() const { return vector<int>(); }
-  virtual vector<int> MaxCredits() const { return vector<int>(); }
+  virtual vector<int> UsedCredits() const {
+    return vector<int>();
+  }
+  virtual vector<int> FreeCredits() const {
+    return vector<int>();
+  }
+  virtual vector<int> MaxCredits() const {
+    return vector<int>();
+  }
 
-  void Display( ostream & os = cout ) const;
+  void Display(ostream & os = cout) const;
 };
 
 #endif

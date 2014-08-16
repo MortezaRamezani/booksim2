@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _SELALLOC_HPP_
 #define _SELALLOC_HPP_
@@ -40,15 +40,15 @@ class SelAlloc : public SparseAllocator {
 
   vector<int> _outmask;
 
-public:
-  SelAlloc( Module *parent, const string& name,
-	    int inputs, int outputs, int iters );
+ public:
+  SelAlloc(Module *parent, const string& name, int inputs, int outputs,
+           int iters);
 
-  void Allocate( );
+  void Allocate();
 
-  void MaskOutput( int out, int mask = 1 );
+  void MaskOutput(int out, int mask = 1);
 
-  virtual void PrintRequests( ostream * os = NULL ) const;
+  virtual void PrintRequests(ostream * os = NULL) const;
 
 };
 

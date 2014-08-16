@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _BATCHTRAFFICMANAGER_HPP_
 #define _BATCHTRAFFICMANAGER_HPP_
@@ -35,7 +35,7 @@
 
 class BatchTrafficManager : public SyntheticTrafficManager {
 
-protected:
+ protected:
 
   vector<int> _max_outstanding;
   vector<int> _batch_size;
@@ -50,25 +50,25 @@ protected:
 
   ostream * _sent_packets_out;
 
-  virtual void _RetireFlit( Flit *f, int dest );
+  virtual void _RetireFlit(Flit *f, int dest);
 
-  virtual int _IssuePacket( int source, int cl );
-  virtual void _ClearStats( );
-  virtual bool _SingleSim( );
+  virtual int _IssuePacket(int source, int cl);
+  virtual void _ClearStats();
+  virtual bool _SingleSim();
 
-  virtual void _UpdateOverallStats( );
+  virtual void _UpdateOverallStats();
 
   virtual string _OverallStatsHeaderCSV() const;
   virtual string _OverallClassStatsCSV(int c) const;
-  virtual void _DisplayOverallClassStats( int c, ostream & os ) const;
-  virtual void _DisplayClassStats( int c, ostream & os ) const;
-  virtual void _WriteClassStats( int c, ostream & os ) const;
+  virtual void _DisplayOverallClassStats(int c, ostream & os) const;
+  virtual void _DisplayClassStats(int c, ostream & os) const;
+  virtual void _WriteClassStats(int c, ostream & os) const;
 
+ public:
 
-public:
-
-  BatchTrafficManager( const Configuration &config, const vector<Network *> & net );
-  virtual ~BatchTrafficManager( );
+  BatchTrafficManager(const Configuration &config,
+                      const vector<Network *> & net);
+  virtual ~BatchTrafficManager();
 
 };
 

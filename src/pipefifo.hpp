@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _PIPEFIFO_HPP_
 #define _PIPEFIFO_HPP_
@@ -38,60 +38,55 @@ template<class T> class PipelineFIFO : public Module {
 
   int _pipe_len;
   int _pipe_ptr;
-  
+
   vector<vector<T*> > _data;
 
-public:
-  PipelineFIFO( Module *parent, const string& name, int lanes, int depth );
-  ~PipelineFIFO( );
+ public:
+  PipelineFIFO(Module *parent, const string& name, int lanes, int depth);
+  ~PipelineFIFO();
 
-  void Write( T* val, int lane = 0 );
-  void WriteAll( T* val );
+  void Write(T* val, int lane = 0);
+  void WriteAll(T* val);
 
-  T*   Read( int lane = 0 );
+  T* Read(int lane = 0);
 
-  void Advance( );
+  void Advance();
 };
 
-template<class T> PipelineFIFO<T>::PipelineFIFO( Module *parent, 
-						 const string& name, 
-						 int lanes, int depth ) :
-  Module( parent, name ),
-  _lanes( lanes ), _depth( depth )
-{
+template<class T> PipelineFIFO<T>::PipelineFIFO(Module *parent,
+                                                const string& name, int lanes,
+                                                int depth)
+    : Module(parent, name),
+      _lanes(lanes),
+      _depth(depth) {
   _pipe_len = depth + 1;
   _pipe_ptr = 0;
 
   _data.resize(_lanes);
-  for ( int l = 0; l < _lanes; ++l ) {
+  for (int l = 0; l < _lanes; ++l) {
     _data[l].resize(_pipe_len, 0);
   }
 }
 
-template<class T> PipelineFIFO<T>::~PipelineFIFO( ) 
-{
+template<class T> PipelineFIFO<T>::~PipelineFIFO() {
 }
 
-template<class T> void PipelineFIFO<T>::Write( T* val, int lane )
-{
+template<class T> void PipelineFIFO<T>::Write(T* val, int lane) {
   _data[lane][_pipe_ptr] = val;
 }
 
-template<class T> void PipelineFIFO<T>::WriteAll( T* val )
-{
-  for ( int l = 0; l < _lanes; ++l ) {
+template<class T> void PipelineFIFO<T>::WriteAll(T* val) {
+  for (int l = 0; l < _lanes; ++l) {
     _data[l][_pipe_ptr] = val;
   }
 }
 
-template<class T> T* PipelineFIFO<T>::Read( int lane )
-{
+template<class T> T* PipelineFIFO<T>::Read(int lane) {
   return _data[lane][_pipe_ptr];
 }
 
-template<class T> void PipelineFIFO<T>::Advance( )
-{
-  _pipe_ptr = ( _pipe_ptr + 1 ) % _pipe_len;
+template<class T> void PipelineFIFO<T>::Advance() {
+  _pipe_ptr = (_pipe_ptr + 1) % _pipe_len;
 }
 
 #endif 

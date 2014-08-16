@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _WORKLOAD_HPP_
 #define _WORKLOAD_HPP_
@@ -45,15 +45,15 @@ extern "C" {
 using namespace std;
 
 class Workload {
-protected:
+ protected:
   int const _nodes;
   queue<int> _pending_nodes;
   queue<int> _deferred_nodes;
   Workload(int nodes);
-public:
+ public:
   virtual ~Workload();
-  static Workload * New(string const & workload, int nodes, 
-			Configuration const * const config = NULL);
+  static Workload * New(string const & workload, int nodes,
+                        Configuration const * const config = NULL);
   virtual void reset();
   virtual void advanceTime();
   virtual bool empty() const;
@@ -69,18 +69,32 @@ public:
 };
 
 class NullWorkload : public Workload {
-public:
-  NullWorkload(int nodes) : Workload(nodes) {}
-  virtual bool completed() const {return true;}
-  virtual int dest() const {return -1;}
-  virtual int size() const {return -1;}
-  virtual int time() const {return -1;}
-  virtual void inject(int pid) {assert(false);}
-  virtual void retire(int pid) {assert(false);}
+ public:
+  NullWorkload(int nodes)
+      : Workload(nodes) {
+  }
+  virtual bool completed() const {
+    return true;
+  }
+  virtual int dest() const {
+    return -1;
+  }
+  virtual int size() const {
+    return -1;
+  }
+  virtual int time() const {
+    return -1;
+  }
+  virtual void inject(int pid) {
+    assert(false);
+  }
+  virtual void retire(int pid) {
+    assert(false);
+  }
 };
 
 class SyntheticWorkload : public Workload {
-protected:
+ protected:
   unsigned int _time;
   vector<int> _sizes;
   vector<int> _rates;
@@ -89,12 +103,11 @@ protected:
   TrafficPattern * _traffic;
   vector<unsigned int> _qtime;
   queue<int> _sleeping_nodes;
-public:
-  SyntheticWorkload(int nodes, double load, string const & traffic, 
-		    string const & injection, 
-		    vector<int> const & sizes, 
-		    vector<int> const & rates, 
-		    Configuration const * const config = NULL);
+ public:
+  SyntheticWorkload(int nodes, double load, string const & traffic,
+                    string const & injection, vector<int> const & sizes,
+                    vector<int> const & rates,
+                    Configuration const * const config = NULL);
   virtual ~SyntheticWorkload();
   virtual void reset();
   virtual void advanceTime();
@@ -103,12 +116,13 @@ public:
   virtual int size() const;
   virtual int time() const;
   virtual void inject(int pid);
-  virtual void retire(int pid) {}
+  virtual void retire(int pid) {
+  }
 };
 
 class TraceWorkload : public Workload {
 
-protected:
+ protected:
 
   unsigned int _time;
 
@@ -125,7 +139,7 @@ protected:
   vector<queue<PacketInfo> > _ready_packets;
 
   ifstream * _trace;
-  
+
   unsigned int _count;
   int _limit;
 
@@ -134,12 +148,12 @@ protected:
 
   void _refill();
 
-public:
-  
-  TraceWorkload(int nodes, string const & filename, 
-		vector<int> const & packet_size, int limit = -1, 
-		unsigned int skip = 0, unsigned int scale = 1);
-  
+ public:
+
+  TraceWorkload(int nodes, string const & filename,
+                vector<int> const & packet_size, int limit = -1,
+                unsigned int skip = 0, unsigned int scale = 1);
+
   virtual ~TraceWorkload();
   virtual void reset();
   virtual void advanceTime();
@@ -154,7 +168,7 @@ public:
 
 class NetraceWorkload : public Workload {
 
-protected:
+ protected:
 
   unsigned long long int _time;
 
@@ -195,14 +209,14 @@ protected:
 
   void _refill();
 
-public:
-  
-  NetraceWorkload(int nodes, string const & filename, 
-		  unsigned int channel_width, long long int limit = -1ll, 
-		  unsigned int scale = 1, int region = -1, 
-		  bool enforce_deps = true, bool enforce_lats = false, 
-		  unsigned int size_offset = 0);
-  
+ public:
+
+  NetraceWorkload(int nodes, string const & filename,
+                  unsigned int channel_width, long long int limit = -1ll,
+                  unsigned int scale = 1, int region = -1, bool enforce_deps =
+                      true,
+                  bool enforce_lats = false, unsigned int size_offset = 0);
+
   virtual ~NetraceWorkload();
   virtual void reset();
   virtual void advanceTime();

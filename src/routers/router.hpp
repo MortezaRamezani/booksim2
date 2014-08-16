@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _ROUTER_HPP_
 #define _ROUTER_HPP_
@@ -42,7 +42,7 @@ typedef Channel<Credit> CreditChannel;
 
 class Router : public TimedModule {
 
-protected:
+ protected:
 
   static int const STALL_BUFFER_BUSY;
   static int const STALL_BUFFER_CONFLICT;
@@ -51,26 +51,26 @@ protected:
   static int const STALL_CROSSBAR_CONFLICT;
 
   int _id;
-  
+
   int _inputs;
   int _outputs;
-  
+
   int _classes;
 
   int _input_speedup;
   int _output_speedup;
-  
+
   double _internal_speedup;
   double _partial_internal_cycles;
 
   int _crossbar_delay;
   int _credit_delay;
-  
-  vector<FlitChannel *>   _input_channels;
+
+  vector<FlitChannel *> _input_channels;
   vector<CreditChannel *> _input_credits;
-  vector<FlitChannel *>   _output_channels;
+  vector<FlitChannel *> _output_channels;
   vector<CreditChannel *> _output_credits;
-  vector<bool>            _channel_faults;
+  vector<bool> _channel_faults;
 
 #ifdef TRACK_FLOWS
   vector<vector<int> > _received_flits;
@@ -90,36 +90,38 @@ protected:
 
   virtual void _InternalStep() = 0;
 
-public:
-  Router( const Configuration& config,
-	  Module *parent, const string & name, int id,
-	  int inputs, int outputs );
+ public:
+  Router(const Configuration& config, Module *parent, const string & name,
+         int id, int inputs, int outputs);
 
-  static Router *NewRouter( const Configuration& config,
-			    Module *parent, const string & name, int id,
-			    int inputs, int outputs );
+  static Router *NewRouter(const Configuration& config, Module *parent,
+                           const string & name, int id, int inputs,
+                           int outputs);
 
-  virtual void AddInputChannel( FlitChannel *channel, CreditChannel *backchannel );
-  virtual void AddOutputChannel( FlitChannel *channel, CreditChannel *backchannel );
- 
-  inline FlitChannel * GetInputChannel( int input ) const {
+  virtual void AddInputChannel(FlitChannel *channel,
+                               CreditChannel *backchannel);
+  virtual void AddOutputChannel(FlitChannel *channel,
+                                CreditChannel *backchannel);
+
+  inline FlitChannel * GetInputChannel(int input) const {
     assert((input >= 0) && (input < _inputs));
     return _input_channels[input];
   }
-  inline FlitChannel * GetOutputChannel( int output ) const {
+  inline FlitChannel * GetOutputChannel(int output) const {
     assert((output >= 0) && (output < _outputs));
     return _output_channels[output];
   }
 
-  virtual void ReadInputs( ) = 0;
-  virtual void Evaluate( );
-  virtual void WriteOutputs( ) = 0;
+  virtual void ReadInputs() = 0;
+  virtual void Evaluate();
+  virtual void WriteOutputs() = 0;
 
-  void OutChannelFault( int c, bool fault = true );
-  bool IsFaultyOutput( int c ) const;
+  void OutChannelFault(int c, bool fault = true);
+  bool IsFaultyOutput(int c) const;
 
-  inline int GetID( ) const {return _id;}
-
+  inline int GetID() const {
+    return _id;
+  }
 
   virtual int GetUsedCredit(int o) const = 0;
   virtual int GetBufferOccupancy(int i) const = 0;
@@ -195,8 +197,12 @@ public:
   }
 #endif
 
-  inline int NumInputs() const {return _inputs;}
-  inline int NumOutputs() const {return _outputs;}
+  inline int NumInputs() const {
+    return _inputs;
+  }
+  inline int NumOutputs() const {
+    return _outputs;
+  }
 };
 
 #endif

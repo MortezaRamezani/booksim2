@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _SYNTHETICTRAFFICMANAGER_HPP_
 #define _SYNTHETICTRAFFICMANAGER_HPP_
@@ -36,13 +36,13 @@
 
 class SyntheticTrafficManager : public TrafficManager {
 
-private:
+ private:
 
   vector<vector<int> > _packet_size;
   vector<vector<int> > _packet_size_rate;
   vector<int> _packet_size_max_val;
 
-protected:
+ protected:
 
   vector<string> _traffic;
   vector<TrafficPattern *> _traffic_pattern;
@@ -53,22 +53,22 @@ protected:
   vector<vector<int> > _qtime;
   vector<vector<bool> > _qdrained;
 
-  vector<Stats *> _tlat_stats;     
-  vector<double> _overall_min_tlat;  
-  vector<double> _overall_avg_tlat;  
-  vector<double> _overall_max_tlat;  
+  vector<Stats *> _tlat_stats;
+  vector<double> _overall_min_tlat;
+  vector<double> _overall_avg_tlat;
+  vector<double> _overall_max_tlat;
 
   vector<vector<Stats *> > _pair_tlat;
 
-  virtual void _RetirePacket( Flit * head, Flit * tail );
+  virtual void _RetirePacket(Flit * head, Flit * tail);
 
-  virtual int _IssuePacket( int source, int cl ) = 0;
+  virtual int _IssuePacket(int source, int cl) = 0;
 
-  virtual void _Inject( );
+  virtual void _Inject();
 
-  virtual bool _PacketsOutstanding( ) const;
+  virtual bool _PacketsOutstanding() const;
 
-  virtual void _ResetSim( );
+  virtual void _ResetSim();
 
   virtual string _OverallStatsHeaderCSV() const;
   virtual string _OverallClassStatsCSV(int c) const;
@@ -76,11 +76,12 @@ protected:
   int _GetNextPacketSize(int cl) const;
   double _GetAveragePacketSize(int cl) const;
 
-  SyntheticTrafficManager( const Configuration &config, const vector<Network *> & net );
+  SyntheticTrafficManager(const Configuration &config,
+                          const vector<Network *> & net);
 
-public:
+ public:
 
-  virtual ~SyntheticTrafficManager( );
+  virtual ~SyntheticTrafficManager();
 
 };
 

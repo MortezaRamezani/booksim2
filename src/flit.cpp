@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 /*flit.cpp
  *
@@ -40,50 +40,47 @@
 stack<Flit *> Flit::_all;
 stack<Flit *> Flit::_free;
 
-ostream& operator<<( ostream& os, const Flit& f )
-{
-  os << "  Flit ID: " << f.id << " (" << &f << ")" 
-     << " Packet ID: " << f.pid
-     << " Class: " << f.cl 
-     << " Head: " << f.head
-     << " Tail: " << f.tail << endl;
-  os << "  Source: " << f.src << "  Dest: " << f.dest << " Intm: "<<f.intm<<endl;
-  os << "  Creation time: " << f.ctime << " Injection time: " << f.itime << " Arrival time: " << f.atime << " Phase: "<<f.ph<< endl;
+ostream& operator<<(ostream& os, const Flit& f) {
+  os << "  Flit ID: " << f.id << " (" << &f << ")" << " Packet ID: " << f.pid
+     << " Class: " << f.cl << " Head: " << f.head << " Tail: " << f.tail
+     << endl;
+  os << "  Source: " << f.src << "  Dest: " << f.dest << " Intm: " << f.intm
+     << endl;
+  os << "  Creation time: " << f.ctime << " Injection time: " << f.itime
+     << " Arrival time: " << f.atime << " Phase: " << f.ph << endl;
   os << "  VC: " << f.vc << endl;
   return os;
 }
 
-Flit::Flit() 
-{  
+Flit::Flit() {
   Reset();
-}  
+}
 
-void Flit::Reset() 
-{  
-  vc        = -1 ;
-  cl        = -1 ;
-  head      = false ;
-  tail      = false ;
-  ctime     = -1 ;
-  itime     = -1 ;
-  atime     = -1 ;
-  id        = -1 ;
-  pid       = -1 ;
-  hops      = 0 ;
-  watch     = false ;
-  record    = false ;
+void Flit::Reset() {
+  vc = -1;
+  cl = -1;
+  head = false;
+  tail = false;
+  ctime = -1;
+  itime = -1;
+  atime = -1;
+  id = -1;
+  pid = -1;
+  hops = 0;
+  watch = false;
+  record = false;
   intm = 0;
   src = -1;
   dest = -1;
   pri = 0;
-  intm =-1;
+  intm = -1;
   ph = -1;
   data = 0;
-}  
+}
 
 Flit * Flit::New() {
   Flit * f;
-  if(_free.empty()) {
+  if (_free.empty()) {
     f = new Flit;
     _all.push(f);
   } else {
@@ -99,7 +96,7 @@ void Flit::Free() {
 }
 
 void Flit::FreeAll() {
-  while(!_all.empty()) {
+  while (!_all.empty()) {
     delete _all.top();
     _all.pop();
   }

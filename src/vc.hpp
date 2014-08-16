@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _VC_HPP_
 #define _VC_HPP_
@@ -36,24 +36,36 @@
 #include "config_utils.hpp"
 
 class VC : public Module {
-public:
-  enum eVCState { state_min = 0, idle = state_min, routing, vc_alloc, active, 
-		  state_max = active };
+ public:
+  enum eVCState {
+    state_min = 0,
+    idle = state_min,
+    routing,
+    vc_alloc,
+    active,
+    state_max = active
+  };
   struct state_info_t {
     int cycles;
   };
   static const char * const VCSTATE[];
-  
-private:
+
+ private:
 
   deque<Flit *> _buffer;
-  
+
   eVCState _state;
-  
+
   OutputSet *_route_set;
   int _out_port, _out_vc;
 
-  enum ePrioType { local_age_based, queue_length_based, hop_count_based, none, other };
+  enum ePrioType {
+    local_age_based,
+    queue_length_based,
+    hop_count_based,
+    none,
+    other
+  };
 
   ePrioType _pri_type;
 
@@ -70,68 +82,59 @@ private:
 
   bool _lookahead_routing;
 
-public:
-  
-  VC( const Configuration& config, int outputs,
-      Module *parent, const string& name );
+ public:
+
+  VC(const Configuration& config, int outputs, Module *parent,
+     const string& name);
   ~VC();
 
-  void AddFlit( Flit *f );
-  inline Flit *FrontFlit( ) const
-  {
+  void AddFlit(Flit *f);
+  inline Flit *FrontFlit() const {
     return _buffer.empty() ? NULL : _buffer.front();
   }
-  
-  Flit *RemoveFlit( );
-  
-  
-  inline bool Empty( ) const
-  {
-    return _buffer.empty( );
+
+  Flit *RemoveFlit();
+
+  inline bool Empty() const {
+    return _buffer.empty();
   }
 
-  inline VC::eVCState GetState( ) const
-  {
+  inline VC::eVCState GetState() const {
     return _state;
   }
 
+  void SetState(eVCState s);
 
-  void SetState( eVCState s );
+  const OutputSet *GetRouteSet() const;
+  void SetRouteSet(OutputSet * output_set);
 
-  const OutputSet *GetRouteSet( ) const;
-  void SetRouteSet( OutputSet * output_set );
+  void SetOutput(int port, int vc);
 
-  void SetOutput( int port, int vc );
-
-  inline int GetOutputPort( ) const
-  {
+  inline int GetOutputPort() const {
     return _out_port;
   }
 
-
-  inline int GetOutputVC( ) const
-  {
+  inline int GetOutputVC() const {
     return _out_vc;
   }
 
   void UpdatePriority();
- 
-  inline int GetPriority( ) const
-  {
+
+  inline int GetPriority() const {
     return _pri;
   }
-  void Route( tRoutingFunction rf, const Router* router, const Flit* f, int in_channel );
+  void Route(tRoutingFunction rf, const Router* router, const Flit* f,
+             int in_channel);
 
-  inline int GetOccupancy() const
-  {
-    return (int)_buffer.size();
+  inline int GetOccupancy() const {
+    return (int) _buffer.size();
   }
 
   // ==== Debug functions ====
 
-  void SetWatch( bool watch = true );
-  bool IsWatched( ) const;
-  void Display( ostream & os = cout ) const;
+  void SetWatch(bool watch = true);
+  bool IsWatched() const;
+  void Display(ostream & os = cout) const;
 };
 
 #endif 

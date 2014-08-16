@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _KNCUBE_HPP_
 #define _KNCUBE_HPP_
@@ -37,25 +37,25 @@ class KNCube : public Network {
   int _k;
   int _n;
 
-  void _ComputeSize( const Configuration &config );
-  void _BuildNet( const Configuration &config );
+  void _ComputeSize(const Configuration &config);
+  void _BuildNet(const Configuration &config);
 
-  int _LeftChannel( int node, int dim );
-  int _RightChannel( int node, int dim );
+  int _LeftChannel(int node, int dim);
+  int _RightChannel(int node, int dim);
 
-  int _LeftNode( int node, int dim );
-  int _RightNode( int node, int dim );
+  int _LeftNode(int node, int dim);
+  int _RightNode(int node, int dim);
 
-public:
-  KNCube( const Configuration &config, const string & name, bool mesh );
+ public:
+  KNCube(const Configuration &config, const string & name, bool mesh);
   static void RegisterRoutingFunctions();
 
-  int GetN( ) const;
-  int GetK( ) const;
+  int GetN() const;
+  int GetK() const;
 
-  double Capacity( ) const;
+  double Capacity() const;
 
-  void InsertRandomFaults( const Configuration &config );
+  void InsertRandomFaults(const Configuration &config);
 
 };
 

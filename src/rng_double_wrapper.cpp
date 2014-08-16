@@ -23,12 +23,11 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #define main rng_double_main
 #include "rng-double.c"
 
-double ranf_next( )
-{
+double ranf_next() {
   return ranf_arr_next( );
 }

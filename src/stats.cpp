@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 /*stats.cpp
  *
@@ -42,64 +42,57 @@
 
 #include "stats.hpp"
 
-Stats::Stats( Module *parent, const string &name,
-	      double bin_size, int num_bins ) :
-  Module( parent, name ), _num_bins( num_bins ), _bin_size( bin_size )
-{
+Stats::Stats(Module *parent, const string &name, double bin_size, int num_bins)
+    : Module(parent, name),
+      _num_bins(num_bins),
+      _bin_size(bin_size) {
   Clear();
 }
 
-void Stats::Clear( )
-{
+void Stats::Clear() {
   _num_samples = 0;
-  _sample_sum  = 0.0;
+  _sample_sum = 0.0;
   _sample_squared_sum = 0.0;
 
   _hist.assign(_num_bins, 0);
 
   _min = numeric_limits<double>::quiet_NaN();
   _max = -numeric_limits<double>::quiet_NaN();
-  
+
   //  _reset = true;
 }
 
-double Stats::Average( ) const
-{
-  return _sample_sum / (double)_num_samples;
+double Stats::Average() const {
+  return _sample_sum / (double) _num_samples;
 }
 
-double Stats::Variance( ) const
-{
-  return (_sample_squared_sum * (double)_num_samples - _sample_sum * _sample_sum) / ((double)_num_samples * (double)_num_samples);
+double Stats::Variance() const {
+  return (_sample_squared_sum * (double) _num_samples
+      - _sample_sum * _sample_sum)
+      / ((double) _num_samples * (double) _num_samples);
 }
 
-double Stats::Min( ) const
-{
+double Stats::Min() const {
   return _min;
 }
 
-double Stats::Max( ) const
-{
+double Stats::Max() const {
   return _max;
 }
 
-double Stats::Sum( ) const
-{
+double Stats::Sum() const {
   return _sample_sum;
 }
 
-double Stats::SquaredSum( ) const
-{
+double Stats::SquaredSum() const {
   return _sample_squared_sum;
 }
 
-int Stats::NumSamples( ) const
-{
+int Stats::NumSamples() const {
   return _num_samples;
 }
 
-void Stats::AddSample( double val )
-{
+void Stats::AddSample(double val) {
   ++_num_samples;
   _sample_sum += val;
 
@@ -108,21 +101,20 @@ void Stats::AddSample( double val )
   _min = !(val >= _min) ? val : _min;
 
   //double clamp between 0 and num_bins-1
-  int b = (int)fmax(floor( val / _bin_size ), 0.0);
+  int b = (int) fmax(floor(val / _bin_size), 0.0);
   b = (b >= _num_bins) ? (_num_bins - 1) : b;
 
   _hist[b]++;
 }
 
-void Stats::Display( ostream & os ) const
-{
+void Stats::Display(ostream & os) const {
   os << *this << endl;
 }
 
 ostream & operator<<(ostream & os, const Stats & s) {
   vector<int> const & v = s._hist;
   os << "[ ";
-  for(size_t i = 0; i < v.size(); ++i) {
+  for (size_t i = 0; i < v.size(); ++i) {
     os << v[i] << " ";
   }
   os << "]";

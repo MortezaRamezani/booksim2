@@ -23,14 +23,13 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
 //  SeparableInputFirstAllocator: Separable Input-First Allocator
 //
 // ----------------------------------------------------------------------
-
 #ifndef _SEPARABLE_INPUT_FIRST_HPP_
 #define _SEPARABLE_INPUT_FIRST_HPP_
 
@@ -40,13 +39,13 @@
 
 class SeparableInputFirstAllocator : public SeparableAllocator {
 
-public:
-  
-  SeparableInputFirstAllocator( Module* parent, const string& name, int inputs,
-				int outputs, const string& arb_type ) ;
+ public:
 
-  virtual void Allocate() ;
+  SeparableInputFirstAllocator(Module* parent, const string& name, int inputs,
+                               int outputs, const string& arb_type);
 
-} ;
+  virtual void Allocate();
+
+};
 
 #endif

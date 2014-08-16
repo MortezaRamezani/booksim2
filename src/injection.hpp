@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _INJECTION_HPP_
 #define _INJECTION_HPP_
@@ -33,34 +33,35 @@
 using namespace std;
 
 class InjectionProcess {
-protected:
+ protected:
   int _nodes;
   double _rate;
   InjectionProcess(int nodes, double rate);
-public:
-  virtual ~InjectionProcess() {}
+ public:
+  virtual ~InjectionProcess() {
+  }
   virtual bool test(int source) = 0;
   virtual void reset();
-  static InjectionProcess * New(string const & inject, int nodes, double load, 
-				Configuration const * const config = NULL);
+  static InjectionProcess * New(string const & inject, int nodes, double load,
+                                Configuration const * const config = NULL);
 };
 
 class BernoulliInjectionProcess : public InjectionProcess {
-public:
+ public:
   BernoulliInjectionProcess(int nodes, double rate);
   virtual bool test(int source);
 };
 
 class OnOffInjectionProcess : public InjectionProcess {
-private:
+ private:
   double _alpha;
   double _beta;
   double _r1;
   vector<int> _initial;
   vector<int> _state;
-public:
-  OnOffInjectionProcess(int nodes, double rate, double alpha, double beta, 
-			double r1, vector<int> initial);
+ public:
+  OnOffInjectionProcess(int nodes, double rate, double alpha, double beta,
+                        double r1, vector<int> initial);
   virtual void reset();
   virtual bool test(int source);
 };

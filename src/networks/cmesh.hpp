@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -45,31 +45,31 @@
 #include "routefunc.hpp"
 
 class CMesh : public Network {
-public:
-  CMesh( const Configuration &config, const string & name );
+ public:
+  CMesh(const Configuration &config, const string & name);
   int GetN() const;
   int GetK() const;
 
-  static int NodeToRouter( int address ) ;
-  static int NodeToPort( int address ) ;
+  static int NodeToRouter(int address);
+  static int NodeToPort(int address);
 
-  static void RegisterRoutingFunctions() ;
+  static void RegisterRoutingFunctions();
 
-private:
+ private:
 
-  static int _cX ;
-  static int _cY ;
+  static int _cX;
+  static int _cY;
 
-  static int _memo_NodeShiftX ;
-  static int _memo_NodeShiftY ;
-  static int _memo_PortShiftY ;
+  static int _memo_NodeShiftX;
+  static int _memo_NodeShiftY;
+  static int _memo_PortShiftY;
 
-  void _ComputeSize( const Configuration &config );
-  void _BuildNet( const Configuration& config );
+  void _ComputeSize(const Configuration &config);
+  void _BuildNet(const Configuration& config);
 
-  int _k ;
-  int _n ;
-  int _c ;
+  int _k;
+  int _n;
+  int _c;
   int _xcount;
   int _ycount;
   int _xrouter;
@@ -80,16 +80,16 @@ private:
 //
 // Routing Functions
 //
-void xy_yx_cmesh( const Router *r, const Flit *f, int in_channel, 
-		  OutputSet *outputs, bool inject ) ;
+void xy_yx_cmesh(const Router *r, const Flit *f, int in_channel,
+                 OutputSet *outputs, bool inject);
 
-void xy_yx_no_express_cmesh( const Router *r, const Flit *f, int in_channel, 
-			     OutputSet *outputs, bool inject ) ;
+void xy_yx_no_express_cmesh(const Router *r, const Flit *f, int in_channel,
+                            OutputSet *outputs, bool inject);
 
-void dor_cmesh( const Router *r, const Flit *f, int in_channel, 
-		OutputSet *outputs, bool inject ) ;
+void dor_cmesh(const Router *r, const Flit *f, int in_channel,
+               OutputSet *outputs, bool inject);
 
-void dor_no_express_cmesh( const Router *r, const Flit *f, int in_channel, 
-			   OutputSet *outputs, bool inject ) ;
+void dor_no_express_cmesh(const Router *r, const Flit *f, int in_channel,
+                          OutputSet *outputs, bool inject);
 
 #endif

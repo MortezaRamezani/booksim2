@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 /*main.cpp
  *
@@ -41,8 +41,6 @@
 #include <iostream>
 #include <fstream>
 
-
-
 #include <sstream>
 #include "booksim.hpp"
 #include "routefunc.hpp"
@@ -54,13 +52,11 @@
 #include "injection.hpp"
 #include "power_module.hpp"
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //Global declarations
 //////////////////////
 
- /* the current traffic manager instance */
+/* the current traffic manager instance */
 TrafficManager * trafficManager = NULL;
 
 int GetSimTime() {
@@ -69,9 +65,9 @@ int GetSimTime() {
 
 class Stats;
 Stats * GetStats(const std::string & name) {
-  Stats* test =  trafficManager->getStats(name);
-  if(test == 0){
-    cout<<"warning statistics "<<name<<" not found"<<endl;
+  Stats* test = trafficManager->getStats(name);
+  if (test == 0) {
+    cout << "warning statistics " << name << " not found" << endl;
   }
   return test;
 }
@@ -79,9 +75,9 @@ Stats * GetStats(const std::string & name) {
 /* printing activity factor*/
 bool gPrintActivity;
 
-int gK;//radix
-int gN;//dimension
-int gC;//concentration
+int gK;  //radix
+int gN;  //dimension
+int gC;  //concentration
 
 int gNodes;
 
@@ -90,12 +86,9 @@ bool gTrace;
 
 ostream * gWatchOut;
 
-
-
 /////////////////////////////////////////////////////////////////////////////
 
-bool Simulate( BookSimConfig const & config )
-{
+bool Simulate(BookSimConfig const & config) {
   vector<Network *> net;
 
   int subnets = config.GetInt("subnets");
@@ -106,7 +99,7 @@ bool Simulate( BookSimConfig const & config )
   for (int i = 0; i < subnets; ++i) {
     ostringstream name;
     name << "network_" << i;
-    net[i] = Network::New( config, name.str() );
+    net[i] = Network::New(config, name.str());
   }
 
   /*tcc and characterize are legacy
@@ -114,7 +107,7 @@ bool Simulate( BookSimConfig const & config )
    */
 
   assert(trafficManager == NULL);
-  trafficManager = TrafficManager::New( config, net ) ;
+  trafficManager = TrafficManager::New(config, net);
 
   /*Start the simulation run
    */
@@ -124,19 +117,20 @@ bool Simulate( BookSimConfig const & config )
   total_time = 0.0;
   gettimeofday(&start_time, NULL);
 
-  bool result = trafficManager->Run() ;
-
+  bool result = trafficManager->Run();
 
   gettimeofday(&end_time, NULL);
-  total_time = ((double)(end_time.tv_sec) + (double)(end_time.tv_usec)/1000000.0)
-            - ((double)(start_time.tv_sec) + (double)(start_time.tv_usec)/1000000.0);
+  total_time = ((double) (end_time.tv_sec)
+      + (double) (end_time.tv_usec) / 1000000.0)
+      - ((double) (start_time.tv_sec)
+          + (double) (start_time.tv_usec) / 1000000.0);
 
-  cout<<"Total run time "<<total_time<<endl;
+  cout << "Total run time " << total_time << endl;
 
-  for (int i=0; i<subnets; ++i) {
+  for (int i = 0; i < subnets; ++i) {
 
     ///Power analysis
-    if(config.GetInt("sim_power") > 0){
+    if (config.GetInt("sim_power") > 0) {
       Power_Module pnet(net[i], config);
       pnet.run();
     }
@@ -150,38 +144,33 @@ bool Simulate( BookSimConfig const & config )
   return result;
 }
 
-
-int main( int argc, char **argv )
-{
+int main(int argc, char **argv) {
 
   BookSimConfig config;
 
-
-  if ( !ParseArgs( &config, argc, argv ) ) {
+  if (!ParseArgs(&config, argc, argv)) {
     cerr << "Usage: " << argv[0] << " configfile... [param=value...]" << endl;
     return 0;
- } 
+  }
 
-  
   /*initialize routing, traffic, injection functions
    */
-  InitializeRoutingMap( config );
+  InitializeRoutingMap(config);
 
   gPrintActivity = (config.GetInt("print_activity") > 0);
   gTrace = (config.GetInt("viewer_trace") > 0);
-  
-  string watch_out_file = config.GetStr( "watch_out" );
-  if(watch_out_file == "") {
+
+  string watch_out_file = config.GetStr("watch_out");
+  if (watch_out_file == "") {
     gWatchOut = NULL;
-  } else if(watch_out_file == "-") {
+  } else if (watch_out_file == "-") {
     gWatchOut = &cout;
   } else {
     gWatchOut = new ofstream(watch_out_file.c_str());
   }
-  
 
   /*configure and run the simulator
    */
-  bool result = Simulate( config );
+  bool result = Simulate(config);
   return result ? -1 : 0;
 }

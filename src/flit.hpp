@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _FLIT_HPP_
 #define _FLIT_HPP_
@@ -36,7 +36,7 @@
 
 class Flit {
 
-public:
+ public:
 
   int vc;
 
@@ -44,24 +44,24 @@ public:
 
   bool head;
   bool tail;
-  
-  int  ctime;
-  int  itime;
-  int  atime;
 
-  int  id;
-  int  pid;
+  int ctime;
+  int itime;
+  int atime;
+
+  int id;
+  int pid;
 
   bool record;
 
-  int  src;
-  int  dest;
+  int src;
+  int dest;
 
-  int  pri;
+  int pri;
 
-  int  hops;
+  int hops;
   bool watch;
-  
+
   // intermediate destination (if any)
   mutable int intm;
 
@@ -69,7 +69,7 @@ public:
   mutable int ph;
 
   // Fields for arbitrary data
-  void* data ;
+  void* data;
 
   // Lookahead route info
   OutputSet la_route_set;
@@ -80,16 +80,17 @@ public:
   void Free();
   static void FreeAll();
 
-private:
+ private:
 
   Flit();
-  ~Flit() {}
+  ~Flit() {
+  }
 
   static stack<Flit *> _all;
   static stack<Flit *> _free;
 
 };
 
-ostream& operator<<( ostream& os, const Flit& f );
+ostream& operator<<(ostream& os, const Flit& f);
 
 #endif

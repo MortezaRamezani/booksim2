@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _IQ_ROUTER_HPP_
 #define _IQ_ROUTER_HPP_
@@ -60,19 +60,19 @@ class IQRouter : public Router {
   bool _spec_check_elig;
   bool _spec_check_cred;
   bool _spec_mask_by_reqs;
-  
+
   bool _active;
 
   int _routing_delay;
   int _vc_alloc_delay;
   int _sw_alloc_delay;
-  
+
   map<int, Flit *> _in_queue_flits;
 
   deque<pair<int, pair<Credit *, int> > > _proc_credits;
 
   deque<pair<int, pair<int, int> > > _route_vcs;
-  deque<pair<int, pair<pair<int, int>, int> > > _vc_alloc_vcs;  
+  deque<pair<int, pair<pair<int, int>, int> > > _vc_alloc_vcs;
   deque<pair<int, pair<pair<int, int>, int> > > _sw_hold_vcs;
   deque<pair<int, pair<pair<int, int>, int> > > _sw_alloc_vcs;
 
@@ -86,11 +86,11 @@ class IQRouter : public Router {
   Allocator *_vc_allocator;
   Allocator *_sw_allocator;
   Allocator *_spec_sw_allocator;
-  
+
   vector<int> _vc_rr_offset;
   vector<int> _sw_rr_offset;
 
-  tRoutingFunction   _rf;
+  tRoutingFunction _rf;
 
   int _output_buffer_size;
   vector<queue<Flit *> > _output_buffer;
@@ -111,32 +111,32 @@ class IQRouter : public Router {
   vector<vector<queue<int> > > _outstanding_classes;
 #endif
 
-  bool _ReceiveFlits( );
-  bool _ReceiveCredits( );
+  bool _ReceiveFlits();
+  bool _ReceiveCredits();
 
-  virtual void _InternalStep( );
+  virtual void _InternalStep();
 
   bool _SWAllocAddReq(int input, int vc, int output);
 
-  void _InputQueuing( );
+  void _InputQueuing();
 
-  void _RouteEvaluate( );
-  void _VCAllocEvaluate( );
-  void _SWHoldEvaluate( );
-  void _SWAllocEvaluate( );
-  void _SwitchEvaluate( );
+  void _RouteEvaluate();
+  void _VCAllocEvaluate();
+  void _SWHoldEvaluate();
+  void _SWAllocEvaluate();
+  void _SwitchEvaluate();
 
-  void _RouteUpdate( );
-  void _VCAllocUpdate( );
-  void _SWHoldUpdate( );
-  void _SWAllocUpdate( );
-  void _SwitchUpdate( );
+  void _RouteUpdate();
+  void _VCAllocUpdate();
+  void _SWHoldUpdate();
+  void _SWAllocUpdate();
+  void _SwitchUpdate();
 
-  void _OutputQueuing( );
+  void _OutputQueuing();
 
-  void _SendFlits( );
-  void _SendCredits( );
-  
+  void _SendFlits();
+  void _SendCredits();
+
   void _UpdateNOQ(int input, int vc, Flit const * f);
 
   // ----------------------------------------
@@ -145,23 +145,23 @@ class IQRouter : public Router {
   //
   // ----------------------------------------
 
-  SwitchMonitor * _switchMonitor ;
-  BufferMonitor * _bufferMonitor ;
-  
-public:
+  SwitchMonitor * _switchMonitor;
+  BufferMonitor * _bufferMonitor;
 
-  IQRouter( Configuration const & config,
-	    Module *parent, string const & name, int id,
-	    int inputs, int outputs );
-  
-  virtual ~IQRouter( );
-  
-  virtual void AddOutputChannel(FlitChannel * channel, CreditChannel * backchannel);
+ public:
 
-  virtual void ReadInputs( );
-  virtual void WriteOutputs( );
-  
-  void Display( ostream & os = cout ) const;
+  IQRouter(Configuration const & config, Module *parent, string const & name,
+           int id, int inputs, int outputs);
+
+  virtual ~IQRouter();
+
+  virtual void AddOutputChannel(FlitChannel * channel,
+                                CreditChannel * backchannel);
+
+  virtual void ReadInputs();
+  virtual void WriteOutputs();
+
+  void Display(ostream & os = cout) const;
 
   virtual int GetUsedCredit(int o) const;
   virtual int GetBufferOccupancy(int i) const;
@@ -175,8 +175,12 @@ public:
   virtual vector<int> FreeCredits() const;
   virtual vector<int> MaxCredits() const;
 
-  SwitchMonitor const * const GetSwitchMonitor() const {return _switchMonitor;}
-  BufferMonitor const * const GetBufferMonitor() const {return _bufferMonitor;}
+  SwitchMonitor const * const GetSwitchMonitor() const {
+    return _switchMonitor;
+  }
+  BufferMonitor const * const GetBufferMonitor() const {
+    return _bufferMonitor;
+  }
 
 };
 

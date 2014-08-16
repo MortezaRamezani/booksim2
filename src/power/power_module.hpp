@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _POWER_MODULE_HPP_
 #define _POWER_MODULE_HPP_
@@ -37,7 +37,7 @@
 #include "switch_monitor.hpp"
 #include "buffer_monitor.hpp"
 
-struct wire{
+struct wire {
   double L;
   double K;
   double M;
@@ -46,14 +46,14 @@ struct wire{
 
 class Power_Module : public Module {
 
-protected:
+ protected:
   //network undersimulation
   Network * net;
   int classes;
   //all channels are this width
   double channel_width;
   //resimulate all with channel_width decremented by channel_sweep until 0
-  double  channel_sweep; 
+  double channel_sweep;
   //write result to a tabbed format to file
   string output_file_name;
 
@@ -70,42 +70,41 @@ protected:
   double wire_length;
   //////////Metal Parameters////////////
   // Wire left/right coupling capacitance [ F/mm ]
-  double Cw_cpl ; 
+  double Cw_cpl;
   // Wire up/down groudn capacitance      [ F/mm ]
-  double Cw_gnd  ;
-  double Cw ;
-  double Rw ;
+  double Cw_gnd;
+  double Cw;
+  double Rw;
   // metal pitch [mm]
-  double MetalPitch ; 
-
+  double MetalPitch;
 
   //////////Device Parameters////////////
-  
-  double LAMBDA  ;       // [um/LAMBDA]
-  double Cd   ;           // [F/um] (for Delay)
-  double Cg  ;           // [F/um] (for Delay)
-  double Cgdl  ;           // [F/um] (for Delay)
-  
-  double Cd_pwr;           // [F/um] (for Power)
-  double Cg_pwr  ;           // [F/um] (for Power)
-			       
-  double IoffN  ;            // [A/um]
-  double IoffP  ;            // [A/um]
-  // Leakage from bitlines, two-port cell  [A]
-  double IoffSRAM;  
-  // [Ohm] ( D1=1um Inverter)
-  double R     ;                         
-  // [F]   ( D1=1um Inverter - for Power )
-  double Ci_delay;   
-  // [F]   ( D1=1um Inverter - for Power )
-  double Co_delay ;              
 
-  double Ci ;
-  double Co ;
-  double Vdd  ;
-  double FO4   ;		     
-  double tCLK ;
-  double fCLK ;              
+  double LAMBDA;       // [um/LAMBDA]
+  double Cd;           // [F/um] (for Delay)
+  double Cg;           // [F/um] (for Delay)
+  double Cgdl;           // [F/um] (for Delay)
+
+  double Cd_pwr;           // [F/um] (for Power)
+  double Cg_pwr;           // [F/um] (for Power)
+
+  double IoffN;            // [A/um]
+  double IoffP;            // [A/um]
+  // Leakage from bitlines, two-port cell  [A]
+  double IoffSRAM;
+  // [Ohm] ( D1=1um Inverter)
+  double R;
+  // [F]   ( D1=1um Inverter - for Power )
+  double Ci_delay;
+  // [F]   ( D1=1um Inverter - for Power )
+  double Co_delay;
+
+  double Ci;
+  double Co;
+  double Vdd;
+  double FO4;
+  double tCLK;
+  double fCLK;
 
   double H_INVD2;
   double W_INVD2;
@@ -115,8 +114,8 @@ protected:
   double W_ND2D1;
   double H_SRAM;
   double W_SRAM;
-  double  ChannelPitch ;
-  double   CrossbarPitch;
+  double ChannelPitch;
+  double CrossbarPitch;
   ////////////////////////////////End of Constants/////////////////////////////
 
   /////////////results///////////////////
@@ -141,46 +140,45 @@ protected:
   double maxInputPort;
   double maxOutputPort;
 
-
   ////////////////////////
 
   //channels
   void calcChannel(const FlitChannel * f);
   wire const & wireOptimize(double l);
   double powerRepeatedWire(double L, double K, double M, double N);
-  double powerRepeatedWireLeak (double K, double M, double N);
-  double powerWireClk (double M, double W);
+  double powerRepeatedWireLeak(double K, double M, double N);
+  double powerWireClk(double M, double W);
   double powerWireDFF(double M, double W, double alpha);
-  
+
   //memory
   void calcBuffer(const BufferMonitor *bm);
   double powerWordLine(double memoryWidth, double memoryDepth);
   double powerMemoryBitRead(double memoryDepth);
   double powerMemoryBitWrite(double memoryDepth);
-  double powerMemoryBitLeak(double memoryDepth );
+  double powerMemoryBitLeak(double memoryDepth);
 
   //switch
   void calcSwitch(const SwitchMonitor *sm);
-  double powerCrossbar(double width, double inputs, double outputs, double from, double to);
+  double powerCrossbar(double width, double inputs, double outputs, double from,
+                       double to);
   double powerCrossbarCtrl(double width, double inputs, double outputs);
-  double powerCrossbarLeak (double width, double inputs, double outputs);
-  
+  double powerCrossbarLeak(double width, double inputs, double outputs);
+
   //output
   double powerOutputCtrl(double width);
 
   //area
 
-  double areaChannel (double K, double N, double M);
-  double areaCrossbar(double Inputs, double Outputs) ;
-  double areaInputModule(double Words) ;
+  double areaChannel(double K, double N, double M);
+  double areaCrossbar(double Inputs, double Outputs);
+  double areaInputModule(double Words);
   double areaOutputModule(double Outputs);
 
-public:
+ public:
   Power_Module(Network * net, const Configuration &config);
   ~Power_Module();
 
   void run();
-
 
 };
 #endif

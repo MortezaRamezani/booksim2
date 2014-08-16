@@ -23,14 +23,13 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 // ----------------------------------------------------------------------
 //
 //  SeparableAllocator: Separable Allocator Base Class
 //
 // ----------------------------------------------------------------------
-
 #ifndef _SEPARABLE_HPP_
 #define _SEPARABLE_HPP_
 
@@ -41,21 +40,21 @@
 class Arbiter;
 
 class SeparableAllocator : public SparseAllocator {
-  
-protected:
 
-  vector<Arbiter*> _input_arb ;
-  vector<Arbiter*> _output_arb ;
+ protected:
 
-public:
-  
-  SeparableAllocator( Module* parent, const string& name, int inputs,
-		      int outputs, const string& arb_type ) ;
-  
-  virtual ~SeparableAllocator() ;
+  vector<Arbiter*> _input_arb;
+  vector<Arbiter*> _output_arb;
 
-  virtual void Clear() ;
+ public:
 
-} ;
+  SeparableAllocator(Module* parent, const string& name, int inputs,
+                     int outputs, const string& arb_type);
+
+  virtual ~SeparableAllocator();
+
+  virtual void Clear();
+
+};
 
 #endif

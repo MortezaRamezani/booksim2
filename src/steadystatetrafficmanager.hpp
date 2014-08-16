@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _STEADYSTATETRAFFICMANAGER_HPP_
 #define _STEADYSTATETRAFFICMANAGER_HPP_
@@ -35,7 +35,7 @@
 
 class SteadyStateTrafficManager : public SyntheticTrafficManager {
 
-protected:
+ protected:
 
   vector<double> _load;
 
@@ -44,9 +44,9 @@ protected:
 
   bool _measure_latency;
 
-  int   _sample_period;
-  int   _max_samples;
-  int   _warmup_periods;
+  int _sample_period;
+  int _max_samples;
+  int _warmup_periods;
 
   vector<double> _latency_thres;
 
@@ -56,19 +56,20 @@ protected:
   vector<double> _warmup_threshold;
   vector<double> _acc_warmup_threshold;
 
-  virtual int _IssuePacket( int source, int cl );
+  virtual int _IssuePacket(int source, int cl);
 
-  virtual void _ResetSim( );
+  virtual void _ResetSim();
 
-  virtual bool _SingleSim( );
+  virtual bool _SingleSim();
 
   virtual string _OverallStatsHeaderCSV() const;
   virtual string _OverallClassStatsCSV(int c) const;
 
-public:
+ public:
 
-  SteadyStateTrafficManager( const Configuration &config, const vector<Network *> & net );
-  virtual ~SteadyStateTrafficManager( );
+  SteadyStateTrafficManager(const Configuration &config,
+                            const vector<Network *> & net);
+  virtual ~SteadyStateTrafficManager();
 
 };
 

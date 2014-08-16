@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _PRIO_ARB_HPP_
 #define _PRIO_ARB_HPP_
@@ -36,7 +36,7 @@
 class PriorityArbiter : public Module {
   int _rr_ptr;
 
-protected:
+ protected:
   const int _inputs;
 
   struct sRequest {
@@ -49,20 +49,19 @@ protected:
 
   int _match;
 
-public:
-  PriorityArbiter( const Configuration &config,
-		   Module *parent, const string& name,
-		   int inputs );
+ public:
+  PriorityArbiter(const Configuration &config, Module *parent,
+                  const string& name, int inputs);
 
-  void Clear( );
+  void Clear();
 
-  void AddRequest( int in, int label = 0, int pri = 0 );
-  void RemoveRequest( int in, int label = 0 );
+  void AddRequest(int in, int label = 0, int pri = 0);
+  void RemoveRequest(int in, int label = 0);
 
-  int Match( ) const;
+  int Match() const;
 
-  void Arbitrate( );
-  void Update( );
+  void Arbitrate();
+  void Update();
 };
 
 #endif 

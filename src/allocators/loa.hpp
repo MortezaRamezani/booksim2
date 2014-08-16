@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _LOA_HPP_
 #define _LOA_HPP_
@@ -39,11 +39,10 @@ class LOA : public DenseAllocator {
   vector<int> _rptr;
   vector<int> _gptr;
 
-public:
-  LOA( Module *parent, const string& name,
-       int inputs, int outputs );
+ public:
+  LOA(Module *parent, const string& name, int inputs, int outputs);
 
-  void Allocate( );
+  void Allocate();
 };
 
 #endif

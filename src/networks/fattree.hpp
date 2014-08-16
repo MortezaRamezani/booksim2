@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -37,7 +37,6 @@
 //  $Id$
 // 
 ////////////////////////////////////////////////////////////////////////
-
 #ifndef _FatTree_HPP_
 #define _FatTree_HPP_
 
@@ -48,29 +47,26 @@ class FatTree : public Network {
   int _k;
   int _n;
 
-  
-  void _ComputeSize( const Configuration& config );
-  void _BuildNet(    const Configuration& config );
+  void _ComputeSize(const Configuration& config);
+  void _BuildNet(const Configuration& config);
 
-  Router*& _Router( int depth, int pos );
+  Router*& _Router(int depth, int pos);
 
-  int  _mapSize;
+  int _mapSize;
   int* _inputChannelMap;
-  int* _outputChannelMap; 
+  int* _outputChannelMap;
   int* _latencyMap;
 
+ public:
 
-
-public:
-
-  FatTree( const Configuration& config ,const string & name );
-  static void RegisterRoutingFunctions() ;
+  FatTree(const Configuration& config, const string & name);
+  static void RegisterRoutingFunctions();
 
   //
   // Methods to Assit Routing Functions
   //
-  static int PreferedPort( const Router* r, int index );
-			 
+  static int PreferedPort(const Router* r, int index);
+
 };
 
 #endif

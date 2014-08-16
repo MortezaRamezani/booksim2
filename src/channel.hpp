@@ -23,7 +23,7 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -48,25 +48,29 @@ using namespace std;
 
 template<typename T>
 class Channel : public TimedModule {
-public:
+ public:
   Channel(Module * parent, string const & name);
-  virtual ~Channel() {}
+  virtual ~Channel() {
+  }
 
   // Physical Parameters
   void SetLatency(int cycles);
-  int GetLatency() const { return _delay ; }
-  
+  int GetLatency() const {
+    return _delay;
+  }
+
   // Send data 
   virtual void Send(T * data);
-  
+
   // Receive data
-  virtual T * Receive(); 
-  
+  virtual T * Receive();
+
   virtual void ReadInputs();
-  virtual void Evaluate() {}
+  virtual void Evaluate() {
+  }
   virtual void WriteOutputs();
 
-protected:
+ protected:
   int _delay;
   T * _input;
   T * _output;
@@ -76,15 +80,18 @@ protected:
 
 template<typename T>
 Channel<T>::Channel(Module * parent, string const & name)
-  : TimedModule(parent, name), _delay(1), _input(0), _output(0) {
+    : TimedModule(parent, name),
+      _delay(1),
+      _input(0),
+      _output(0) {
 }
 
 template<typename T>
 void Channel<T>::SetLatency(int cycles) {
-  if(cycles <= 0) {
+  if (cycles <= 0) {
     Error("Channel must have positive delay.");
   }
-  _delay = cycles ;
+  _delay = cycles;
 }
 
 template<typename T>
@@ -99,7 +106,7 @@ T * Channel<T>::Receive() {
 
 template<typename T>
 void Channel<T>::ReadInputs() {
-  if(_input) {
+  if (_input) {
     _wait_queue.push(make_pair(GetSimTime() + _delay - 1, _input));
     _input = 0;
   }
@@ -108,12 +115,12 @@ void Channel<T>::ReadInputs() {
 template<typename T>
 void Channel<T>::WriteOutputs() {
   _output = 0;
-  if(_wait_queue.empty()) {
+  if (_wait_queue.empty()) {
     return;
   }
   pair<int, T *> const & item = _wait_queue.front();
   int const & time = item.first;
-  if(GetSimTime() < time) {
+  if (GetSimTime() < time) {
     return;
   }
   assert(GetSimTime() == time);

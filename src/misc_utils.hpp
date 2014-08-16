@@ -23,12 +23,12 @@
  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #ifndef _MISC_UTILS_HPP_
 #define _MISC_UTILS_HPP_
 
-int log_two( int x );
-int powi( int x, int y );
+int log_two(int x);
+int powi(int x, int y);
 
 #endif 
