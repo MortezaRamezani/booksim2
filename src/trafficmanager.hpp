@@ -304,6 +304,7 @@ class TrafficManager : public Module {
 
   int _GetNextPacketSize(int cl) const;
   double _GetAveragePacketSize(int cl) const;
+  double ComputeJitter(int cl) const;
 
  public:
 

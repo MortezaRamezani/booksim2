@@ -746,9 +746,6 @@ void TrafficManager::_RetireFlit(Flit *f, int dest) {
             f->atime - head->ctime);
         _pair_nlat[f->cl][f->src * _nodes + dest]->AddSample(
             f->atime - head->itime);
-        if (mrDebug)
-          cout << "{MR DEBUG} " << f->src << " - " << dest << " - " << head->id
-               << " = " << (f->atime - head->ctime) << endl;
       }
     }
 
@@ -2159,6 +2156,10 @@ void TrafficManager::DisplayOverallStats(ostream & os) const {
     os << "Hops average = " << _overall_hop_stats[c] / (double) _total_sims
        << " (" << _total_sims << " samples)" << endl;
 
+    if (_pair_stats)
+      os << "Jitter = " << ComputeJitter(c) << " (" << _total_sims
+         << " samples)" << endl;
+
 #ifdef TRACK_STALLS
     os << "Buffer busy stall rate = " << (double)_overall_buffer_busy_stalls[c] / (double)_total_sims
     << " (" << _total_sims << " samples)" << endl
@@ -2286,4 +2287,17 @@ double TrafficManager::_GetAveragePacketSize(int cl) const {
     sum += psize[i] * prate[i];
   }
   return (double) sum / (double) (_packet_size_max_val[cl] + 1);
+}
+
+double TrafficManager::ComputeJitter(int cl) const {
+  int successful_flow = 0;
+  double sigma_var = 0.0;
+  for (int i = 0; i < (int) _pair_plat[cl].size(); i++) {
+    if (_pair_plat[cl][i]->Variance() != 0) {
+      successful_flow++;
+      sigma_var += _pair_plat[cl][i]->Variance();
+    }
+  }
+  double jitter = (double) (1.0 / successful_flow) * sqrt(sigma_var);
+  return jitter;
 }

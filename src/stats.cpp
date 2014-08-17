@@ -54,6 +54,11 @@ void Stats::Clear() {
   _sample_sum = 0.0;
   _sample_squared_sum = 0.0;
 
+  _sample_variance = 0.0;
+  _var_e_t = 0.0;
+  _var_avg = 0.0;
+  _var_sse = 0.0;
+
   _hist.assign(_num_bins, 0);
 
   _min = numeric_limits<double>::quiet_NaN();
