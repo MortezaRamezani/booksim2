@@ -1521,7 +1521,7 @@ bool TrafficManager::_SingleSim() {
           (total_phases + 1 >= _warmup_periods) :
           ((!_measure_latency || (lat_chg_exc_class < 0))
               && (acc_chg_exc_class < 0))) {
-        cout << "Warmed up ..." << "Time used is " << _time << " cycles"
+        cout << "Warmed up ..." << "\nTime used is " << _time << " cycles"
              << endl;
         clear_last = true;
         _sim_state = running;
