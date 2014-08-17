@@ -1,6 +1,6 @@
 // $Id$
 
-//simple 16X16 torus under injection mode
+//general run config file
 
 viewer_trace = 0;
 mr_debug = 0;
@@ -25,7 +25,7 @@ vc_buf_size = 4;
 //print_activity = 1;
 //print_csv_results = 1;
 
-stats_out = ./results/stats.txt;
+//stats_out = ./results/stats.txt;
 pair_stats = 1;
 
 //watch_out = -;
