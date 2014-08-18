@@ -152,6 +152,7 @@ class TrafficManager : public Module {
   vector<double> _overall_min_plat;
   vector<double> _overall_avg_plat;
   vector<double> _overall_max_plat;
+  vector<double> _overall_jitter;
 
   vector<Stats *> _nlat_stats;
   vector<double> _overall_min_nlat;

@@ -470,6 +470,7 @@ TrafficManager::TrafficManager(const Configuration &config,
   _overall_min_plat.resize(_classes, 0.0);
   _overall_avg_plat.resize(_classes, 0.0);
   _overall_max_plat.resize(_classes, 0.0);
+  _overall_jitter.resize(_classes, 0.0);
 
   _nlat_stats.resize(_classes);
   _overall_min_nlat.resize(_classes, 0.0);
@@ -1703,6 +1704,8 @@ void TrafficManager::_UpdateOverallStats() {
     _overall_avg_flat[c] += _flat_stats[c]->Average();
     _overall_max_flat[c] += _flat_stats[c]->Max();
 
+    _overall_jitter[c] += ComputeJitter(c);
+
     _overall_min_frag[c] += _frag_stats[c]->Min();
     _overall_avg_frag[c] += _frag_stats[c]->Average();
     _overall_max_frag[c] += _frag_stats[c]->Max();
@@ -2157,8 +2160,8 @@ void TrafficManager::DisplayOverallStats(ostream & os) const {
        << " (" << _total_sims << " samples)" << endl;
 
     if (_pair_stats)
-      os << "Jitter = " << ComputeJitter(c) << " (" << _total_sims
-         << " samples)" << endl;
+      os << "Jitter = " << _overall_jitter[c] / (double) _total_sims << " ("
+         << _total_sims << " samples)" << endl;
 
 #ifdef TRACK_STALLS
     os << "Buffer busy stall rate = " << (double)_overall_buffer_busy_stalls[c] / (double)_total_sims
@@ -2207,6 +2210,8 @@ string TrafficManager::_OverallStatsCSV(int c) const {
      << _overall_avg_sent[c] / _overall_avg_sent_packets[c] << ','
      << _overall_avg_accepted[c] / _overall_avg_accepted_packets[c] << ','
      << _overall_hop_stats[c] / (double) _total_sims;
+  if (_pair_stats)
+    os << ',' << _overall_jitter[c] / (double) _total_sims;
 
 #ifdef TRACK_STALLS
   os << ',' << (double)_overall_buffer_busy_stalls[c] / (double)_total_sims

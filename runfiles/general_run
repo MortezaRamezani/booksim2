@@ -23,7 +23,7 @@ vc_buf_size = 4;
 
 //use_read_write = ;
 //print_activity = 1;
-//print_csv_results = 1;
+print_csv_results = 1;
 
 //stats_out = ./results/stats.txt;
 pair_stats = 1;
