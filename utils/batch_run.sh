@@ -9,8 +9,8 @@
 
 #declare -a k_size=("4" "8" "16")
 declare -a k_size=("4")
-#declare -a traffic_pattern=("bitcomp" "bitrev" "butterfly" "shuffle" "neighbor" "uniform" "transpose" "tornado")
-declare -a traffic_pattern=("bitcomp")
+declare -a traffic_pattern=("bitcomp" "bitrev" "butterfly" "shuffle" "neighbor" "uniform" "transpose" "tornado")
+#declare -a traffic_pattern=("bitcomp")
 declare -a load_rate=("0.02" "0.04" "0.06" "0.08" "0.1" "0.12" "0.14" "0.16" "0.18" "0.2")
 declare -a num_of_vc=("2" "4")
 

@@ -46,6 +46,7 @@ num_vcs = 2;
 traffic = bitcomp;
 
 injection_rate = 0.2;
+injection_rate_uses_flits = 1;
 injection_process = on_off;
 
 burst_alpha = 0.5;
