@@ -18,13 +18,13 @@ for k in "${k_size[@]}"
 do
 	for t in "${traffic_pattern[@]}"
 	do
-		for nv in "${num_of_vc}"
+		for nv in "${num_of_vc[@]}"
 		do
-		  for ld in "${load_rate}"
+		  for ld in "${load_rate[@]}"
 			do
 			   run_date=$(date +"%Y-%m-%d_%H%M")
 			   ./src/booksim ./runfiles/general_run "k=$k" "traffic=$t" "num_vcs=$nv" "injection_rate=$ld"\
-			   "stats_out=./results/stats_"$k"x"$k"_"$t"_"$nv"VC_"$run_date"" > ./results/out_"$k"x"$k"_"$t"_"$nv"VC_"$run_date" &
+			   "stats_out=./results/stats_"$k"x"$k"_"$t"_"$nv"VC_"$ld"_"$run_date"" > ./results/out_"$k"x"$k"_"$t"_"$nv"VC_"$ld"_"$run_date" &
 			done
 		done
 	done
