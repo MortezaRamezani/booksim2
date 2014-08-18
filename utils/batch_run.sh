@@ -24,7 +24,7 @@ do
 			do
 			   run_date=$(date +"%Y-%m-%d_%H%M")
 			   ./src/booksim ./runfiles/general_run "k=$k" "traffic=$t" "num_vcs=$nv" "injection_rate=$ld"\
-			   "stats_out=./results/stats_"$k"x"$k"_"$t"_"$nv"VC_"$run_date"" > ./results/out_"$k"x"$k"_"$t"_"$nv"VC_"$run_date" &
+			   "stats_out=./results/stats_"$k"x"$k"_"$t"_"$nv"VC_"$ld"_"$run_date"" > ./results/out_"$k"x"$k"_"$t"_"$nv"VC_"$ld"_"$run_date" &
 			done
 		done
 	done

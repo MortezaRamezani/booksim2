@@ -16,7 +16,7 @@ st_final_delay = 1;
 
 //vc_allocator = loa;
 
-latency_thres = 1000000.0;
+latency_thres = 100000000.0;
 
 packet_size = 8;
 vc_buf_size = 4;
