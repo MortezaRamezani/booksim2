@@ -21,7 +21,7 @@ do
 		for nv in "${num_of_vc[@]}"
 		do
 		  for ld in "${load_rate[@]}"
-			do
+			do 
 			   run_date=$(date +"%Y-%m-%d_%H%M")
 			   ./src/booksim ./runfiles/general_run "k=$k" "traffic=$t" "num_vcs=$nv" "injection_rate=$ld"\
 			   "stats_out=./results/stats_"$k"x"$k"_"$t"_"$nv"VC_"$ld"_"$run_date"" > ./results/out_"$k"x"$k"_"$t"_"$nv"VC_"$ld"_"$run_date" &
