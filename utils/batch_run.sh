@@ -13,6 +13,8 @@ declare -a traffic_pattern=("bitcomp" "bitrev" "butterfly" "shuffle" "neighbor" 
 #declare -a traffic_pattern=("bitcomp")
 declare -a load_rate=("0.02" "0.04" "0.06" "0.08" "0.1" "0.12" "0.14" "0.16" "0.18" "0.2")
 declare -a num_of_vc=("2" "4")
+declare -a vc_buf_size=("4" "8" "16")
+declare -a burst_alpha=("0.25" "0.5" "0.75");
 
 dir="./results/"$(date +"%Y%m%d_%H%M")
 mkdir -p $dir

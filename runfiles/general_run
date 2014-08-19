@@ -32,12 +32,13 @@ pair_stats = 1;
 //watch_file = ./src/examples/w.txt;
 
 // Topology
-topology = torus;
+topology = mesh;
 k = 4;
 n = 2;
 
 // Routing
-routing_function = dim_order;
+//routing_function = dim_order;
+routing_function = xy_yx;
 
 // Flow control
 num_vcs = 2;
