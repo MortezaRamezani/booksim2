@@ -10,6 +10,7 @@ for ln in fp:
         break
     line_temp = ln.split()
     line = map(int, line_temp)
+    line[3] = 0
     if (line[0] - temp_time) == 0 :
         print ' '.join(map(str, line))
     else:
