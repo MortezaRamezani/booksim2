@@ -99,11 +99,13 @@ int Stats::NumSamples() const {
 }
 
 void Stats::UpdateVariance(double val) {
-//  cout << "debug : " << _sample_variance << " - "<<val << endl;
+  if (_num_samples <= 1)
+    return;
   _var_e_t = val - _var_avg;
   _var_avg = _var_avg + (_var_e_t / _num_samples);
   _var_sse = _var_sse + _var_e_t * (val - _var_avg);
   _sample_variance = _var_sse / (_num_samples - 1);
+//  cout << "debug : " << _num_samples << " - "<<_sample_variance << " - "<<val << endl;
 }
 
 void Stats::AddSample(double val) {
