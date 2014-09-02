@@ -121,6 +121,7 @@ class TrafficManager : public Module {
   vector<double> _overall_min_plat;
   vector<double> _overall_avg_plat;
   vector<double> _overall_max_plat;
+  vector<double> _overall_jitter;
 
   vector<Stats *> _nlat_stats;
   vector<double> _overall_min_nlat;
@@ -264,6 +265,8 @@ class TrafficManager : public Module {
   virtual void _DisplayClassStats(int c, ostream & os) const;
   virtual void _WriteClassStats(int c, ostream & os) const;
   virtual void _DisplayOverallClassStats(int c, ostream & os) const;
+
+  double ComputeJitter(int cl) const;
 
   TrafficManager(const Configuration &config, const vector<Network *> & net);
 

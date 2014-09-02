@@ -28,6 +28,7 @@
 #include <sstream>
 #include <fstream>
 #include <limits>
+#include <cmath>
 
 #include "booksim.hpp"
 #include "booksim_config.hpp"
@@ -318,6 +319,7 @@ TrafficManager::TrafficManager(const Configuration &config,
   _overall_min_plat.resize(_classes, 0.0);
   _overall_avg_plat.resize(_classes, 0.0);
   _overall_max_plat.resize(_classes, 0.0);
+  _overall_jitter.resize(_classes, 0.0);
 
   _nlat_stats.resize(_classes);
   _overall_min_nlat.resize(_classes, 0.0);
@@ -1210,6 +1212,8 @@ void TrafficManager::_UpdateOverallStats() {
     _overall_avg_flat[c] += _flat_stats[c]->Average();
     _overall_max_flat[c] += _flat_stats[c]->Max();
 
+    _overall_jitter[c] += ComputeJitter(c);
+
     _overall_min_frag[c] += _frag_stats[c]->Min();
     _overall_avg_frag[c] += _frag_stats[c]->Average();
     _overall_max_frag[c] += _frag_stats[c]->Max();
@@ -1516,6 +1520,12 @@ void TrafficManager::_WriteClassStats(int c, ostream & os) const {
         os << _pair_flat[c][i * _nodes + j]->Average() << " ";
       }
     }
+    os << "];" << endl << "variance_plat(" << c + 1 << ",:) = [ ";
+    for (int i = 0; i < _nodes; ++i) {
+      for (int j = 0; j < _nodes; ++j) {
+        os << _pair_plat[c][i * _nodes + j]->Variance() << " ";
+      }
+    }
   }
 
   double time_delta = (double) (_drain_time - _reset_time);
@@ -1668,6 +1678,10 @@ void TrafficManager::_DisplayOverallClassStats(int c, ostream & os) const {
      << _overall_hop_stats[c] / (double) _total_sims << " (" << _total_sims
      << " samples)" << endl;
 
+  if (_pair_stats)
+    os << "Jitter = " << _overall_jitter[c] / (double) _total_sims << " ("
+       << _total_sims << " samples)" << endl;
+
 #ifdef TRACK_STALLS
   os << "Overall buffer busy stalls = " << (double)_overall_buffer_busy_stalls[c] / (double)_total_sims
   << " (" << _total_sims << " samples)" << endl
@@ -1696,6 +1710,8 @@ string TrafficManager::_OverallStatsHeaderCSV() const {
      << ',' << "min_accepted_flits" << ',' << "avg_accepted_flits" << ','
      << "max_accepted_flits" << ',' << "avg_sent_packet_size" << ','
      << "avg_accepted_packet_size" << ',' << "hops";
+  if (_pair_stats)
+    os << ',' << "jitter";
 #ifdef TRACK_STALLS
   os << ',' << "buffer_busy"
   << ',' << "buffer_conflict"
@@ -1735,6 +1751,8 @@ string TrafficManager::_OverallClassStatsCSV(int c) const {
      << _overall_avg_sent[c] / _overall_avg_sent_packets[c] << ','
      << _overall_avg_accepted[c] / _overall_avg_accepted_packets[c] << ','
      << _overall_hop_stats[c] / (double) _total_sims;
+  if (_pair_stats)
+    os << ',' << _overall_jitter[c] / (double) _total_sims;
 
 #ifdef TRACK_STALLS
   os << ',' << (double)_overall_buffer_busy_stalls[c] / (double)_total_sims
@@ -1768,4 +1786,17 @@ void TrafficManager::_LoadWatchList(const string & filename) {
   } else {
     Error("Unable to open flit watch file: " + filename);
   }
+}
+
+double TrafficManager::ComputeJitter(int cl) const {
+  int successful_flow = 0;
+  double sigma_var = 0.0;
+  for (int i = 0; i < (int) _pair_plat[cl].size(); i++) {
+    if (_pair_plat[cl][i]->Variance() != 0) {
+      successful_flow++;
+      sigma_var += _pair_plat[cl][i]->Variance();
+    }
+  }
+  double jitter = (double) (1.0 / successful_flow) * sqrt(sigma_var);
+  return jitter;
 }
