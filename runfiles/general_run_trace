@@ -1,0 +1,58 @@
+// $Id$
+
+//general run config file
+
+//viewer_trace = 0;
+//mr_debug = 0;
+
+sim_type = workload;
+workload = trace({./results/lu.convert,{1}}); 
+
+warmup_periods = 3;
+max_samples = 25;
+sample_period = 10000;
+
+routing_delay = 1;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+//vc_allocator = loa;
+
+latency_thres = 100000000.0;
+
+packet_size = 8;
+vc_buf_size = 4;
+
+//use_read_write = ;
+//print_activity = 1;
+print_csv_results = 1;
+
+//stats_out = ./results/stats.txt;
+pair_stats = 1;
+
+//watch_out = -;
+//watch_file = ./src/examples/w.txt;
+
+// Topology
+topology = mesh;
+k = 4;
+n = 2;
+
+// Routing
+//routing_function = dim_order;
+routing_function = xy_yx;
+
+// Flow control
+num_vcs = 2;
+
+// Traffic
+//traffic = bitcomp;
+
+//injection_rate = 0.2;
+//injection_rate_uses_flits = 1;
+//injection_process = on_off;
+
+//burst_alpha = 0.5;
+//burst_beta = 0.5;
+//burst_r1 = -1.0;
