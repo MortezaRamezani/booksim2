@@ -11,5 +11,5 @@ for ln in fp:
       break
   line_temp = ln.split()
   line = map(int, line_temp)
-  line[0] = math.ceil(line[0]/2.0)
+  line[0] = int(math.ceil(line[0]/2.0))
   print ' '.join(map(str, line))
