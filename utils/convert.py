@@ -12,6 +12,7 @@ for ln in fp:
     line = map(int, line_temp)
     line[3] = 0
     if (line[0] - temp_time) == 0 :
+        line[0] = 0
         print ' '.join(map(str, line))
     else:
         temp = line[0]
