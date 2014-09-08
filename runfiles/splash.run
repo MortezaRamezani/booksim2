@@ -1,0 +1,31 @@
+// $Id$
+
+sim_type = workload;
+workload = trace({./results/trace.in,{1}});
+
+warmup_periods = 3;
+max_samples = 10;
+sample_period = 1000000;
+
+routing_delay = 1;
+vc_alloc_delay = 1;
+sw_alloc_delay = 1;
+st_final_delay = 1;
+
+print_csv_results = 1;
+pair_stats = 1;
+
+//latency_thres = 10000000.0;
+
+// Flow control
+num_vcs = 2;
+packet_size = 8;
+vc_buf_size = 8;
+
+// Topology
+topology = mesh;
+k = 7;
+n = 2;
+
+// Routing
+routing_function = xy_yx;
