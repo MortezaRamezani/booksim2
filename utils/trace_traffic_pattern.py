@@ -18,3 +18,4 @@ for ln in fp:
 for i in range(0, 49):
   for j in range(0, 49):
     print pattern[i*49 + j], 
+  print ''
