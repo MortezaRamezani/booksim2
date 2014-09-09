@@ -17,5 +17,5 @@ for ln in fp:
     
 for i in range(0, 49):
   for j in range(0, 49):
-    print pattern[i*7 + j] ' '
+    print pattern[i*7 + j],
   print '\n'
