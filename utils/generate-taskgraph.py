@@ -25,7 +25,7 @@ for ln in fp:
   for tmp in ln.split():
     rate.append(tmp)
 
-print net_size    
+#print net_size    
 
 lamb = [0] * pow(net_size,2)
 state = [1] * pow(net_size,2)
