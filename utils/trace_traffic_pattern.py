@@ -5,7 +5,7 @@ import sys
 fp = open(sys.argv[1], 'r').read().split('\n')
 temp_time = 0
 
-pattern = [0] * (49)
+pattern = [0] * 49 * 49
 
 for ln in fp:
     if ln == '':
@@ -17,5 +17,5 @@ for ln in fp:
     
 for i in range(0, 49):
   for j in range(0, 49):
-    print pattern(i*7+j), ' '
+    print pattern[i*7+j], ' '
   print '\n'
