@@ -9,24 +9,28 @@ beta = 0.5
 f_clk = 1500
 m = 128
 b = 8
-time = 5000000
+time = 500000
 
-x = int(sys.argv[2])
-y = int(sys.argv[3])
-net_size = x*y
+net_size = 0
 
 fp = open(sys.argv[1], 'r').read().split('\n')
 temp_time = 0
 
 rate = []
-lamb = [0] * pow(net_size,2)
-state = [1] * pow(net_size,2)
 
 for ln in fp:
   if ln == '':
     break
+  net_size += 1
   for tmp in ln.split():
     rate.append(tmp)
+
+print net_size    
+
+lamb = [0] * pow(net_size,2)
+state = [1] * pow(net_size,2)
+
+#exit(0)
 
 for idx, r in enumerate(rate):
   lamb[idx] = float(r)*1000.0/(m*b*f_clk*1.0)
